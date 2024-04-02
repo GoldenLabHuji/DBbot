@@ -1,25 +1,14 @@
-interface IOperator {
-    readonly displayName: string;
-    calculationFunction(column: number[], choise: number): number[];
-    getDisplayName(): string;
-}
+export abstract class AbstractOperator {
+    constructor(private readonly displayName: string) {}
 
-export class Operator implements IOperator {
-    displayName: string;
-    constructor(private _displayName: string) {
-        this.displayName = _displayName;
-    }
-
-    calculationFunction(column: number[], choise: number): number[] {
-        return column;
-    }
+    abstract calculationFunction(column: number[], choise: number): number[];
 
     getDisplayName(): string {
-        return this._displayName;
+        return this.displayName;
     }
 }
 
-export class EqualOperator extends Operator {
+export class EqualOperator extends AbstractOperator {
     constructor() {
         super("EQUAL");
     }
@@ -29,7 +18,7 @@ export class EqualOperator extends Operator {
     }
 }
 
-export class LessOperator extends Operator {
+export class LessOperator extends AbstractOperator {
     constructor() {
         super("LESS");
     }
@@ -39,7 +28,7 @@ export class LessOperator extends Operator {
     }
 }
 
-export class GreaterOperator extends Operator {
+export class GreaterOperator extends AbstractOperator {
     constructor() {
         super("GREATER");
     }
