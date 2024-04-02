@@ -3,23 +3,23 @@ import { Operator } from "./operator";
 type TypeOfData = "string" | "numeric";
 
 export class Column {
-    private operatorsArray: Operator[] = [];
     constructor(
-        private readonly _id: string,
-        private _typeOfData: TypeOfData,
-        private _displayName: string = _id
+        private readonly id: string,
+        private typeOfData: TypeOfData,
+        private displayName: string = id,
+        private operatorsArray: Operator[] = []
     ) {}
 
     getId(): string {
-        return this._id;
+        return this.id;
     }
 
     getTypeOfData(): TypeOfData {
-        return this._typeOfData;
+        return this.typeOfData;
     }
 
     getDisplayName(): string {
-        return this._displayName;
+        return this.displayName;
     }
 
     getOperators(): Operator[] {
