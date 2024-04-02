@@ -1,44 +1,50 @@
 interface IOperator {
-    _displayName: string;
+    readonly displayName: string;
     calculationFunction(column: number[], choise: number): number[];
+    getDisplayName(): string;
 }
 
-class EqualOperator implements IOperator {
-    _displayName: string = "EQUAL";
+export class Operator implements IOperator {
+    displayName: string;
+    constructor(private _displayName: string) {
+        this.displayName = _displayName;
+    }
+
+    calculationFunction(column: number[], choise: number): number[] {
+        return column;
+    }
+
+    getDisplayName(): string {
+        return this._displayName;
+    }
+}
+
+export class EqualOperator extends Operator {
+    constructor() {
+        super("EQUAL");
+    }
 
     calculationFunction(column: number[], choise: number): number[] {
         return column.filter((value) => value === choise);
     }
 }
 
-class LessOperator implements IOperator {
-    _displayName: string = "LESS";
+export class LessOperator extends Operator {
+    constructor() {
+        super("LESS");
+    }
 
     calculationFunction(column: number[], choise: number): number[] {
         return column.filter((value) => value < choise);
     }
 }
 
-class GreaterOperator implements IOperator {
-    _displayName: string = "GREATER";
+export class GreaterOperator extends Operator {
+    constructor() {
+        super("GREATER");
+    }
 
     calculationFunction(column: number[], choise: number): number[] {
         return column.filter((value) => value > choise);
-    }
-}
-
-class Operator {
-    _displayName: string;
-    constructor(private displayName: string) {
-        this._displayName = displayName;
-    }
-    greaterThan(column: number[], choise: number): number[] {
-        return column.filter((value) => value > choise);
-    }
-    lessThan(column: number[], choise: number): number[] {
-        return column.filter((value) => value < choise);
-    }
-    equalTo(column: number[], choise: number): number[] {
-        return column.filter((value) => value === choise);
     }
 }
