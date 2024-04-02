@@ -1,14 +1,8 @@
 import { Column } from "./column";
 
-abstract class AbstractDBbot {
-    protected columns: Column[] = [];
-    abstract getColumns(): Column[];
-    abstract addColumn(column: Column): void;
-    abstract removeColumn(column: Column): void;
-    abstract loadFile(path: string): void;
-}
+export class DBbot {
+    constructor(private columns: Column[] = []) {}
 
-export class DBbot extends AbstractDBbot {
     getColumns(): Column[] {
         return this.columns;
     }
@@ -23,6 +17,5 @@ export class DBbot extends AbstractDBbot {
 
     loadFile(path: string): void {
         console.log(`Loading file from path: ${path}`);
-        //TODO: implement file loading
     }
 }
