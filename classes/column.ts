@@ -2,7 +2,7 @@ import { Operator } from "./operator";
 
 type TypeOfData = "string" | "numeric";
 
-class Column {
+export class Column {
     private operatorsArray: Operator[] = [];
     constructor(
         private readonly _id: string,
