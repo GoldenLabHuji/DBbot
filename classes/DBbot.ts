@@ -1,19 +1,14 @@
 import { Column } from "./column";
 
-interface IDBbot {
-    readonly columns: Column[];
-    getColumns(): Column[];
-    addColumn(column: Column): void;
-    removeColumn(column: Column): void;
-    loadFile(path: string): void;
+abstract class AbstractDBbot {
+    protected columns: Column[] = [];
+    abstract getColumns(): Column[];
+    abstract addColumn(column: Column): void;
+    abstract removeColumn(column: Column): void;
+    abstract loadFile(path: string): void;
 }
 
-export class DBbot implements IDBbot {
-    columns: Column[];
-    constructor(_columns: Column[] = []) {
-        this.columns = _columns;
-    }
-
+export class DBbot extends AbstractDBbot {
     getColumns(): Column[] {
         return this.columns;
     }
@@ -28,5 +23,6 @@ export class DBbot implements IDBbot {
 
     loadFile(path: string): void {
         console.log(`Loading file from path: ${path}`);
+        //TODO: implement file loading
     }
 }
