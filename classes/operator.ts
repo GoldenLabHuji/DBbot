@@ -1,4 +1,4 @@
-export abstract class AbstractOperator {
+export abstract class Operator {
     constructor(private readonly displayName: string) {}
 
     abstract calculationFunction(column: number[], choise: number): number[];
@@ -8,7 +8,7 @@ export abstract class AbstractOperator {
     }
 }
 
-export class EqualOperator extends AbstractOperator {
+export class EqualOperator extends Operator {
     constructor() {
         super("EQUAL");
     }
@@ -18,7 +18,7 @@ export class EqualOperator extends AbstractOperator {
     }
 }
 
-export class LessOperator extends AbstractOperator {
+export class LessOperator extends Operator {
     constructor() {
         super("LESS");
     }
@@ -28,7 +28,7 @@ export class LessOperator extends AbstractOperator {
     }
 }
 
-export class GreaterOperator extends AbstractOperator {
+export class GreaterOperator extends Operator {
     constructor() {
         super("GREATER");
     }
