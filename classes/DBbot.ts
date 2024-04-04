@@ -1,6 +1,9 @@
+import fs from "fs";
+import csvParser from "csv-parser";
 import { Column } from "./column";
 
 export class DBbot {
+    private dataMap = new Map<string, any>();
     constructor(private columns: Column[] = []) {}
 
     getColumns(): Column[] {
@@ -16,6 +19,21 @@ export class DBbot {
     }
 
     loadFile(path: string): void {
-        console.log(`Loading file from path: ${path}`);
+        fs.createReadStream(path)
+            .pipe(csvParser())
+            .on("data", (row: any) => {
+                this.dataMap.set(row.id, row);
+            })
+            .on("end", () => {
+                console.log("CSV file successfully processed.");
+                console.log("Data:", this.dataMap);
+            })
+            .on("error", (error: any) => {
+                console.error("Error occurred while reading CSV:", error);
+            });
+    }
+
+    getRow(id: string): any {
+        return this.dataMap.get(id);
     }
 }
