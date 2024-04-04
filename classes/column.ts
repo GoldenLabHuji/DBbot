@@ -1,11 +1,11 @@
 import { Operator } from "./operator";
 
-type TypeOfData = "string" | "numeric";
+type DataType = "string" | "numeric";
 
 export class Column {
     constructor(
         private readonly id: string,
-        private typeOfData: TypeOfData,
+        private dataType: DataType,
         private displayName: string = id,
         private operatorsArray: Operator[] = []
     ) {}
@@ -14,8 +14,8 @@ export class Column {
         return this.id;
     }
 
-    getTypeOfData(): TypeOfData {
-        return this.typeOfData;
+    getDataType(): DataType {
+        return this.dataType;
     }
 
     getDisplayName(): string {
