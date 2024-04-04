@@ -1,7 +1,10 @@
 export abstract class Operator {
     constructor(private readonly displayName: string) {}
 
-    abstract calculationFunction(column: number[], choise: number): number[];
+    abstract calculate(
+        column: number[] | string[],
+        choice: number | number[]
+    ): number[] | string[];
 
     getDisplayName(): string {
         return this.displayName;
@@ -13,8 +16,13 @@ export class EqualOperator extends Operator {
         super("EQUAL");
     }
 
-    calculationFunction(column: number[], choise: number): number[] {
-        return column.filter((value) => value === choise);
+    calculate(
+        column: number[] | string[],
+        choice: number | number[]
+    ): number[] | string[] {
+        return column.filter((value) => value === choice) as
+            | number[]
+            | string[];
     }
 }
 
@@ -23,8 +31,11 @@ export class LessOperator extends Operator {
         super("LESS");
     }
 
-    calculationFunction(column: number[], choise: number): number[] {
-        return column.filter((value) => value < choise);
+    calculate(
+        column: number[] | string[],
+        choice: number | number[]
+    ): number[] | string[] {
+        return column.filter((value) => value < choice) as number[] | string[];
     }
 }
 
@@ -33,7 +44,10 @@ export class GreaterOperator extends Operator {
         super("GREATER");
     }
 
-    calculationFunction(column: number[], choise: number): number[] {
-        return column.filter((value) => value > choise);
+    calculate(
+        column: number[] | string[],
+        choice: number | number[]
+    ): number[] | string[] {
+        return column.filter((value) => value > choice) as number[] | string[];
     }
 }
