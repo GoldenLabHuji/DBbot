@@ -2,6 +2,8 @@ import { DBbot } from "./DBbot";
 const { exec } = require("child_process");
 
 export class app {
+    constructor(public botUIPath: string) {}
+
     private startReactApp(path: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const reactAppProcess = exec("npm run dev", { cwd: path });
@@ -26,7 +28,7 @@ export class app {
 
     runBot(bot: DBbot): void {
         process.env.DB_BOT = JSON.stringify(bot);
-        this.startReactApp("../../BotUI")
+        this.startReactApp(this.botUIPath)
             .then(() => {
                 console.log("React app started successfully");
             })
