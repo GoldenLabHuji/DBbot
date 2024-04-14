@@ -1,3 +1,10 @@
 import { DBbot } from "./classes/DBbot";
+import { app as appClass } from "./classes/app";
 
-export const dbBot = new DBbot();
+const dbBot = new DBbot();
+const app = new appClass();
+
+module.exports = {
+    dbBot,
+    app,
+};

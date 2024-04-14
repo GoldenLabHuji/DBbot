@@ -2,7 +2,6 @@ import fs from "fs";
 import csvParser from "csv-parser";
 import { Column } from "./column";
 import { DataType } from "../general/types";
-const { exec } = require("child_process");
 
 export class DBbot {
     private dataMap = new Map<string, any>();
@@ -74,39 +73,6 @@ export class DBbot {
             })
             .on("error", (error: any) => {
                 console.error("Error occurred while reading CSV:", error);
-            });
-    }
-
-    private startReactApp(path: string): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            const reactAppProcess = exec("npm run dev", { cwd: path });
-
-            reactAppProcess.stdout.on("data", (data: any) => {
-                console.log(`React App: ${data}`);
-                if (data.includes("Compiled successfully")) {
-                    resolve();
-                }
-            });
-
-            reactAppProcess.stderr.on("data", (data: any) => {
-                console.error(`React App Error: ${data}`);
-                reject();
-            });
-
-            reactAppProcess.on("close", (code: any) => {
-                console.log(`React App process exited with code ${code}`);
-            });
-        });
-    }
-
-    runBot(path: string): void {
-        // process.env.DB_BOT = JSON.stringify(new dbBot());
-        this.startReactApp(path)
-            .then(() => {
-                console.log("React app started successfully");
-            })
-            .catch(() => {
-                console.error("Failed to start React app");
             });
     }
 }
