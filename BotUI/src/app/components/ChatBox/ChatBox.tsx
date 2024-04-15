@@ -5,95 +5,67 @@ import { styles } from "@/app/components/ChatBox/ChatBox.style";
 import ChatInput from "@/app/components/ChatInput";
 import ChatButton from "@/app/components/ChatButton";
 import { useRecoilState } from "recoil";
-import { Message } from "@/app/general/interfaces";
-import {
-    messagesSectionAtom,
-    queryParamsAtom,
-    isQuerySubmitAtom,
-} from "@/app/store/atoms";
+import { queryParamsAtom, isQuerySubmitAtom } from "@/app/store/atoms";
 import { botMessages } from "@/app/general/resources";
-import {
-    handleUserInput,
-    updateMessagesSection,
-    handleEndChat,
-} from "@/app/components/ChatBox/utils";
+import useInput from "@/app/hooks/useInput";
+import useChat from "@/app/hooks/useChat";  
+import useUpdateMsg from "@/app/hooks/useUpdateMsg";
+import useEndChat from "@/app/hooks/useEndChat";
 
 export default function ChatBox() {
-    const [messages, setMessages] = useRecoilState(messagesSectionAtom);
-    const [isQuerySubmit, setIsQuerySubmit] = useRecoilState(isQuerySubmitAtom);
-    const [queryParams, setQueryParams] = useRecoilState(queryParamsAtom);
-    const [isSubmit, setIsSubmit] = useState<boolean>(false);
-    const [currentMessagesSection, setCurrentMessagesSection] = useState<
-        Message[]
-    >([]);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-    const [isEndSection, setIsEndSection] = useState<boolean>(false);
-    const [isEndChat, setIsEndChat] = useState<boolean>(false);
+    const [_, setIsQuerySubmit] = useRecoilState(isQuerySubmitAtom);
+    const [__, setQueryParams] = useRecoilState(queryParamsAtom);
     const [lastQuestionIndex, setLastQuestionIndex] = useState<number>(
         botMessages.length - 1
     );
-    const [isStringParameter, setIsStringParameter] = useState<boolean>(false);
-    const [botMsg, setBotMsg] = useState<Message[]>(botMessages);
+
+    const { currentMsg, currentQIndex, endChat } = useChat();
+    const { handleUserInput, botMsg, isSubmit, strParam } = useInput(
+        currentMsg,
+        currentQIndex,
+        lastQuestionIndex
+    );
+
+    const { endSection, updateMessagesSection } = useUpdateMsg(
+        currentMsg,
+        botMsg,
+        currentQIndex.state
+    );
+
+    const { handleEndChat } = useEndChat(strParam);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
         const input = data.get("input")?.toString() || "";
-
-        handleUserInput(
-            input,
-            botMsg,
-            setBotMsg,
-            currentMessagesSection,
-            setCurrentMessagesSection,
-            setCurrentQuestionIndex,
-            setIsEndChat,
-            currentQuestionIndex,
-            setIsEndSection,
-            setIsSubmit,
-            lastQuestionIndex,
-            setIsStringParameter,
-            isStringParameter,
-            isSubmit
-        );
-
+        handleUserInput(input, endChat.setState);
         e.currentTarget.reset();
     };
 
     useEffect(() => {
-        if (!isEndChat) {
-            setCurrentMessagesSection([
-                ...currentMessagesSection,
-                botMsg[currentQuestionIndex],
+        if (!endChat.state) {
+            currentMsg.setState([
+                ...currentMsg.state,
+                botMsg[currentQIndex.state],
             ]);
         }
-    }, [currentQuestionIndex, isEndChat]);
+    }, [currentQIndex.state, endChat.state]);
 
     useEffect(() => {
         setLastQuestionIndex(botMsg.length - 1);
     }, [botMsg]);
 
     useEffect(() => {
-        if (isEndChat) {
-            const params = handleEndChat(messages, isStringParameter);
+        if (endChat.state) {
+            const params = handleEndChat();
             setQueryParams(params);
             setIsQuerySubmit(true);
         }
-    }, [isEndChat]);
+    }, [endChat.state]);
 
     useEffect(() => {
-        updateMessagesSection(
-            currentQuestionIndex,
-            botMsg,
-            currentMessagesSection,
-            setCurrentMessagesSection,
-            setIsEndSection,
-            setMessages,
-            messages,
-            isEndSection,
-            isEndChat
-        );
-    }, [currentMessagesSection, isSubmit, isEndSection]);
+        updateMessagesSection(endChat.state);
+    }, [currentMsg.state, isSubmit, endSection.state]);
 
     return (
         <Box sx={styles.box}>
