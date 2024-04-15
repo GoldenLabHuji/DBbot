@@ -15,7 +15,8 @@ import {
 import { resultMsg } from "@/app/general/resources";
 import CSVButton from "@/app/components/CSVButton";
 
-export default function Chat() {
+export default function Chat({ bot }: { bot: any }) {
+    // TODO: Fix any type
     const [messagesSection, setMessagesSection] =
         useRecoilState(messagesSectionAtom);
     const [queryParams, setQueryParams] = useRecoilState(queryParamsAtom);
