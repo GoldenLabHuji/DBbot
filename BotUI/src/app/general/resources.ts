@@ -2,50 +2,66 @@ import {
     Message,
     NumericAttribute,
     StringAttribute,
-    Operator,
+    NumericOperator,
+    StringOperator,
 } from "@/app/general/interfaces";
 import { sender, typeOfQuestion } from "@/app/general/types";
 
-export const botMessages: Message[] = [
-    {
-        id: 0,
-        text: `Hello! I'm a ChatBot that will help you to get small pieces of data from a large dataset called the English Lexicon Project. 
+export const botMessages = (
+    headers: string[] = [],
+    dbName: string = "Database",
+    dbDescription: string = "INSERT DESCRIPTION OF THE DATABASE"
+): Message[] => {
+    if (!headers || headers.length === 0) return [];
 
-The English Lexicon Project contains a large number of words with many of their properties, and summaries of behavioral data from experiments that examined how easy or difficult to read these words are. 
+    const headersArray = headers.map(
+        (header, index) => `${index + 1}: ${header}`
+    );
+    const headersString = headersArray.join("\n");
+    return [
+        {
+            id: 0,
+            text: `Hello! I'm a ChatBot that will help you to get small pieces of data from a large dataset called ${dbName}. 
+
+${dbDescription}
 
 Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 1,
-        text: `My main purpose as a ChatBot is to help you get data based on specific properties of words.
+            sender: "bot",
+            typeOfQuestion: "intro",
+            answerOptions: [1],
+        },
+        {
+            id: 1,
+            text: `My main purpose as a ChatBot is to help you get data based on specific properties of words.
 
 For example, you may be interested in looking specifically at very long or very short words, 
 or to look at words that are acquired early or late in childhood.
 
 Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 2,
-        text: `At the moment, I have the capacity of helping you extract data based on five word properties:
-
-1: Age of Acquisition
-2: Number of Phonemes
-3: Number of Syllables
-4: Related words ( like words that start with the same characters as a chosen word or words that sound like a chosen word )
+            sender: "bot",
+            typeOfQuestion: "intro",
+            answerOptions: [1],
+        },
+        {
+            id: 2,
+            text: `At the moment, I have the capacity of helping you extract data based on ${
+                headers.length
+            } word properties:
+${headersString}
+${
+    headers.length + 1
+}: Related words ( like words that start with the same characters as a chosen word or words that sound like a chosen word )
 
 Which property would you like to start with?`,
-        sender: "bot",
-        typeOfQuestion: "parameter",
-        answerOptions: [1, 2, 3, 4],
-    },
-];
-
+            sender: "bot",
+            typeOfQuestion: "parameter",
+            answerOptions: Array.from(
+                { length: headers.length + 1 },
+                (_, index) => index + 1
+            ),
+        },
+    ];
+};
 export const botNumericNotEqualMessages: Message[] = [
     {
         id: 0,
@@ -252,11 +268,12 @@ Which property would you like to start with?`,
 
 export const emptyNumericAttribute: NumericAttribute = {
     value: 0,
-    operator: Operator.Greater,
+    operator: NumericOperator.Greater,
 };
 
 export const emptyStringAttribute: StringAttribute = {
     value: "",
+    operator: StringOperator.StartWith,
 };
 
 export const resultMsg = {
@@ -266,20 +283,3 @@ You can download the results as a csv file`,
     sender: "bot" as sender,
     typeOfQuestion: "result" as typeOfQuestion,
 };
-
-export const tableHeaders = [
-    "Word",
-    "Length",
-    "SUBTLWF",
-    "Ortho_N",
-    "Phono_N",
-    "Concreteness_Rating",
-    "Age_Of_Acquisition",
-    "BG_Mean",
-    "Pron",
-    "NPhon",
-    "NSyll",
-    "NMorph",
-    "I_NM_Mean _RT",
-    "I NMG Mean Accuracy",
-];
