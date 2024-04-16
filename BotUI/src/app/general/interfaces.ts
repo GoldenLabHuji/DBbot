@@ -13,31 +13,62 @@ export interface MessageSection {
     messageSection: Message[];
 }
 
+export interface ChatProps {
+    bot: Bot;
+}
+
 export interface MessageProps {
     message: Message;
 }
 
-export enum Operator {
+export interface TableProps {
+    rows: WordData[];
+}
+
+export interface Bot {
+    name: string;
+    description: string;
+    columns: BotColumn[];
+    dataMap: {};
+    headers: string[];
+}
+
+interface BotColumn {
+    id: string;
+    dataType: "numeric" | "string";
+    displayName: string;
+    rows: string[] | number[];
+    operatorsArray: BotOperatorArray[];
+}
+
+interface BotOperatorArray {
+    displayName: string;
+}
+
+export enum NumericOperator {
     Greater = "Greater",
     Lower = "Lower",
     Equal = "Equal",
     Range = "Range",
 }
 
+export enum StringOperator {
+    StartWith = "StartWith",
+    SoundLike = "SoundLike",
+}
+
 export interface NumericAttribute {
     value: number | number[];
-    operator: Operator;
+    operator: NumericOperator;
 }
 
 export interface StringAttribute {
     value: string;
+    operator: StringOperator;
 }
 
 export interface QueryWords {
     [key: string]: NumericAttribute | StringAttribute | null;
-}
-export interface TableProps {
-    rows: WordData[];
 }
 
 export interface ResultsData {
