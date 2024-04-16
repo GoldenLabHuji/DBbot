@@ -1,5 +1,4 @@
 import { useState, Dispatch, SetStateAction } from "react";
-import { botMessages } from "@/app/general/resources";
 import { Message } from "@/app/general/interfaces";
 import {
     sender,
@@ -8,6 +7,7 @@ import {
     currentQIndexType,
 } from "@/app/general/types";
 import {
+    botMessages,
     botStringMessages,
     botOperatorMessages,
     botRangeOperatorMessages,
@@ -15,15 +15,18 @@ import {
     botNumericNotEqualMessages,
     botAddParameterMessages,
 } from "@/app/general/resources";
+import { botAtom } from "@/app/store/atoms";
+import { useRecoilState } from "recoil";
 
 export default function useInput(
     currentMsg: currentMsgType,
     currentQIndex: currentQIndexType,
     lastQuestionIndex: number
 ) {
-    const [botMsg, setBotMsg] = useState<Message[]>(botMessages);
+    const [bot, _] = useRecoilState(botAtom);
+    const [botMsg, setBotMsg] = useState<Message[]>(botMessages(bot.headers));
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
-    const [_, setIsEndSection] = useState<boolean>(false);
+    const [__, setIsEndSection] = useState<boolean>(false);
     const [isStringParameter, setIsStringParameter] = useState<boolean>(false);
 
     const handleUserInput = (
@@ -63,37 +66,26 @@ export default function useInput(
 
             switch (typeOfQuestion) {
                 case "add":
-                    if (Number(input) === 2) {
-                        setIsEndChat(true);
-                    } else {
-                        setIsEndSection(true);
+                    const isEnd = Number(input) === 2;
+                    setIsEndSection(true);
+                    setIsEndChat(isEnd);
+                    !isEnd &&
                         setBotMsg([...botMsg, ...botAddParameterMessages]);
-                    }
                     break;
                 case "parameter":
-                    if (Number(input) === 4) {
-                        setIsStringParameter(true);
-                        setBotMsg([...botMsg, ...botStringMessages]);
-                        setIsEndSection(false);
-                    } else {
-                        setIsStringParameter(false);
-                        if (Number(input) === 1) {
-                            setBotMsg([
-                                ...botMsg,
-                                ...botNumericNotEqualMessages,
-                            ]);
-                        } else {
-                            setBotMsg([...botMsg, ...botNumericEqualMessages]);
-                        }
-                    }
+                    const isString = Number(input) === bot.headers.length + 1;
+                    setIsStringParameter(isString);
+                    setBotMsg(
+                        isString
+                            ? [...botMsg, ...botStringMessages]
+                            : [...botMsg, ...botNumericEqualMessages]
+                    );
                     break;
                 case "operator":
-                    if (!isStringParameter) {
-                        if (Number(input) === 3) {
-                            setBotMsg([...botMsg, ...botRangeOperatorMessages]);
-                        } else {
-                            setBotMsg([...botMsg, ...botOperatorMessages]);
-                        }
+                    if (!isStringParameter && Number(input) === 3) {
+                        setBotMsg([...botMsg, ...botRangeOperatorMessages]);
+                    } else if (!isStringParameter) {
+                        setBotMsg([...botMsg, ...botOperatorMessages]);
                     }
                     break;
                 default:
