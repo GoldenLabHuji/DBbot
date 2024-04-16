@@ -1,4 +1,3 @@
-"use client";
 import { atom, RecoilState } from "recoil";
 import {
     MessageSection,
@@ -6,6 +5,7 @@ import {
     QueryWords,
     WordData,
     ResultsData,
+    Bot,
 } from "@/app/general/interfaces";
 
 export const messagesSectionAtom: RecoilState<MessageSection[]> = atom({
@@ -42,4 +42,9 @@ export const isResultsAtom: RecoilState<boolean> = atom({
 export const isQuerySubmitAtom: RecoilState<boolean> = atom({
     key: "isQuerySubmit",
     default: false,
+});
+
+export const botAtom: RecoilState<Bot> = atom({
+    key: "bot",
+    default: {} as Bot,
 });
