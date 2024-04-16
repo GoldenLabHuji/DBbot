@@ -11,18 +11,29 @@ import {
     queryWordsAtom,
     isResultsAtom,
     isQuerySubmitAtom,
+    botAtom,
 } from "@/app/store/atoms";
+import { ChatProps } from "@/app/general/interfaces";
 import { resultMsg } from "@/app/general/resources";
 import CSVButton from "@/app/components/CSVButton";
 
-export default function Chat({ bot }: { bot: any }) {
-    // TODO: Fix any type
+export default function Chat({ bot }: ChatProps) {
+    const [botState, setBotState] = useRecoilState(botAtom);
+
+    useEffect(() => {
+        setBotState(bot);
+    }, [bot]);
+
+    useEffect(() => {
+        console.log(botState);
+    }, []);
+
     const [messagesSection, setMessagesSection] =
         useRecoilState(messagesSectionAtom);
-    const [queryParams, setQueryParams] = useRecoilState(queryParamsAtom);
+    const [queryParams, __] = useRecoilState(queryParamsAtom);
     const [queryWords, setQueryWords] = useRecoilState(queryWordsAtom);
     const [isResult, setIsResult] = useRecoilState(isResultsAtom);
-    const [isQuerySubmit, setIsQuerySubmit] = useRecoilState(isQuerySubmitAtom);
+    const [isQuerySubmit, ___] = useRecoilState(isQuerySubmitAtom);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const messagesEndRef = useRef(null);
