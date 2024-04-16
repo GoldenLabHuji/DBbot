@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { queryParamsAtom, isQuerySubmitAtom } from "@/app/store/atoms";
 import { botMessages } from "@/app/general/resources";
 import useInput from "@/app/hooks/useInput";
-import useChat from "@/app/hooks/useChat";  
+import useChat from "@/app/hooks/useChat";
 import useUpdateMsg from "@/app/hooks/useUpdateMsg";
 import useEndChat from "@/app/hooks/useEndChat";
 
