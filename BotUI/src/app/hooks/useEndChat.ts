@@ -1,11 +1,12 @@
 import { useRecoilState } from "recoil";
-import { messagesSectionAtom, botAtom } from "@/app/store/atoms";
+import { messagesSectionAtom } from "@/app/store/atoms";
 import {
     QueryWords,
     NumericOperator,
     StringOperator,
     NumericAttribute,
     StringAttribute,
+    Bot,
 } from "@/app/general/interfaces";
 import {
     emptyNumericAttribute,
@@ -14,8 +15,7 @@ import {
 import { isNumberArray } from "@/app/general/utils";
 import { strParamType } from "@/app/general/types";
 
-export default function useEndChat(strParam: strParamType) {
-    const [bot, __] = useRecoilState(botAtom);
+export default function useEndChat(strParam: strParamType, bot: Bot) {
     const [messages, _] = useRecoilState(messagesSectionAtom);
 
     const handleEndChat = (): QueryWords => {

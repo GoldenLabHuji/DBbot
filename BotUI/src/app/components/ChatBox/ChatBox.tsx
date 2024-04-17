@@ -7,12 +7,13 @@ import ChatButton from "@/app/components/ChatButton";
 import { useRecoilState } from "recoil";
 import { queryParamsAtom, isQuerySubmitAtom } from "@/app/store/atoms";
 import { botMessages } from "@/app/general/resources";
+import { ChatBoxProps } from "@/app/general/interfaces";
 import useInput from "@/app/hooks/useInput";
 import useChat from "@/app/hooks/useChat";
 import useUpdateMsg from "@/app/hooks/useUpdateMsg";
 import useEndChat from "@/app/hooks/useEndChat";
 
-export default function ChatBox() {
+export default function ChatBox({ bot }: ChatBoxProps) {
     const [_, setIsQuerySubmit] = useRecoilState(isQuerySubmitAtom);
     const [__, setQueryParams] = useRecoilState(queryParamsAtom);
     const [lastQuestionIndex, setLastQuestionIndex] = useState<number>(
@@ -23,7 +24,8 @@ export default function ChatBox() {
     const { handleUserInput, botMsg, isSubmit, strParam } = useInput(
         currentMsg,
         currentQIndex,
-        lastQuestionIndex
+        lastQuestionIndex,
+        bot,
     );
 
     const { endSection, updateMessagesSection } = useUpdateMsg(
@@ -32,7 +34,7 @@ export default function ChatBox() {
         currentQIndex.state
     );
 
-    const { handleEndChat } = useEndChat(strParam);
+    const { handleEndChat } = useEndChat(strParam, bot);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();

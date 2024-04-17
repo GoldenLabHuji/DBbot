@@ -11,23 +11,12 @@ import {
     queryWordsAtom,
     isResultsAtom,
     isQuerySubmitAtom,
-    botAtom,
 } from "@/app/store/atoms";
 import { ChatProps } from "@/app/general/interfaces";
 import { resultMsg } from "@/app/general/resources";
 import CSVButton from "@/app/components/CSVButton";
 
 export default function Chat({ bot }: ChatProps) {
-    const [botState, setBotState] = useRecoilState(botAtom);
-
-    useEffect(() => {
-        setBotState(bot);
-    }, [bot]);
-
-    useEffect(() => {
-        console.log(botState);
-    }, []);
-
     const [messagesSection, setMessagesSection] =
         useRecoilState(messagesSectionAtom);
     const [queryParams, __] = useRecoilState(queryParamsAtom);
@@ -121,7 +110,7 @@ export default function Chat({ bot }: ChatProps) {
                 <div ref={messagesEndRef} />
             </Box>
 
-            <ChatBox />
+            <ChatBox bot={bot} />
         </Box>
     );
 }

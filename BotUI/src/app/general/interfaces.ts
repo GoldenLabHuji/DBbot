@@ -16,6 +16,7 @@ export interface MessageSection {
 export interface ChatProps {
     bot: Bot;
 }
+export interface ChatBoxProps extends ChatProps {}
 
 export interface MessageProps {
     message: Message;

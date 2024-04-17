@@ -1,5 +1,5 @@
 import { useState, Dispatch, SetStateAction } from "react";
-import { Message } from "@/app/general/interfaces";
+import { Message, Bot } from "@/app/general/interfaces";
 import {
     sender,
     typeOfQuestion,
@@ -15,15 +15,13 @@ import {
     botNumericNotEqualMessages,
     botAddParameterMessages,
 } from "@/app/general/resources";
-import { botAtom } from "@/app/store/atoms";
-import { useRecoilState } from "recoil";
 
 export default function useInput(
     currentMsg: currentMsgType,
     currentQIndex: currentQIndexType,
-    lastQuestionIndex: number
+    lastQuestionIndex: number,
+    bot: Bot
 ) {
-    const [bot, _] = useRecoilState(botAtom);
     const [botMsg, setBotMsg] = useState<Message[]>(botMessages(bot.headers));
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [__, setIsEndSection] = useState<boolean>(false);
