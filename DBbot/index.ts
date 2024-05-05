@@ -5,5 +5,3 @@ module.exports = {
     DBbot,
     app,
 };
-// export const dbBot = new DBbot();
-// export const app = new appClass();
