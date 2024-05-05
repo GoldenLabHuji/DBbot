@@ -1,11 +1,12 @@
-var _a = require("./DBbot"), DBbot = _a.DBbot, appClass = _a.app;
-var dbBot = new DBbot();
-var app = new appClass("./BotUI");
+"use strict";
+const { DBbot, app: appClass } = require("./DBbot");
+const dbBot = new DBbot();
+const app = new appClass("./BotUI");
 // Testing
-// TODO: Remove this
+// TODO: Remove this in production
 dbBot.loadFile("./data.csv");
 app.runBot(dbBot);
 module.exports = {
-    dbBot: dbBot,
-    app: app
+    dbBot,
+    app,
 };

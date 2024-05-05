@@ -1,55 +1,54 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Column = void 0;
-var operator_1 = require("./operator");
-var Column = /** @class */ (function () {
-    function Column(id, dataType, displayName) {
-        var _a, _b;
-        if (displayName === void 0) { displayName = id; }
+const operator_1 = require("./operator");
+class Column {
+    id;
+    dataType;
+    displayName;
+    rows = [];
+    operatorsArray = [];
+    constructor(id, dataType, displayName = id) {
         this.id = id;
         this.dataType = dataType;
         this.displayName = displayName;
-        this.rows = [];
-        this.operatorsArray = [];
-        var numericOperators = [
+        const numericOperators = [
             new operator_1.EqualOperator(),
             new operator_1.LessOperator(),
             new operator_1.GreaterOperator(),
             new operator_1.RangeOperator(),
         ];
-        var stringOperators = [
+        const stringOperators = [
             new operator_1.ContainsOperator(),
             new operator_1.StartsWithOperator(),
         ];
         if (dataType === "numeric") {
-            (_a = this.operatorsArray).push.apply(_a, numericOperators);
+            this.operatorsArray.push(...numericOperators);
         }
         else if (dataType === "string") {
-            (_b = this.operatorsArray).push.apply(_b, stringOperators);
+            this.operatorsArray.push(...stringOperators);
         }
         else {
             throw new Error("Invalid data type");
         }
     }
-    Column.prototype.getRows = function () {
+    getRows() {
         return this.rows;
-    };
-    Column.prototype.addRows = function (rows) {
-        var _a;
-        (_a = this.rows).push.apply(_a, rows);
-    };
-    Column.prototype.getId = function () {
+    }
+    addRows(rows) {
+        this.rows.push(...rows);
+    }
+    getId() {
         return this.id;
-    };
-    Column.prototype.getDataType = function () {
+    }
+    getDataType() {
         return this.dataType;
-    };
-    Column.prototype.getDisplayName = function () {
+    }
+    getDisplayName() {
         return this.displayName;
-    };
-    Column.prototype.getOperators = function () {
+    }
+    getOperators() {
         return this.operatorsArray;
-    };
-    return Column;
-}());
+    }
+}
 exports.Column = Column;
