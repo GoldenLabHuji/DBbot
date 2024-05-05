@@ -4,17 +4,13 @@ import {
     StringAttribute,
     NumericOperator,
     StringOperator,
+    Bot,
 } from "@/app/general/interfaces";
 import { sender, typeOfQuestion } from "@/app/general/types";
 
-export const botMessages = (
-    headers: string[] = [],
-    dbName: string = "INSERT DATABASE NAME",
-    dbDescription: string = "INSERT DESCRIPTION OF THE DATABASE",
-    dbExample: string = "INSERT EXAMPLE OF USE CASE"
-): Message[] => {
+export const botMessages = (bot: Bot): Message[] => {
+    const headers = bot?.headers || [];
     if (!headers || headers.length === 0) return [];
-    console.log(headers);
     const headersArray = headers.map(
         (header, index) => `${index + 1}: ${header}`
     );
@@ -23,9 +19,11 @@ export const botMessages = (
     return [
         {
             id: 0,
-            text: `Hello! I'm a ChatBot that will help you to get small pieces of data from a large dataset called ${dbName}. 
+            text: `Hello! I'm a ChatBot that will help you to get small pieces of data from a large dataset called ${
+                bot?.name || "INSERT DATABASE NAME"
+            }. 
 
-${dbDescription}
+${bot?.description || "INSERT DESCRIPTION OF THE DATABASE"}
 
 Enter 1 to continue`,
             sender: "bot",
@@ -36,7 +34,7 @@ Enter 1 to continue`,
             id: 1,
             text: `My main purpose as a ChatBot is to help you get data based on specific properties of words.
 
-${dbExample}
+${bot?.example || "INSERT EXAMPLE OF USE CASE"}
 
 Enter 1 to continue`,
             sender: "bot",

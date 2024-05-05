@@ -22,7 +22,7 @@ export default function useInput(
     lastQuestionIndex: number,
     bot: Bot
 ) {
-    const [botMsg, setBotMsg] = useState<Message[]>(botMessages(bot.headers));
+    const [botMsg, setBotMsg] = useState<Message[]>(botMessages(bot));
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [__, setIsEndSection] = useState<boolean>(false);
     const [isStringParameter, setIsStringParameter] = useState<boolean>(false);
@@ -53,6 +53,11 @@ export default function useInput(
             currentMsg.setState([...currentMsg.state, newMessage]);
         }
 
+        const dataType = bot.columns[Number(input) - 1]?.dataType;
+        const isString =
+            dataType === "string" || Number(input) === bot.headers.length + 1;
+        setIsStringParameter(isString);
+
         if ((!isAnswerOptions && input !== "") || isAnswerOptionsValid) {
             const newMessage: Message = {
                 id: currentMsg.state.length,
@@ -71,8 +76,6 @@ export default function useInput(
                         setBotMsg([...botMsg, ...botAddParameterMessages]);
                     break;
                 case "parameter":
-                    const isString = Number(input) === bot.headers.length + 1;
-                    setIsStringParameter(isString);
                     setBotMsg(
                         isString
                             ? [...botMsg, ...botStringMessages]
@@ -80,9 +83,9 @@ export default function useInput(
                     );
                     break;
                 case "operator":
-                    if (!isStringParameter && Number(input) === 3) {
+                    if (!isString && Number(input) === 3) {
                         setBotMsg([...botMsg, ...botRangeOperatorMessages]);
-                    } else if (!isStringParameter) {
+                    } else if (!isString) {
                         setBotMsg([...botMsg, ...botOperatorMessages]);
                     }
                     break;

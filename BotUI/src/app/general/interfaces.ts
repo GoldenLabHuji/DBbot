@@ -27,8 +27,9 @@ export interface TableProps {
 }
 
 export interface Bot {
-    name: string;
-    description: string;
+    name: string | null;
+    description: string | null;
+    example: string | null;
     columns: BotColumn[];
     dataMap: {};
     headers: string[];
