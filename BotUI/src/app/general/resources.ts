@@ -9,15 +9,17 @@ import { sender, typeOfQuestion } from "@/app/general/types";
 
 export const botMessages = (
     headers: string[] = [],
-    dbName: string = "Database",
-    dbDescription: string = "INSERT DESCRIPTION OF THE DATABASE"
+    dbName: string = "INSERT DATABASE NAME",
+    dbDescription: string = "INSERT DESCRIPTION OF THE DATABASE",
+    dbExample: string = "INSERT EXAMPLE OF USE CASE"
 ): Message[] => {
     if (!headers || headers.length === 0) return [];
-
+    console.log(headers);
     const headersArray = headers.map(
         (header, index) => `${index + 1}: ${header}`
     );
     const headersString = headersArray.join("\n");
+
     return [
         {
             id: 0,
@@ -34,8 +36,7 @@ Enter 1 to continue`,
             id: 1,
             text: `My main purpose as a ChatBot is to help you get data based on specific properties of words.
 
-For example, you may be interested in looking specifically at very long or very short words, 
-or to look at words that are acquired early or late in childhood.
+${dbExample}
 
 Enter 1 to continue`,
             sender: "bot",
