@@ -1,12 +1,11 @@
 const fs = require("fs");
-const csvParser = require("csv-parser");
 import { Column } from "./column";
 import { DataType } from "../general/types";
 
 export class DBbot {
     private dataMap = new Map<string, any>();
     private headers: string[] = [];
-    constructor(private columns: Column[] = []) {}
+    private columns: Column[] = [];
 
     getColumns(): Column[] {
         return this.columns;
@@ -25,22 +24,26 @@ export class DBbot {
 
     loadFile(path: string): void {
         try {
-            const fileData = fs.readFileSync(path, 'utf8');
-            const rows = fileData.split('\n');
-            const headerRow = rows.shift(); // Remove the header row
+            const fileData = fs.readFileSync(path, "utf8");
+            const rows = fileData.split("\n");
+            const headerRow = [rows.shift()];
             if (headerRow) {
-                const headers = headerRow.split('\t').map((header: string) => header.trim()); // Trim whitespace from headers
+                const headers = headerRow[0]
+                    .split(",")
+                    .map((header: string) => header.trim());
                 this.headers = headers;
                 headers.forEach((header: string) => {
                     this.dataMap.set(header, []);
                 });
             }
-    
+
             rows.forEach((row: string) => {
-                const columns = row.split('\t').map((column: string) => column.trim()); // Trim whitespace from columns
+                const columns = row
+                    .split(",")
+                    .map((column: string) => column.trim());
                 columns.forEach((column: string, index: string | number) => {
                     const columnName = this.headers[index as number];
-                    if (columnName && column !== '') { // Check for empty values
+                    if (columnName && column !== "") {
                         const columnData = this.dataMap.get(columnName);
                         if (columnData) {
                             columnData.push(column);
@@ -48,24 +51,29 @@ export class DBbot {
                     }
                 });
             });
-    
+
             this.headers.forEach((column) => {
                 const columnData = this.dataMap.get(column);
                 if (columnData && columnData.length > 0) {
                     const dataType: DataType = Number(columnData[0])
-                        ? 'numeric'
-                        : 'string';
+                        ? "numeric"
+                        : "string";
                     const col = new Column(column, dataType);
-                    const numberColumnData: number[] = columnData.map((item: string) => parseFloat(item));
-                    col.addRows(dataType === 'numeric' ? numberColumnData : columnData);
+                    const numberColumnData: number[] = columnData.map(
+                        (item: string) => parseFloat(item)
+                    );
+                    col.addRows(
+                        dataType === "numeric" ? numberColumnData : columnData
+                    );
                     this.addColumn(col);
                 } else {
-                    console.error(`Column ${column} has no data. Skipping this column.`);
+                    console.error(
+                        `Column ${column} has no data. Skipping this column.`
+                    );
                 }
             });
         } catch (error) {
-            console.error('Error occurred while reading CSV:', error);
+            console.error(error);
         }
     }
-    
 }
