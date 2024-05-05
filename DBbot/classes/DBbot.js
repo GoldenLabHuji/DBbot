@@ -33,39 +33,45 @@ class DBbot {
                     this.dataMap.set(header, []);
                 });
             }
-            rows.forEach((row) => {
-                const columns = row
-                    .split(",")
-                    .map((column) => column.trim());
-                columns.forEach((column, index) => {
-                    const columnName = this.headers[index];
-                    if (columnName && column !== "") {
-                        const columnData = this.dataMap.get(columnName);
-                        if (columnData) {
-                            columnData.push(column);
-                        }
-                    }
-                });
-            });
-            this.headers.forEach((column) => {
-                const columnData = this.dataMap.get(column);
-                if (columnData && columnData.length > 0) {
-                    const dataType = Number(columnData[0])
-                        ? "numeric"
-                        : "string";
-                    const col = new column_1.Column(column, dataType);
-                    const numberColumnData = columnData.map((item) => parseFloat(item));
-                    col.addRows(dataType === "numeric" ? numberColumnData : columnData);
-                    this.addColumn(col);
-                }
-                else {
-                    console.error(`Column ${column} has no data. Skipping this column.`);
-                }
-            });
+            this.addColumsToDataMap(rows);
+            this.addColumnsAuto();
         }
         catch (error) {
             console.error(error);
         }
+    }
+    addColumsToDataMap(rows) {
+        rows.forEach((row) => {
+            const columns = row
+                .split(",")
+                .map((column) => column.trim());
+            columns.forEach((column, index) => {
+                const columnName = this.headers[index];
+                if (columnName && column !== "") {
+                    const columnData = this.dataMap.get(columnName);
+                    if (columnData) {
+                        columnData.push(column);
+                    }
+                }
+            });
+        });
+    }
+    addColumnsAuto() {
+        this.headers.forEach((column) => {
+            const columnData = this.dataMap.get(column);
+            if (columnData && columnData.length > 0) {
+                const dataType = Number(columnData[0])
+                    ? "numeric"
+                    : "string";
+                const col = new column_1.Column(column, dataType);
+                const numberColumnData = columnData.map((item) => parseFloat(item));
+                col.addRows(dataType === "numeric" ? numberColumnData : columnData);
+                this.addColumn(col);
+            }
+            else {
+                console.error(`Column ${column} has no data. Skipping this column.`);
+            }
+        });
     }
 }
 exports.DBbot = DBbot;
