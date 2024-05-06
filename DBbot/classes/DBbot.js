@@ -7,6 +7,7 @@ class DBbot {
     dataMap = new Map();
     headers = [];
     columns = [];
+    filePath = "";
     getColumns() {
         return this.columns;
     }
@@ -20,6 +21,7 @@ class DBbot {
         this.columns = this.columns.filter((c) => c !== column);
     }
     loadFile(path) {
+        this.filePath = path;
         try {
             const fileData = fs.readFileSync(path, "utf8");
             const rows = fileData.split("\n");
