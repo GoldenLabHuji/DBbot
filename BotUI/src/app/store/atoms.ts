@@ -3,8 +3,6 @@ import {
     MessageSection,
     Message,
     QueryWords,
-    WordData,
-    ResultsData,
     Bot,
 } from "@/app/general/interfaces";
 
@@ -20,18 +18,12 @@ export const messagesSectionAtom: RecoilState<MessageSection[]> = atom({
 
 export const queryParamsAtom: RecoilState<QueryWords> = atom({
     key: "queryParams",
-    default: {
-        age_of_aquisition: null,
-        number_of_phon: null,
-        number_of_syll: null,
-        start_with: null,
-        sound_like: null,
-    } as QueryWords,
+    default: {} as QueryWords,
 });
 
-export const queryWordsAtom: RecoilState<ResultsData> = atom({
+export const queryWordsAtom: RecoilState<any> = atom({
     key: "queryWords",
-    default: { data: [] as WordData[] },
+    default: [] as any[],
 });
 
 export const isResultsAtom: RecoilState<boolean> = atom({

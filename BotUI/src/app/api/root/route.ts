@@ -1,26 +1,38 @@
-import { QueryWords } from "@/app/general/interfaces";
+import { QueryReq } from "@/app/general/interfaces";
+import { getOperator } from "@/app/general/utils";
 import { NextRequest, NextResponse } from "next/server";
+import fs from "fs";
+import csvParser from "csv-parser";
 
 export async function POST(request: NextRequest) {
-    const url = process.env.api_url;
-    const wordsParams: QueryWords = await request.json();
-    const wordsLimit = 10;
+    const req = await request.json();
+    const queryReq = req.queryReq as QueryReq[];
+    const filePath = req.filePath as string;
+    const rows = await filterCSV(filePath, queryReq);
+    return NextResponse.json(rows);
+}
 
-    const response = await fetch(`${url}/${wordsLimit}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            age_of_aquisition: wordsParams?.age_of_aquisition,
-            n_phon: wordsParams?.number_of_phon,
-            n_syll: wordsParams?.number_of_syll,
-            start_with: wordsParams?.start_with,
-            sound_like: wordsParams?.sound_like,
-        }),
+export async function filterCSV(filePath: string, queryReq: QueryReq[]) {
+    return new Promise<any[]>((resolve, reject) => {
+        const operators = queryReq.map(
+            (query) => getOperator(query.operator) as any
+        );
+        const rows: any[] = [];
+        fs.createReadStream(filePath)
+            .pipe(csvParser())
+            .on("data", (row: any) => {
+                const isRequired = queryReq.every((query, index) =>
+                    operators[index](query.value, row[query.param])
+                );
+                if (isRequired) {
+                    rows.push(row);
+                }
+            })
+            .on("end", () => {
+                resolve(rows);
+            })
+            .on("error", (error) => {
+                reject(error);
+            });
     });
-
-    const data = await response.json();
-
-    return NextResponse.json({ data });
 }

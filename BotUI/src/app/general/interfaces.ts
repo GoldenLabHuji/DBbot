@@ -33,6 +33,7 @@ export interface Bot {
     columns: BotColumn[];
     dataMap: {};
     headers: string[];
+    filePath: string;
 }
 
 interface BotColumn {
@@ -59,6 +60,12 @@ export enum StringOperator {
     SoundLike = "SoundLike",
 }
 
+export interface QueryReq {
+    value: number | string | number[];
+    operator: NumericOperator | StringOperator;
+    param: string;
+}
+
 export interface NumericAttribute {
     value: number | number[];
     operator: NumericOperator;
@@ -71,10 +78,6 @@ export interface StringAttribute {
 
 export interface QueryWords {
     [key: string]: NumericAttribute | StringAttribute | null;
-}
-
-export interface ResultsData {
-    data: any[];
 }
 
 export interface WordData {

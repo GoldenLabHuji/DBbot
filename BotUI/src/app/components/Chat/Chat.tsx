@@ -12,7 +12,7 @@ import {
     isResultsAtom,
     isQuerySubmitAtom,
 } from "@/app/store/atoms";
-import { ChatProps } from "@/app/general/interfaces";
+import { ChatProps, QueryReq } from "@/app/general/interfaces";
 import { resultMsg } from "@/app/general/resources";
 import CSVButton from "@/app/components/CSVButton";
 
@@ -39,20 +39,30 @@ export default function Chat({ bot }: ChatProps) {
         const getQueryWords = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch("/api/root", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        age_of_aquisition: queryParams?.age_of_aquisition,
-                        number_of_phon: queryParams?.number_of_phon,
-                        number_of_syll: queryParams?.number_of_syll,
-                        start_with: queryParams?.start_with,
-                        sound_like: queryParams?.sound_like,
-                    }),
+                const queryReq: QueryReq[] = [];
+                Object.entries(queryParams).forEach((entry) => {
+                    const [param, attribute] = entry;
+                    if (attribute !== null) {
+                        const { value, operator } = attribute;
+                        queryReq.push({
+                            param,
+                            operator,
+                            value,
+                        });
+                    }
                 });
 
+                const pathArray = bot?.filePath.split("/");
+                const lastPathItem = pathArray.pop();
+                const path = "../" + lastPathItem;
+                
+                const response = await fetch("/api/root", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        queryReq,
+                        filePath: path,
+                    }),
+                });
                 if (!response.ok) {
                     const error = await response.json();
                     throw new Error(error.message);
@@ -84,6 +94,12 @@ export default function Chat({ bot }: ChatProps) {
         }
     }, [isQuerySubmit]);
 
+    useEffect(() => {
+        if (isQuerySubmit) {
+            console.log(queryWords);
+        }
+    }, [queryWords]);
+
     return (
         <Box sx={styles.container}>
             <Box sx={styles.secondContainer}>
@@ -104,8 +120,8 @@ export default function Chat({ bot }: ChatProps) {
                         <CircularProgress />
                     </Box>
                 )}
-                {isResult && queryWords.data?.length > 0 && (
-                    <CSVButton queryWords={queryWords?.data} />
+                {isResult && queryWords.length > 0 && (
+                    <CSVButton queryWords={queryWords} />
                 )}
                 <div ref={messagesEndRef} />
             </Box>

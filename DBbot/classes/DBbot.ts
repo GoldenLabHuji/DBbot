@@ -6,6 +6,7 @@ export class DBbot {
     private dataMap = new Map<string, any>();
     private headers: string[] = [];
     private columns: Column[] = [];
+    public filePath: string = "";
 
     getColumns(): Column[] {
         return this.columns;
@@ -23,6 +24,7 @@ export class DBbot {
     }
 
     loadFile(path: string): void {
+        this.filePath = path;
         try {
             const fileData = fs.readFileSync(path, "utf8");
             const rows = fileData.split("\n");

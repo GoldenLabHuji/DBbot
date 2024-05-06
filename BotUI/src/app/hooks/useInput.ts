@@ -12,7 +12,6 @@ import {
     botOperatorMessages,
     botRangeOperatorMessages,
     botNumericEqualMessages,
-    botNumericNotEqualMessages,
     botAddParameterMessages,
 } from "@/app/general/resources";
 
@@ -20,12 +19,15 @@ export default function useInput(
     currentMsg: currentMsgType,
     currentQIndex: currentQIndexType,
     lastQuestionIndex: number,
-    bot: Bot
+    bot: Bot,
+    strParam: {
+        state: boolean;
+        setState: Dispatch<SetStateAction<boolean>>;
+    }
 ) {
     const [botMsg, setBotMsg] = useState<Message[]>(botMessages(bot));
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
-    const [__, setIsEndSection] = useState<boolean>(false);
-    const [isStringParameter, setIsStringParameter] = useState<boolean>(false);
+    const [_, setIsEndSection] = useState<boolean>(false);
 
     const handleUserInput = (
         input: string,
@@ -53,11 +55,6 @@ export default function useInput(
             currentMsg.setState([...currentMsg.state, newMessage]);
         }
 
-        const dataType = bot.columns[Number(input) - 1]?.dataType;
-        const isString =
-            dataType === "string" || Number(input) === bot.headers.length + 1;
-        setIsStringParameter(isString);
-
         if ((!isAnswerOptions && input !== "") || isAnswerOptionsValid) {
             const newMessage: Message = {
                 id: currentMsg.state.length,
@@ -76,6 +73,11 @@ export default function useInput(
                         setBotMsg([...botMsg, ...botAddParameterMessages]);
                     break;
                 case "parameter":
+                    const dataType = bot.columns[Number(input) - 1]?.dataType;
+                    const isString =
+                        dataType === "string" ||
+                        Number(input) === bot.headers.length + 1;
+                    strParam.setState(isString);
                     setBotMsg(
                         isString
                             ? [...botMsg, ...botStringMessages]
@@ -83,9 +85,9 @@ export default function useInput(
                     );
                     break;
                 case "operator":
-                    if (!isString && Number(input) === 3) {
+                    if (!strParam.state && Number(input) === 3) {
                         setBotMsg([...botMsg, ...botRangeOperatorMessages]);
-                    } else if (!isString) {
+                    } else if (!strParam.state) {
                         setBotMsg([...botMsg, ...botOperatorMessages]);
                     }
                     break;
@@ -102,10 +104,5 @@ export default function useInput(
         setIsSubmit(!isSubmit);
     };
 
-    const strParam = {
-        state: isStringParameter,
-        setState: setIsStringParameter,
-    };
-
-    return { handleUserInput, botMsg, isSubmit, strParam };
+    return { handleUserInput, botMsg, isSubmit };
 }
