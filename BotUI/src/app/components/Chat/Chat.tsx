@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import Message from "@/app/components/Message/Message";
+import { defaultMsgSection } from "@/app/general/resources";
 import ChatBox from "@/app/components/ChatBox";
 import { styles } from "@/app/components/Chat/Chat.style";
 import { useRecoilState } from "recoil";
@@ -23,7 +24,7 @@ export default function Chat({ bot }: ChatProps) {
     const [queryWords, setQueryWords] = useRecoilState(queryWordsAtom);
     const [isResult, setIsResult] = useRecoilState(isResultsAtom);
     const [isQuerySubmit, ___] = useRecoilState(isQuerySubmitAtom);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [loading, setloading] = useState<boolean>(false);
 
     const messagesEndRef = useRef(null);
 
@@ -38,7 +39,7 @@ export default function Chat({ bot }: ChatProps) {
     useEffect(() => {
         const getQueryWords = async () => {
             try {
-                setIsLoading(true);
+                setloading(true);
                 const queryReq: QueryReq[] = [];
                 Object.entries(queryParams).forEach((entry) => {
                     const [param, attribute] = entry;
@@ -55,7 +56,7 @@ export default function Chat({ bot }: ChatProps) {
                 const pathArray = bot?.filePath.split("/");
                 const lastPathItem = pathArray.pop();
                 const path = "../" + lastPathItem;
-                
+
                 const response = await fetch("/api/root", {
                     method: "POST",
                     body: JSON.stringify({
@@ -72,7 +73,7 @@ export default function Chat({ bot }: ChatProps) {
             } catch (err: any) {
                 console.log(err.message);
             } finally {
-                setIsLoading(false);
+                setloading(false);
             }
         };
         if (isQuerySubmit) {
@@ -86,7 +87,7 @@ export default function Chat({ bot }: ChatProps) {
                 ...prev,
 
                 {
-                    id: "resultSection",
+                    id: 0,
                     messageSection: [resultMsg],
                 },
             ]);
@@ -94,28 +95,21 @@ export default function Chat({ bot }: ChatProps) {
         }
     }, [isQuerySubmit]);
 
-    useEffect(() => {
-        if (isQuerySubmit) {
-            console.log(queryWords);
-        }
-    }, [queryWords]);
-
     return (
         <Box sx={styles.container}>
             <Box sx={styles.secondContainer}>
-                {messagesSection && messagesSection.length > 0
-                    ? messagesSection.map(
-                          (msgSection) =>
-                              msgSection?.messageSection &&
-                              msgSection?.messageSection.length > 0 &&
-                              msgSection?.messageSection.map(
-                                  (message, index) => (
-                                      <Message key={index} message={message} />
-                                  )
-                              )
-                      )
-                    : []}
-                {isLoading && (
+                {(messagesSection &&
+                    messagesSection.length > 0 &&
+                    messagesSection.map(
+                        (msgSection) =>
+                            msgSection?.messageSection &&
+                            msgSection?.messageSection.length > 0 &&
+                            msgSection?.messageSection.map((message, index) => (
+                                <Message key={index} message={message} />
+                            ))
+                    )) ??
+                    defaultMsgSection}
+                {loading && (
                     <Box textAlign="center">
                         <CircularProgress />
                     </Box>
@@ -123,7 +117,7 @@ export default function Chat({ bot }: ChatProps) {
                 {isResult && queryWords.length > 0 && (
                     <CSVButton queryWords={queryWords} />
                 )}
-                <div ref={messagesEndRef} />
+                <Box component="div" ref={messagesEndRef} />
             </Box>
 
             <ChatBox bot={bot} />

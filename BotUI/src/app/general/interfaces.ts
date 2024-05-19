@@ -1,7 +1,7 @@
-import { sender, typeOfQuestion } from "@/app/general/types";
+import { sender, typeOfQuestion, strOrNum } from "@/app/general/types";
 
 export interface Message {
-    id: string | number;
+    id: number;
     text: string;
     sender: sender;
     typeOfQuestion: typeOfQuestion;
@@ -9,7 +9,7 @@ export interface Message {
 }
 
 export interface MessageSection {
-    id: number | string;
+    id: number;
     messageSection: Message[];
 }
 
@@ -27,9 +27,9 @@ export interface TableProps {
 }
 
 export interface Bot {
-    name: string | null;
-    description: string | null;
-    example: string | null;
+    name: string;
+    description: string;
+    example: string;
     columns: BotColumn[];
     dataMap: {};
     headers: string[];
@@ -38,9 +38,9 @@ export interface Bot {
 
 interface BotColumn {
     id: string;
-    dataType: "numeric" | "string";
+    dataType: DataType;
     displayName: string;
-    rows: string[] | number[];
+    rows: strOrNum[];
     operatorsArray: BotOperatorArray[];
 }
 
@@ -60,8 +60,13 @@ export enum StringOperator {
     SoundLike = "SoundLike",
 }
 
+export enum DataType {
+    Numeric = "numeric",
+    String = "string",
+}
+
 export interface QueryReq {
-    value: number | string | number[];
+    value: strOrNum | number[];
     operator: NumericOperator | StringOperator;
     param: string;
 }
@@ -81,5 +86,5 @@ export interface QueryWords {
 }
 
 export interface WordData {
-    [key: string]: string | number | null;
+    [key: string]: strOrNum | null;
 }

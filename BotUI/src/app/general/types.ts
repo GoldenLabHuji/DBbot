@@ -24,3 +24,5 @@ export type strParamType = {
     state: boolean;
     setState: Dispatch<SetStateAction<boolean>>;
 };
+
+export type strOrNum = string | number;

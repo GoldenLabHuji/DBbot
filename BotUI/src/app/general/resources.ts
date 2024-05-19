@@ -4,6 +4,7 @@ import {
     StringAttribute,
     NumericOperator,
     StringOperator,
+    MessageSection,
     Bot,
 } from "@/app/general/interfaces";
 import { sender, typeOfQuestion } from "@/app/general/types";
@@ -276,9 +277,16 @@ export const emptyStringAttribute: StringAttribute = {
 };
 
 export const resultMsg = {
-    id: "resultMsg",
+    id: 0,
     text: `Here is the results of your query. 
 You can download the results as a csv file`,
     sender: "bot" as sender,
     typeOfQuestion: "result" as typeOfQuestion,
 };
+
+export const defaultMsgSection = [
+    {
+        id: 0,
+        messageSection: [] as Message[],
+    },
+] as MessageSection[];

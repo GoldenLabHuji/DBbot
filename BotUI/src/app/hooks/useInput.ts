@@ -35,10 +35,7 @@ export default function useInput(
     ) => {
         const lastMessageSectionQuestion =
             currentMsg.state[currentMsg.state.length - 1];
-        const typeOfQuestion =
-            currentMsg.state.length > 0
-                ? lastMessageSectionQuestion.typeOfQuestion
-                : "";
+        const typeOfQuestion = lastMessageSectionQuestion.typeOfQuestion ?? "";
 
         const isAnswerOptions = !!lastMessageSectionQuestion.answerOptions;
         const isAnswerOptionsValid =
