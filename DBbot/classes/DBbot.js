@@ -2,11 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBbot = void 0;
 const fs = require("fs");
+const sync_1 = require("csv-parse/sync");
 const column_1 = require("./column");
 class DBbot {
     dataMap = new Map();
     headers = [];
     columns = [];
+    name = "INSERT DATABASE NAME";
+    description = "INSERT DESCRIPTION OF THE DATABASE";
+    example = "INSERT EXAMPLE OF USE CASE";
     filePath = "";
     getColumns() {
         return this.columns;
@@ -14,46 +18,52 @@ class DBbot {
     getHeaders() {
         return this.headers;
     }
+    setName(name) {
+        this.name = name;
+    }
+    setDescription(description) {
+        this.description = description;
+    }
+    setExample(example) {
+        this.example = example;
+    }
     addColumn(column) {
         this.columns.push(column);
     }
     removeColumn(column) {
         this.columns = this.columns.filter((c) => c !== column);
     }
+    testDataMap() {
+        console.log(this.dataMap);
+    }
     loadFile(path) {
         this.filePath = path;
         try {
             const fileData = fs.readFileSync(path, "utf8");
-            const rows = fileData.split("\n");
-            const headerRow = [rows.shift()];
-            if (headerRow) {
-                const headers = headerRow[0]
-                    .split(",")
-                    .map((header) => header.trim());
-                this.headers = headers;
-                headers.forEach((header) => {
+            const records = (0, sync_1.parse)(fileData, {
+                columns: true,
+                trim: true,
+                skip_empty_lines: true,
+            });
+            if (records.length > 0) {
+                this.headers = Object.keys(records[0]);
+                this.headers.forEach((header) => {
                     this.dataMap.set(header, []);
                 });
             }
-            this.addColumsToDataMap(rows);
+            this.addColumsToDataMap(records);
             this.addColumnsAuto();
         }
         catch (error) {
             console.error(error);
         }
     }
-    addColumsToDataMap(rows) {
-        rows.forEach((row) => {
-            const columns = row
-                .split(",")
-                .map((column) => column.trim());
-            columns.forEach((column, index) => {
-                const columnName = this.headers[index];
-                if (columnName && column !== "") {
-                    const columnData = this.dataMap.get(columnName);
-                    if (columnData) {
-                        columnData.push(column);
-                    }
+    addColumsToDataMap(records) {
+        records.forEach((record) => {
+            this.headers.forEach((header) => {
+                const columnData = this.dataMap.get(header);
+                if (columnData) {
+                    columnData.push(record[header]);
                 }
             });
         });
@@ -62,9 +72,10 @@ class DBbot {
         this.headers.forEach((column) => {
             const columnData = this.dataMap.get(column);
             if (columnData && columnData.length > 0) {
-                const dataType = Number(columnData[0])
-                    ? "numeric"
-                    : "string";
+                const isNumeric = columnData.every((item) => {
+                    return !isNaN(Number(item));
+                });
+                const dataType = isNumeric ? "numeric" : "string";
                 const col = new column_1.Column(column, dataType);
                 const numberColumnData = columnData.map((item) => parseFloat(item));
                 col.addRows(dataType === "numeric" ? numberColumnData : columnData);

@@ -1,9 +1,9 @@
 "use strict";
 const { DBbot, app: appClass } = require("./DBbot");
+const path = require("path");
 const dbBot = new DBbot();
-const app = new appClass("./BotUI");
-dbBot.loadFile("./data.csv");
-app.runBot(dbBot);
+const reactPath = path.resolve(__dirname, "./BotUI");
+const app = new appClass(reactPath);
 module.exports = {
     dbBot,
     app,
