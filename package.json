@@ -1,19 +1,21 @@
 {
-  "name": "dbbot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^20.12.4",
-    "typescript": "^5.4.3"
-  },
-  "dependencies": {
-    "csv-parser": "^3.0.0",
-    "fs": "^0.0.1-security"
-  }
+    "name": "dbbot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "demo": "node index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^20.12.4",
+        "typescript": "^5.4.3"
+    },
+    "dependencies": {
+        "csv-parse": "^5.5.6",
+        "csv-parser": "^3.0.0",
+        "fs": "^0.0.1-security"
+    }
 }
