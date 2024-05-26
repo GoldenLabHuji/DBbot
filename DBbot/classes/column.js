@@ -6,12 +6,14 @@ class Column {
     id;
     dataType;
     displayName;
+    customOperators;
     rows = [];
     operatorsArray = [];
-    constructor(id, dataType, displayName = id) {
+    constructor(id, dataType, displayName = id, customOperators = []) {
         this.id = id;
         this.dataType = dataType;
         this.displayName = displayName;
+        this.customOperators = customOperators;
         const numericOperators = [
             new operator_1.EqualOperator(),
             new operator_1.LessOperator(),
@@ -19,14 +21,14 @@ class Column {
             new operator_1.RangeOperator(),
         ];
         const stringOperators = [
-            new operator_1.ContainsOperator(),
+            new operator_1.SoundLikeOperator(),
             new operator_1.StartsWithOperator(),
         ];
         if (dataType === "numeric") {
-            this.operatorsArray.push(...numericOperators);
+            this.operatorsArray.push(...[...numericOperators, ...this.customOperators]);
         }
         else if (dataType === "string") {
-            this.operatorsArray.push(...stringOperators);
+            this.operatorsArray.push(...[...stringOperators, ...this.customOperators]);
         }
         else {
             throw new Error("Invalid data type");
