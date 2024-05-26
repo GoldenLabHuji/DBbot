@@ -77,8 +77,8 @@ export default function useInput(
                     strParam.setState(isString);
                     setBotMsg(
                         isString
-                            ? [...botMsg, ...botStringMessages]
-                            : [...botMsg, ...botNumericEqualMessages]
+                            ? [...botMsg, ...botStringMessages(bot)]
+                            : [...botMsg, ...botNumericEqualMessages(bot)]
                     );
                     break;
                 case "operator":
