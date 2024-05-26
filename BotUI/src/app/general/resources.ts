@@ -101,52 +101,37 @@ Do you want the words to be greater, lower, or in a specific range?
     },
 ];
 
-export const botNumericEqualMessages: Message[] = [
-    {
-        id: 0,
-        text: `To help you get the words you desire, 
-I need to know few things about your specific 
-requirments to the property you have chosen above.
+export const botNumericEqualMessages = (bot: Bot): Message[] => {
+    const numericOperators = bot.operatorsData.numeric;
 
-First I need to know if you want the words to be greater, lower, in a specific range or equal to a specific value.
-Then I need to know the value of this property you want to start with.
+    const optionsArray =
+        (numericOperators &&
+            numericOperators.map(
+                (operator, index) => `${index + 1}: ${operator.name}`
+            )) ??
+        [];
+    const optionsString = optionsArray.join("\n") ?? "";
 
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 1,
-        text: `For example, if you chose the property "number of phonemes" and you want words that have between 4 and 7 phonemes , you will choose the "Range" in the first question, then the value 4 in the second question and then the value 7 in the third question.
+    return [
+        {
+            id: 0,
+            text: `Choose operator:
 
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 2,
-        text: `Let's start with the first question.
-        
-Do you want the words to be greater, lower, in a specific range or equal to a specific value?
-
-1. Greater
-2. Lower
-3. Range
-4. Equal
+${optionsString}
 `,
-        sender: "bot",
-        typeOfQuestion: "operator",
-        answerOptions: [1, 2, 3, 4],
-    },
-];
+            sender: "bot",
+            typeOfQuestion: "operator",
+            answerOptions: Array.from(
+                { length: numericOperators.length + 1 },
+                (_, index) => index + 1
+            ),
+        },
+    ];
+};
 export const botOperatorMessages: Message[] = [
     {
         id: 0,
-        text: `Now I need to know the value of this parameter you want to start with.
-        
-What would you like the value of this property to be?`,
+        text: `Enter starting value:`,
         sender: "bot",
         typeOfQuestion: "value",
     },
@@ -194,51 +179,47 @@ Enter 1 to continue`,
     },
 ];
 
-export const botStringMessages: Message[] = [
-    {
-        id: 0,
-        text: `To help you get the words you desire, 
-I need to know few things about your specific 
-requirments to the property you have chosen above.
+export const botStringMessages = (bot: Bot): Message[] => {
+    const stringOperators = bot.operatorsData.string;
 
-First I need to know if you want the words to be words that starts with the same characters as a chosen word or words that sound like a chosen word.
-Then I need to know the word you want to start with.
+    const optionsArray =
+        stringOperators.map(
+            (operator, index) => `${index + 1}: ${operator.name}`
+        ) ?? [];
 
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 1,
-        text: `Let's start with the first question.
-        
-Do you want the words to be:
+    const optionsString = optionsArray.join("\n") ?? "";
+    return [
+        {
+            id: 0,
+            text: `Choose operator:
 
-1. Words that starts with the same characters as a chosen word
-2. Words that sound like a chosen word`,
-        sender: "bot",
-        typeOfQuestion: "operator",
-        answerOptions: [1, 2],
-    },
-    {
-        id: 2,
-        text: `Now I need to know the word you want to start with.
-        
-What would you like the this word to be?`,
-        sender: "bot",
-        typeOfQuestion: "value",
-    },
-    {
-        id: 3,
-        text: `Do you want to add more parameter?
+${optionsString}`,
+
+            sender: "bot",
+            typeOfQuestion: "operator",
+            answerOptions: Array.from(
+                { length: stringOperators.length + 1 },
+                (_, index) => index + 1
+            ),
+        },
+        {
+            id: 1,
+            text: `Enter starting value:`,
+            sender: "bot",
+            typeOfQuestion: "value",
+        },
+        {
+            id: 2,
+            text: `Do you want to add more parameter?
+
 1. Yes
 2. No`,
-        sender: "bot",
-        typeOfQuestion: "add",
-        answerOptions: [1, 2],
-    },
-];
+            sender: "bot",
+            typeOfQuestion: "add",
+            answerOptions: [1, 2],
+        },
+    ];
+};
 
 export const botAddParameterMessages: Message[] = [
     {
