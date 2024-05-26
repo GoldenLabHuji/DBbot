@@ -2,8 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBbot = void 0;
 const fs = require("fs");
+const path = require("path");
 const sync_1 = require("csv-parse/sync");
 const column_1 = require("./column");
+const operator_1 = require("./operator");
+const resources_1 = require("../general/resources");
 class DBbot {
     dataMap = new Map();
     headers = [];
@@ -12,20 +15,29 @@ class DBbot {
     description = "INSERT DESCRIPTION OF THE DATABASE";
     example = "INSERT EXAMPLE OF USE CASE";
     filePath = "";
-    getColumns() {
-        return this.columns;
+    customOperators = [];
+    operatorsData = {
+        string: resources_1.STRING_OPERATRORS_DATA,
+        numeric: resources_1.NUMERIC_OPERATORS_DATA,
+    };
+    getDetails() {
+        return {
+            name: this.name,
+            description: this.description,
+            example: this.example,
+        };
     }
-    getHeaders() {
-        return this.headers;
+    getData() {
+        return {
+            headers: this.headers,
+            columns: this.columns,
+            customOperators: this.customOperators,
+        };
     }
-    setName(name) {
-        this.name = name;
-    }
-    setDescription(description) {
-        this.description = description;
-    }
-    setExample(example) {
-        this.example = example;
+    setDetails(details) {
+        this.name = details.name ?? this.name;
+        this.description = details.description ?? this.description;
+        this.example = details.example ?? this.example;
     }
     addColumn(column) {
         this.columns.push(column);
@@ -33,8 +45,17 @@ class DBbot {
     removeColumn(column) {
         this.columns = this.columns.filter((c) => c !== column);
     }
-    testDataMap() {
-        console.log(this.dataMap);
+    addCustomOperator(params) {
+        this.registerOperators(params);
+        const functionFilePath = path.resolve(__dirname, `../../BotUI/src/app/operators/${params.name}.js`);
+        const importStatements = (params.importFunctions &&
+            params.importFunctions
+                .map((func) => `import {${func}} from './${func}.js';`)
+                .join("\n")) ??
+            "";
+        fs.writeFileSync(functionFilePath, `${importStatements}
+
+export const ${params.name} = ${params.customFunction.toString()};`);
     }
     loadFile(path) {
         this.filePath = path;
@@ -57,6 +78,15 @@ class DBbot {
         catch (error) {
             console.error(error);
         }
+    }
+    registerOperators(params) {
+        const newOperator = new operator_1.CustomOperator(params.name, params.customFunction);
+        this.customOperators.push(newOperator);
+        this.operatorsData[params.dataType].push({
+            name: params.name,
+            dataType: params.dataType,
+            params: params.params,
+        });
     }
     addColumsToDataMap(records) {
         records.forEach((record) => {
