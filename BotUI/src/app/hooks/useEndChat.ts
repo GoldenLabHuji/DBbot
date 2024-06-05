@@ -36,6 +36,13 @@ export default function useEndChat(strParam: strParamType, bot: Bot) {
                 (msg) => msg && msg?.sender === "user"
             );
 
+            const numericOpertors = bot.operatorsData.numeric.map(
+                (op) => op.name
+            );
+            const stringOpertors = bot.operatorsData.string.map(
+                (op) => op.name
+            );
+
             userFilteredMessages?.forEach((msg) => {
                 switch (msg?.typeOfQuestion) {
                     case "value":
@@ -50,20 +57,14 @@ export default function useEndChat(strParam: strParamType, bot: Bot) {
                         break;
                     case "operator":
                         if (!strParam.state) {
-                            numericAttribute.operator = [
-                                NumericOperator.Greater,
-                                NumericOperator.Lower,
-                                NumericOperator.Range,
-                                NumericOperator.Equal,
-                            ][Number(msg?.text) - 1];
+                            numericAttribute.operator =
+                                numericOpertors[Number(msg?.text) - 1];
                             if (Number(msg?.text) === 3) {
                                 numericAttribute.value = [] as number[];
                             }
                         } else {
-                            stringAttribute.operator = [
-                                StringOperator.StartWith,
-                                StringOperator.SoundLike,
-                            ][Number(msg?.text) - 1];
+                            stringAttribute.operator =
+                                stringOpertors[Number(msg?.text) - 1];
                         }
                         break;
                     case "parameter":
