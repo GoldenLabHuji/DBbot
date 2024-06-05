@@ -83,6 +83,50 @@ export class DBbot {
 
 export const ${params.name} = ${params.customFunction.toString()};`
         );
+
+        this.createOperatorsFile();
+    }
+
+    createOperatorsFile(): void {
+        const operatorsFilePath = path.resolve(
+            __dirname,
+            `${
+                OPERATOR_PATHS[process.env.NODE_ENV ?? "production"]
+            }/operators.ts`
+        );
+        const operatorsNames = this.customOperators.map((operator) =>
+            operator.getName()
+        );
+
+        const customFunctionsImport = operatorsNames
+            .map((name) => `import { ${name} } from "@/app/operators/${name}";`)
+            .join("\n");
+        const exportNames = operatorsNames.join(",\n");
+
+        fs.writeFileSync(
+            operatorsFilePath,
+            `import {
+                greaterOperator,
+                lowerOperator,
+                equalOperator,
+                rangeOperator,
+                startWithOperator,
+                soundLikeOperator,
+            } from "@/app/operators";
+            
+            ${customFunctionsImport}
+            
+            export const OPERATORS = {
+                Greater: greaterOperator,
+                Lower: lowerOperator,
+                Equal: equalOperator,
+                Range: rangeOperator,
+                SoundLike: soundLikeOperator,
+                StartWith: startWithOperator,
+                ${exportNames}
+               
+            };`
+        );
     }
 
     loadFile(path: string): void {
