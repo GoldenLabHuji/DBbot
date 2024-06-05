@@ -29,12 +29,20 @@ export default function Chat({ bot }: ChatProps) {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        console.log("bot", bot);
+    }, [bot]);
+
+    useEffect(() => {
         if (messagesEndRef.current) {
             (messagesEndRef.current as HTMLElement).scrollIntoView({
                 behavior: "smooth",
             });
         }
     }, [messagesSection]);
+
+    useEffect(() => {
+        console.log("queryParams", queryParams);
+    }, [queryParams]);
 
     useEffect(() => {
         const getQueryWords = async () => {
