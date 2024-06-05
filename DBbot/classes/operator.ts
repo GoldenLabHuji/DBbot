@@ -14,12 +14,16 @@ export abstract class Operator {
 }
 
 export class CustomOperator extends Operator {
-    constructor(name: string, private customFunction: Function) {
+    constructor(private name: string, private customFunction: Function) {
         super(name);
     }
 
     calculate() {
         return this.customFunction();
+    }
+
+    getName() {
+        return this.name;
     }
 }
 export class EqualOperator extends Operator {
