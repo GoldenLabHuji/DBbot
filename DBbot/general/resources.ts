@@ -1,4 +1,13 @@
-import { OperatorData } from "./types";
+import { OperatorData, Paths } from "./types";
+
+export const OPERATOR_PATHS: Paths = {
+    development: "../../BotUI/src/app/operators",
+    production: "../../../BotUI/src/app/operators",
+};
+export const REACT_APP_PATH: Paths = {
+    development: "./BotUI",
+    production: "../BotUI",
+};
 
 export const STRING_OPERATRORS_DATA: OperatorData[] = [
     {

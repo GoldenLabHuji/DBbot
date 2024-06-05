@@ -5,6 +5,10 @@ export type DataType = "string" | "numeric";
 
 export type NumOrStr = number | string;
 
+export type Paths = {
+    [key: string]: string;
+};
+
 export type BotData = {
     headers: string[];
     columns: Column[];
