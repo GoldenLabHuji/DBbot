@@ -1,44 +1,36 @@
 import { dbBot, app } from "../index";
 
-function addNum(a: number, b: number) {
-    a + b;
+function startWithB(startingValue: string) {
+    return startingValue.toLowerCase().startsWith("b");
 }
 
-function addStr(a: string, b: string) {
-    a + b;
+function endWithR(startingValue: string) {
+    return startingValue.toLowerCase().endsWith("r");
 }
 
 dbBot.addCustomOperator({
-    name: "addNum",
-    customFunction: addNum,
-    dataType: "numeric",
-    params: [
-        {
-            name: "a",
-            dataType: "numeric",
-        },
-        {
-            name: "b",
-            dataType: "numeric",
-        },
-    ],
-});
-dbBot.addCustomOperator({
-    name: "addStr",
-    customFunction: addStr,
+    name: "startWithB",
+    customFunction: startWithB,
     dataType: "string",
     params: [
         {
-            name: "a",
-            dataType: "string",
-        },
-        {
-            name: "b",
+            name: "startingValue",
             dataType: "string",
         },
     ],
 });
 
+dbBot.addCustomOperator({
+    name: "endWithR",
+    customFunction: endWithR,
+    dataType: "string",
+    params: [
+        {
+            name: "startingValue",
+            dataType: "string",
+        },
+    ],
+});
 
-dbBot.loadFile("./sw_characters.csv");
+dbBot.loadFile("./demo.csv");
 app.runBot(dbBot);
