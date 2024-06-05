@@ -1,6 +1,5 @@
-const fs = require("fs");
-const path = require("path");
-
+import fs from "fs";
+import path from "path";
 import { parse } from "csv-parse/sync";
 import { Column } from "./column";
 import { CustomOperator } from "./operator";
@@ -14,6 +13,7 @@ import {
 import {
     STRING_OPERATRORS_DATA,
     NUMERIC_OPERATORS_DATA,
+    OPERATOR_PATHS,
 } from "../general/resources";
 
 export class DBbot {
@@ -65,7 +65,9 @@ export class DBbot {
 
         const functionFilePath = path.resolve(
             __dirname,
-            `../../BotUI/src/app/operators/${params.name}.js`
+            `${OPERATOR_PATHS[process.env.NODE_ENV ?? "production"]}/${
+                params.name
+            }.js`
         );
 
         const importStatements =
