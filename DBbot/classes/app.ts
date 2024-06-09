@@ -19,15 +19,18 @@ export class app {
                 console.error(`React App Error: ${data}`);
                 reject();
             });
-            
+
             reactAppProcess.on("close", (code: any) => {
                 console.log(`React App process exited with code ${code}`);
             });
         });
     }
 
-    runBot(bot: DBbot): void {
+    public runBot(bot: DBbot): void {
+        bot.createOperatorsFile();
+
         process.env.DB_BOT = JSON.stringify(bot);
+
         this.startReactApp(this.botUIPath)
             .then(() => {
                 console.log("React app started successfully");

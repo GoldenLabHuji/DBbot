@@ -1,36 +1,38 @@
 import { dbBot, app } from "../index";
+import { AddCustomOperatorParams } from "../DBbot/general/types";
 
-function startWithB(startingValue: string) {
-    return startingValue.toLowerCase().startsWith("b");
-}
-
-function endWithR(startingValue: string) {
-    return startingValue.toLowerCase().endsWith("r");
-}
-
-dbBot.addCustomOperator({
+const startWithBOperator = {
     name: "startWithB",
-    customFunction: startWithB,
+    customFunction: function startWithB(inputValue: string) {
+        return inputValue.toLowerCase().startsWith("b");
+    },
     dataType: "string",
     params: [
         {
-            name: "startingValue",
+            name: "InputValue",
             dataType: "string",
         },
     ],
-});
+};
 
-dbBot.addCustomOperator({
+dbBot.addCustomOperator(startWithBOperator as AddCustomOperatorParams);
+
+const endWithROperator = {
     name: "endWithR",
-    customFunction: endWithR,
+    customFunction: function (inputValue: string) {
+        return inputValue.toLowerCase().endsWith("r");
+    },
     dataType: "string",
     params: [
         {
-            name: "startingValue",
+            name: "inputValue",
             dataType: "string",
         },
     ],
-});
+};
+
+dbBot.addCustomOperator(endWithROperator as AddCustomOperatorParams);
 
 dbBot.loadFile("./demo.csv");
+
 app.runBot(dbBot);

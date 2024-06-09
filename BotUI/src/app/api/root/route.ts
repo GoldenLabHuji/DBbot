@@ -7,7 +7,6 @@ import csvParser from "csv-parser";
 export async function POST(request: NextRequest) {
     const req = await request.json();
     const queryReq = req.queryReq as QueryReq[];
-    console.log("queryReq", queryReq);
     const filePath = req.filePath as string;
     const rows = await filterCSV(filePath, queryReq);
     return NextResponse.json(rows);
@@ -22,11 +21,11 @@ export async function filterCSV(filePath: string, queryReq: QueryReq[]) {
         fs.createReadStream(filePath)
             .pipe(csvParser())
             .on("data", (row: any) => {
-                // TODO: add operator function getting the params it needs. (with spread operator - ...params)
-
-                const isRequired = queryReq.every(
-                    (query, index) =>
-                        operators[index](query.value, row[query.param]) // like this: operators[index](row[query.param], ...params)
+                const isRequired = queryReq.every((query, index) =>
+                    operators[index](
+                        row[query.parameter],
+                        ...query.functionParams
+                    )
                 );
                 if (isRequired) {
                     rows.push(row);

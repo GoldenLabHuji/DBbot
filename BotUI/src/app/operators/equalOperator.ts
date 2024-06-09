@@ -1,3 +1,3 @@
-export function equalOperator(startingValue: number, checkValue: number) {
-    return Number(startingValue) === Number(checkValue);
+export function equalOperator(checkValue: number, compareValue: number) {
+    return Number(compareValue) === Number(checkValue);
 }

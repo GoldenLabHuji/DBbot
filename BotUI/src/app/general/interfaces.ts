@@ -86,22 +86,21 @@ export enum DataType {
 
 export interface QueryReq {
     value: strOrNum | number[];
-    // operator: NumericOperator | StringOperator;
     operator: string;
-    param: string;
+    functionParams: strOrNum[];
+    parameter: string;
 }
 
 export interface NumericAttribute {
     value: number | number[];
-    // operator: NumericOperator;
+    params: strOrNum[];
     operator: string;
 }
 
 export interface StringAttribute {
     value: string;
-    // operator: StringOperator;
+    params: strOrNum[];
     operator: string;
-
 }
 
 export interface QueryWords {

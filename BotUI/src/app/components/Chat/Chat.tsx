@@ -29,10 +29,6 @@ export default function Chat({ bot }: ChatProps) {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        console.log("bot", bot);
-    }, [bot]);
-
-    useEffect(() => {
         if (messagesEndRef.current) {
             (messagesEndRef.current as HTMLElement).scrollIntoView({
                 behavior: "smooth",
@@ -41,22 +37,19 @@ export default function Chat({ bot }: ChatProps) {
     }, [messagesSection]);
 
     useEffect(() => {
-        console.log("queryParams", queryParams);
-    }, [queryParams]);
-
-    useEffect(() => {
         const getQueryWords = async () => {
             try {
                 setloading(true);
                 const queryReq: QueryReq[] = [];
                 Object.entries(queryParams).forEach((entry) => {
-                    const [param, attribute] = entry;
+                    const [parameter, attribute] = entry;
                     if (attribute !== null) {
-                        const { value, operator } = attribute;
+                        const { value, operator, params } = attribute;
                         queryReq.push({
-                            param,
+                            parameter,
                             operator,
                             value,
+                            functionParams: params,
                         });
                     }
                 });

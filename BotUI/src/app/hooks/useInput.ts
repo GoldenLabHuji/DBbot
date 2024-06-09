@@ -8,11 +8,11 @@ import {
 } from "@/app/general/types";
 import {
     botMessages,
-    botStringMessages,
     botOperatorMessages,
-    botRangeOperatorMessages,
-    botNumericEqualMessages,
-    botAddParameterMessages,
+    botRestartMessages,
+    botFunctionParamsMessages,
+    emptyMessage,
+    botAddMessages,
 } from "@/app/general/resources";
 
 export default function useInput(
@@ -67,7 +67,7 @@ export default function useInput(
                     setIsEndSection(true);
                     setIsEndChat(isEnd);
                     !isEnd &&
-                        setBotMsg([...botMsg, ...botAddParameterMessages]);
+                        setBotMsg([...botMsg, ...botRestartMessages(bot)]);
                     break;
                 case "parameter":
                     const dataType = bot.columns[Number(input) - 1]?.dataType;
@@ -75,19 +75,26 @@ export default function useInput(
                         dataType === "string" ||
                         Number(input) === bot.headers.length + 1;
                     strParam.setState(isString);
-                    setBotMsg(
-                        isString
-                            ? [...botMsg, ...botStringMessages(bot)]
-                            : [...botMsg, ...botNumericEqualMessages(bot)]
-                    );
+                    setBotMsg([
+                        ...botMsg,
+                        ...botOperatorMessages(bot, isString),
+                    ]);
                     break;
                 case "operator":
-                    if (!strParam.state && Number(input) === 3) {
-                        setBotMsg([...botMsg, ...botRangeOperatorMessages]);
-                    } else if (!strParam.state) {
-                        setBotMsg([...botMsg, ...botOperatorMessages]);
+                    const operatorIndex = Number(input) - 1;
+                    const funcParamsMsg = botFunctionParamsMessages(
+                        bot,
+                        operatorIndex,
+                        strParam.state
+                    );
+
+                    if (funcParamsMsg[0] === emptyMessage) {
+                        setBotMsg([...botMsg, ...botAddMessages]);
+                    } else {
+                        setBotMsg([...botMsg, ...funcParamsMsg]);
                     }
                     break;
+
                 default:
                     break;
             }

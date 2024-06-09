@@ -15,28 +15,28 @@ export const STRING_OPERATRORS_DATA: OperatorData[] = [
         dataType: "string",
         params: [
             {
-                name: "startingValue",
+                name: "inputValue",
                 dataType: "string",
                 isArray: false,
             },
             {
-                name: "checkValue",
+                name: "compareValue",
                 dataType: "string",
                 isArray: false,
             },
         ],
     },
     {
-        name: "StartsWith",
+        name: "StartWith",
         dataType: "string",
         params: [
             {
-                name: "startingValue",
+                name: "inputValue",
                 dataType: "string",
                 isArray: false,
             },
             {
-                name: "checkValue",
+                name: "compareValue",
                 dataType: "string",
                 isArray: false,
             },
@@ -50,12 +50,12 @@ export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         dataType: "numeric",
         params: [
             {
-                name: "startingValue",
+                name: "inputValue",
                 dataType: "numeric",
                 isArray: false,
             },
             {
-                name: "checkValue",
+                name: "compareValue",
                 dataType: "numeric",
                 isArray: false,
             },
@@ -66,12 +66,12 @@ export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         dataType: "numeric",
         params: [
             {
-                name: "startingValue",
+                name: "inputValue",
                 dataType: "numeric",
                 isArray: false,
             },
             {
-                name: "checkValue",
+                name: "compareValue",
                 dataType: "numeric",
                 isArray: false,
             },
@@ -82,12 +82,12 @@ export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         dataType: "numeric",
         params: [
             {
-                name: "startingValue",
+                name: "inputValue",
                 dataType: "numeric",
                 isArray: false,
             },
             {
-                name: "checkValue",
+                name: "compareValue",
                 dataType: "numeric",
                 isArray: false,
             },
@@ -98,15 +98,39 @@ export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         dataType: "numeric",
         params: [
             {
-                name: "startingValue",
+                name: "inputValue",
                 dataType: "numeric",
-                isArray: true,
+                isArray: false,
             },
             {
-                name: "checkValue",
+                name: "minValue",
+                dataType: "numeric",
+                isArray: false,
+            },
+            {
+                name: "maxValue",
                 dataType: "numeric",
                 isArray: false,
             },
         ],
     },
 ];
+
+export const OPERATORS_FILE = `
+import {
+    greaterOperator,
+    lowerOperator,
+    equalOperator,
+    rangeOperator,
+    startWithOperator,
+    soundLikeOperator,
+} from "@/app/operators";
+
+export const OPERATORS = {
+    Greater: greaterOperator,
+    Lower: lowerOperator,
+    Equal: equalOperator,
+    Range: rangeOperator,
+    SoundLike: soundLikeOperator,
+    StartWith: startWithOperator,
+};`;

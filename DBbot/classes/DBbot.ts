@@ -14,6 +14,7 @@ import {
     STRING_OPERATRORS_DATA,
     NUMERIC_OPERATORS_DATA,
     OPERATOR_PATHS,
+    OPERATORS_FILE,
 } from "../general/resources";
 
 export class DBbot {
@@ -30,7 +31,7 @@ export class DBbot {
         numeric: NUMERIC_OPERATORS_DATA,
     };
 
-    getDetails(): BotDetails {
+    public getDetails(): BotDetails {
         return {
             name: this.name,
             description: this.description,
@@ -38,7 +39,7 @@ export class DBbot {
         };
     }
 
-    getData(): BotData {
+    public getData(): BotData {
         return {
             headers: this.headers,
             columns: this.columns,
@@ -46,21 +47,21 @@ export class DBbot {
         };
     }
 
-    setDetails(details: BotDetails): void {
+    public setDetails(details: BotDetails): void {
         this.name = details.name ?? this.name;
         this.description = details.description ?? this.description;
         this.example = details.example ?? this.example;
     }
 
-    addColumn(column: Column): void {
+    private addColumn(column: Column): void {
         this.columns.push(column);
     }
 
-    removeColumn(column: Column): void {
+    private removeColumn(column: Column): void {
         this.columns = this.columns.filter((c) => c !== column);
     }
 
-    addCustomOperator(params: AddCustomOperatorParams): void {
+    public addCustomOperator(params: AddCustomOperatorParams): void {
         this.registerOperators(params);
 
         const functionFilePath = path.resolve(
@@ -83,17 +84,16 @@ export class DBbot {
 
 export const ${params.name} = ${params.customFunction.toString()};`
         );
-
-        this.createOperatorsFile();
     }
 
-    createOperatorsFile(): void {
+    public createOperatorsFile(): void {
         const operatorsFilePath = path.resolve(
             __dirname,
             `${
                 OPERATOR_PATHS[process.env.NODE_ENV ?? "production"]
             }/operators.ts`
         );
+
         const operatorsNames = this.customOperators.map((operator) =>
             operator.getName()
         );
@@ -101,35 +101,24 @@ export const ${params.name} = ${params.customFunction.toString()};`
         const customFunctionsImport = operatorsNames
             .map((name) => `import { ${name} } from "@/app/operators/${name}";`)
             .join("\n");
-        const exportNames = operatorsNames.join(",\n");
 
-        fs.writeFileSync(
-            operatorsFilePath,
-            `import {
-                greaterOperator,
-                lowerOperator,
-                equalOperator,
-                rangeOperator,
-                startWithOperator,
-                soundLikeOperator,
-            } from "@/app/operators";
-            
-            ${customFunctionsImport}
-            
-            export const OPERATORS = {
-                Greater: greaterOperator,
-                Lower: lowerOperator,
-                Equal: equalOperator,
-                Range: rangeOperator,
-                SoundLike: soundLikeOperator,
-                StartWith: startWithOperator,
-                ${exportNames}
-               
-            };`
-        );
+        const appendOperators = operatorsNames
+            .map(
+                (name) =>
+                    `OPERATORS["${name}" as keyof typeof OPERATORS] = ${name};`
+            )
+            .join("\n");
+
+        const fileText =
+            OPERATORS_FILE +
+            "\n\n" +
+            customFunctionsImport +
+            "\n\n" +
+            appendOperators;
+        fs.writeFileSync(operatorsFilePath, fileText);
     }
 
-    loadFile(path: string): void {
+    public loadFile(path: string): void {
         this.filePath = path;
         try {
             const fileData = fs.readFileSync(path, "utf8");
@@ -178,7 +167,7 @@ export const ${params.name} = ${params.customFunction.toString()};`
         });
     }
 
-    private addColumnsAuto() {
+    private addColumnsAuto(): void {
         this.headers.forEach((column) => {
             const columnData = this.dataMap.get(column);
             if (columnData && columnData.length > 0) {
