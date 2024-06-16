@@ -27,6 +27,7 @@ export type BotDetails = {
     name?: string;
     description?: string;
     example?: string;
+    operatorsMessage?: string;
 };
 
 export type AddCustomOperatorParams = OperatorData & {
@@ -41,6 +42,7 @@ type NameDataType = {
 
 type Params = NameDataType & {
     isArray?: boolean;
+    message?: string;
 };
 
 export type OperatorsObject = {

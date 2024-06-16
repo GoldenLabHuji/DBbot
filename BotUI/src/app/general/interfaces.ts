@@ -35,6 +35,8 @@ export interface Bot {
     headers: string[];
     filePath: string;
     operatorsData: BotOperators;
+    operatorsMessage: string;
+    currentOperatorIndex: number;
 }
 
 interface BotColumn {
@@ -54,12 +56,14 @@ interface BotOperatorArray {
     displayName: string;
 }
 
-interface BotOperatorData extends NameDataType {
+export interface BotOperatorData extends NameDataType {
     params: BotOperatorParams[];
+    message?: string;
 }
 
 interface BotOperatorParams extends NameDataType {
     isArray: boolean;
+    message?: string;
 }
 
 interface NameDataType {

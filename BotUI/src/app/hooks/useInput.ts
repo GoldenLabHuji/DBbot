@@ -82,9 +82,11 @@ export default function useInput(
                     break;
                 case "operator":
                     const operatorIndex = Number(input) - 1;
+
+                    bot.currentOperatorIndex = operatorIndex;
+
                     const funcParamsMsg = botFunctionParamsMessages(
                         bot,
-                        operatorIndex,
                         strParam.state
                     );
 

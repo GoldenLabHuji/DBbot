@@ -23,6 +23,7 @@ export class DBbot {
     private columns: Column[] = [];
     private name: string = "INSERT DATABASE NAME";
     private description: string = "INSERT DESCRIPTION OF THE DATABASE";
+    private operatorsMessage: string = "CHOOSE OPERATOR:";
     private example: string = "INSERT EXAMPLE OF USE CASE";
     public filePath: string = "";
     private customOperators: CustomOperator[] = [];
@@ -30,12 +31,14 @@ export class DBbot {
         string: STRING_OPERATRORS_DATA,
         numeric: NUMERIC_OPERATORS_DATA,
     };
+    private currentOperatorIndex: number = 0;
 
     public getDetails(): BotDetails {
         return {
             name: this.name,
             description: this.description,
             example: this.example,
+            operatorsMessage: this.operatorsMessage,
         };
     }
 
@@ -51,6 +54,8 @@ export class DBbot {
         this.name = details.name ?? this.name;
         this.description = details.description ?? this.description;
         this.example = details.example ?? this.example;
+        this.operatorsMessage =
+            details.operatorsMessage ?? this.operatorsMessage;
     }
 
     private addColumn(column: Column): void {
@@ -153,6 +158,7 @@ export const ${params.name} = ${params.customFunction.toString()};`
             name: params.name,
             dataType: params.dataType,
             params: params.params,
+            message: params.message,
         });
     }
 

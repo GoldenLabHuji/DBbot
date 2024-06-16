@@ -6,6 +6,7 @@ import {
     StringOperator,
     MessageSection,
     Bot,
+    BotOperatorData,
 } from "@/app/general/interfaces";
 import { sender, typeOfQuestion } from "@/app/general/types";
 
@@ -21,10 +22,10 @@ export const botMessages = (bot: Bot): Message[] => {
         {
             id: 0,
             text: `Hello! I'm a ChatBot that will help you to get small pieces of data from a large dataset called ${
-                bot?.name || "INSERT DATABASE NAME"
+                bot?.name ?? "INSERT DATABASE NAME"
             }. 
 
-${bot?.description || "INSERT DESCRIPTION OF THE DATABASE"}
+${bot?.description ?? "INSERT DESCRIPTION OF THE DATABASE"}
 
 Enter 1 to continue`,
             sender: "bot",
@@ -35,7 +36,7 @@ Enter 1 to continue`,
             id: 1,
             text: `My main purpose as a ChatBot is to help you get data based on specific properties of words.
 
-${bot?.example || "INSERT EXAMPLE OF USE CASE"}
+${bot?.example ?? "INSERT EXAMPLE OF USE CASE"}
 
 Enter 1 to continue`,
             sender: "bot",
@@ -66,11 +67,24 @@ export const botOperatorMessages = (bot: Bot, isStr: boolean): Message[] => {
         (operator, index) => `${index + 1}: ${operator.name}`
     );
     const optionsString = optionsArray.join("\n");
+    const message = bot?.operatorsMessage ?? "CHOOSE OPERATOR:";
 
-    return [
+    const chosenOperator = operators[bot.currentOperatorIndex];
+
+    const operatorMessage: Message = {
+        id: 0,
+        text: `${chosenOperator?.message}
+            
+Enter 1 to continue`,
+        sender: "bot",
+        typeOfQuestion: "intro",
+        answerOptions: [1],
+    };
+
+    const displayMessage: Message[] = [
         {
             id: 0,
-            text: `Choose operator:
+            text: `${message}
 
 ${optionsString}
 `,
@@ -82,21 +96,29 @@ ${optionsString}
             ),
         },
     ];
+
+    if (chosenOperator.message) {
+        displayMessage.push(operatorMessage);
+    }
+
+    return displayMessage;
 };
 
 export const botFunctionParamsMessages = (
     bot: Bot,
-    operatorIndex: number,
     isStr: boolean
 ): Message[] => {
     const operators = isStr
         ? bot.operatorsData.string
         : bot.operatorsData.numeric;
-    const params = operators[operatorIndex].params;
+
+    const chosenOperator = operators[bot.currentOperatorIndex];
+    const params = chosenOperator.params;
+
     const messages: Message[] = params.map((prm, index) => {
         return {
             id: index,
-            text: `Enter value for parameter ${prm?.name}:`,
+            text: prm?.message ?? `ENTER VALUE FOR PARAMETER ${prm?.name}:`,
             sender: "bot",
             typeOfQuestion: "functionParams",
         };
