@@ -3,11 +3,7 @@ import { NumOrStr } from "../general/types";
 export abstract class Operator {
     constructor(private readonly displayName: string) {}
 
-    abstract calculate(
-        inputValue: NumOrStr,
-        ...args: any
-        
-    ): boolean;
+    abstract calculate(inputValue: NumOrStr, ...args: any): boolean;
 
     getDisplayName(): string {
         return this.displayName;
@@ -23,13 +19,14 @@ export class CustomOperator extends Operator {
         return this.customFunction();
     }
 }
+
 export class EqualOperator extends Operator {
     constructor() {
         super("EQUAL");
     }
 
-    calculate(startingValue: number, checkValue: number) {
-        return Number(startingValue) === Number(checkValue);
+    calculate(inputValue: number, compareValue: number) {
+        return Number(compareValue) === Number(inputValue);
     }
 }
 
@@ -38,8 +35,8 @@ export class LessOperator extends Operator {
         super("LESS");
     }
 
-    calculate(startingValue: number, checkValue: number) {
-        return checkValue <= startingValue;
+    calculate(inputValue: number, compareValue: number) {
+        return inputValue <= compareValue;
     }
 }
 
@@ -48,8 +45,8 @@ export class GreaterOperator extends Operator {
         super("GREATER");
     }
 
-    calculate(startingValue: number, checkValue: number) {
-        return checkValue >= startingValue;
+    calculate(inputValue: number, compareValue: number) {
+        return inputValue >= compareValue;
     }
 }
 
@@ -68,19 +65,23 @@ export class SoundLikeOperator extends Operator {
         super("CONTAINS");
     }
 
-    calculate(startingValue: string, checkValue: string) {
-        const maxDiff = 2;
+    calculate(
+        inputValue: string,
+        compareValue: string,
+        maxDifferences: number
+    ) {
         let diffCount = 0;
-        const indexArray = new Array(startingValue.length)
+        const shorterLength = Math.min(inputValue.length, compareValue.length);
+        const indexArray = new Array(shorterLength)
             .fill(0)
             .map((_, index) => index);
-        const lowerStartingValue = startingValue.toLowerCase();
-        const lowerCheckValue = checkValue.toLowerCase();
+        const lowerStartingValue = inputValue.toLowerCase();
+        const lowerCheckValue = compareValue.toLowerCase();
         indexArray.forEach((i) => {
             if (lowerStartingValue[i] !== lowerCheckValue[i]) diffCount++;
-            if (diffCount > maxDiff) return false;
+            if (diffCount > maxDifferences) return false;
         });
-        return diffCount <= maxDiff;
+        return diffCount <= maxDifferences;
     }
 }
 
@@ -89,7 +90,7 @@ export class StartsWithOperator extends Operator {
         super("STARTS WITH");
     }
 
-    calculate(startingValue: string, checkValue: string) {
-        return checkValue.toLowerCase().startsWith(startingValue.toLowerCase());
+    calculate(inputValue: string, compareValue: string) {
+        return inputValue.toLowerCase().startsWith(compareValue.toLowerCase());
     }
 }

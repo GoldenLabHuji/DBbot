@@ -24,6 +24,11 @@ export const STRING_OPERATRORS_DATA: OperatorData[] = [
                 dataType: "string",
                 isArray: false,
             },
+            {
+                name: "maxDifferences",
+                dataType: "numeric",
+                isArray: false,
+            },
         ],
     },
     {

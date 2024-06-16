@@ -1,7 +1,7 @@
 export function rangeOperator(
-    checkValue: number,
+    inputValue: number,
     minValue: number,
     maxValue: number
 ) {
-    return checkValue >= minValue && checkValue <= maxValue;
+    return inputValue >= minValue && inputValue <= maxValue;
 }
