@@ -1,10 +1,10 @@
 import { dbBot, app } from "../index";
 import { AddCustomOperatorParams } from "../DBbot/general/types";
 
-const startWithBOperator = {
-    name: "startWithB",
-    customFunction: function startWithB(inputValue: string) {
-        return inputValue.toLowerCase().startsWith("b");
+const startWithBAndEndWithXOperator = {
+    name: "startWithBAndEndWithX",
+    customFunction: function (inputValue: string, endChar: string) {
+        return inputValue.toLowerCase().startsWith("b") && inputValue.toLowerCase().endsWith(endChar);
     },
     dataType: "string",
     params: [
@@ -12,10 +12,14 @@ const startWithBOperator = {
             name: "InputValue",
             dataType: "string",
         },
+        {
+            name: "endChar",
+            dataType: "string",
+        },
     ],
 };
 
-dbBot.addCustomOperator(startWithBOperator as AddCustomOperatorParams);
+dbBot.addCustomOperator(startWithBAndEndWithXOperator as AddCustomOperatorParams);
 
 const endWithROperator = {
     name: "endWithR",
@@ -33,6 +37,6 @@ const endWithROperator = {
 
 dbBot.addCustomOperator(endWithROperator as AddCustomOperatorParams);
 
-dbBot.loadFile("./demo.csv");
+dbBot.loadFile("./sw_characters.csv");
 
 app.runBot(dbBot);
