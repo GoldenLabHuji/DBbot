@@ -1,5 +1,5 @@
 import { Column } from "../classes/column";
-import { CustomOperator } from "../classes/operator";
+import { CustomOperator, Operator } from "../classes/operator";
 
 export type DataType = "string" | "numeric";
 
@@ -7,6 +7,14 @@ export type NumOrStr = number | string;
 
 export type Paths = {
     [key: string]: string;
+};
+
+export type ColumnData = {
+    id: string;
+    rows: any[];
+    dataType: DataType;
+    displayName: string;
+    operators: Operator[];
 };
 
 export type BotData = {

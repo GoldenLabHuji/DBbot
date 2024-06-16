@@ -4,8 +4,9 @@ export abstract class Operator {
     constructor(private readonly displayName: string) {}
 
     abstract calculate(
-        startingValue: NumOrStr | number[],
-        checkValue: NumOrStr
+        inputValue: NumOrStr,
+        ...args: any
+        
     ): boolean;
 
     getDisplayName(): string {
@@ -20,10 +21,6 @@ export class CustomOperator extends Operator {
 
     calculate() {
         return this.customFunction();
-    }
-
-    getName() {
-        return this.name;
     }
 }
 export class EqualOperator extends Operator {
@@ -61,8 +58,8 @@ export class RangeOperator extends Operator {
         super("RANGE");
     }
 
-    calculate(startingValue: number[], checkValue: number) {
-        return checkValue >= startingValue[0] && checkValue <= startingValue[1];
+    calculate(inputValue: number, minValue: number, maxValue: number) {
+        return inputValue >= minValue && inputValue <= maxValue;
     }
 }
 

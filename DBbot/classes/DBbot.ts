@@ -95,7 +95,7 @@ export const ${params.name} = ${params.customFunction.toString()};`
         );
 
         const operatorsNames = this.customOperators.map((operator) =>
-            operator.getName()
+            operator.getDisplayName()
         );
 
         const customFunctionsImport = operatorsNames
