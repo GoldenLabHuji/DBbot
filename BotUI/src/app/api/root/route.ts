@@ -22,7 +22,10 @@ export async function filterCSV(filePath: string, queryReq: QueryReq[]) {
             .pipe(csvParser())
             .on("data", (row: any) => {
                 const isRequired = queryReq.every((query, index) =>
-                    operators[index](query.value, row[query.param])
+                    operators[index](
+                        row[query.parameter],
+                        ...query.functionParams
+                    )
                 );
                 if (isRequired) {
                     rows.push(row);

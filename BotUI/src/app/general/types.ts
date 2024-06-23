@@ -4,6 +4,7 @@ import { Message } from "@/app/general/interfaces";
 export type sender = "bot" | "user";
 export type typeOfQuestion =
     | "parameter"
+    | "functionParams"
     | "value"
     | "operator"
     | "add"

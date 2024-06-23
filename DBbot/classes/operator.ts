@@ -1,23 +1,38 @@
+import { NumOrStr } from "../general/types";
+
 export abstract class Operator {
     constructor(private readonly displayName: string) {}
 
     abstract calculate(
-        column: number[] | string[],
-        choice: number | string | number[]
-    ): number[] | string[];
+        startingValue: NumOrStr | number[],
+        checkValue: NumOrStr
+    ): boolean;
 
     getDisplayName(): string {
         return this.displayName;
     }
 }
 
+export class CustomOperator extends Operator {
+    constructor(private name: string, private customFunction: Function) {
+        super(name);
+    }
+
+    calculate() {
+        return this.customFunction();
+    }
+
+    getName() {
+        return this.name;
+    }
+}
 export class EqualOperator extends Operator {
     constructor() {
         super("EQUAL");
     }
 
-    calculate(column: number[], choice: number): number[] {
-        return column.filter((value) => value === choice);
+    calculate(startingValue: number, checkValue: number) {
+        return Number(startingValue) === Number(checkValue);
     }
 }
 
@@ -26,8 +41,8 @@ export class LessOperator extends Operator {
         super("LESS");
     }
 
-    calculate(column: number[], choice: number): number[] {
-        return column.filter((value) => value < choice);
+    calculate(startingValue: number, checkValue: number) {
+        return checkValue <= startingValue;
     }
 }
 
@@ -36,8 +51,8 @@ export class GreaterOperator extends Operator {
         super("GREATER");
     }
 
-    calculate(column: number[], choice: number): number[] {
-        return column.filter((value) => value > choice);
+    calculate(startingValue: number, checkValue: number) {
+        return checkValue >= startingValue;
     }
 }
 
@@ -46,20 +61,29 @@ export class RangeOperator extends Operator {
         super("RANGE");
     }
 
-    calculate(column: number[], choice: number[]): number[] {
-        return column.filter(
-            (value) => value >= choice[0] && value <= choice[1]
-        );
+    calculate(startingValue: number[], checkValue: number) {
+        return checkValue >= startingValue[0] && checkValue <= startingValue[1];
     }
 }
 
-export class ContainsOperator extends Operator {
+export class SoundLikeOperator extends Operator {
     constructor() {
         super("CONTAINS");
     }
 
-    calculate(column: string[], choice: string): string[] {
-        return column.filter((value) => value.includes(choice));
+    calculate(startingValue: string, checkValue: string) {
+        const maxDiff = 2;
+        let diffCount = 0;
+        const indexArray = new Array(startingValue.length)
+            .fill(0)
+            .map((_, index) => index);
+        const lowerStartingValue = startingValue.toLowerCase();
+        const lowerCheckValue = checkValue.toLowerCase();
+        indexArray.forEach((i) => {
+            if (lowerStartingValue[i] !== lowerCheckValue[i]) diffCount++;
+            if (diffCount > maxDiff) return false;
+        });
+        return diffCount <= maxDiff;
     }
 }
 
@@ -68,7 +92,7 @@ export class StartsWithOperator extends Operator {
         super("STARTS WITH");
     }
 
-    calculate(column: string[], choice: string): string[] {
-        return column.filter((value) => value.startsWith(choice));
+    calculate(startingValue: string, checkValue: string) {
+        return checkValue.toLowerCase().startsWith(startingValue.toLowerCase());
     }
 }

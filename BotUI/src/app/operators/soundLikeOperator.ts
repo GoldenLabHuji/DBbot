@@ -1,10 +1,10 @@
-export function soundLikeOperator(startingValue: string, checkValue: string) {
+export function soundLikeOperator(checkValue: string, compareValue: string) {
     const maxDiff = 2;
     let diffCount = 0;
-    const indexArray = new Array(startingValue.length)
+    const indexArray = new Array(compareValue.length)
         .fill(0)
         .map((_, index) => index);
-    const lowerStartingValue = startingValue.toLowerCase();
+    const lowerStartingValue = compareValue.toLowerCase();
     const lowerCheckValue = checkValue.toLowerCase();
     indexArray.forEach((i) => {
         if (lowerStartingValue[i] !== lowerCheckValue[i]) diffCount++;

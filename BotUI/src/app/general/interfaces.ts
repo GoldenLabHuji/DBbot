@@ -34,6 +34,7 @@ export interface Bot {
     dataMap: {};
     headers: string[];
     filePath: string;
+    operatorsData: BotOperators;
 }
 
 interface BotColumn {
@@ -44,8 +45,26 @@ interface BotColumn {
     operatorsArray: BotOperatorArray[];
 }
 
+interface BotOperators {
+    numeric: BotOperatorData[];
+    string: BotOperatorData[];
+}
+
 interface BotOperatorArray {
     displayName: string;
+}
+
+interface BotOperatorData extends NameDataType {
+    params: BotOperatorParams[];
+}
+
+interface BotOperatorParams extends NameDataType {
+    isArray: boolean;
+}
+
+interface NameDataType {
+    name: string;
+    dataType: DataType;
 }
 
 export enum NumericOperator {
@@ -67,18 +86,21 @@ export enum DataType {
 
 export interface QueryReq {
     value: strOrNum | number[];
-    operator: NumericOperator | StringOperator;
-    param: string;
+    operator: string;
+    functionParams: strOrNum[];
+    parameter: string;
 }
 
 export interface NumericAttribute {
     value: number | number[];
-    operator: NumericOperator;
+    params: strOrNum[];
+    operator: string;
 }
 
 export interface StringAttribute {
     value: string;
-    operator: StringOperator;
+    params: strOrNum[];
+    operator: string;
 }
 
 export interface QueryWords {

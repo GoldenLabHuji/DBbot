@@ -1,5 +1,5 @@
 import { DBbot } from "./DBbot";
-const { exec } = require("child_process");
+import { exec } from "child_process";
 
 export class app {
     constructor(public botUIPath: string) {}
@@ -8,14 +8,14 @@ export class app {
         return new Promise<void>((resolve, reject) => {
             const reactAppProcess = exec("npm run dev", { cwd: path });
 
-            reactAppProcess.stdout.on("data", (data: any) => {
+            reactAppProcess.stdout?.on("data", (data: any) => {
                 console.log(`React App: ${data}`);
                 if (data.includes("Compiled successfully")) {
                     resolve();
                 }
             });
 
-            reactAppProcess.stderr.on("data", (data: any) => {
+            reactAppProcess.stderr?.on("data", (data: any) => {
                 console.error(`React App Error: ${data}`);
                 reject();
             });
@@ -26,8 +26,11 @@ export class app {
         });
     }
 
-    runBot(bot: DBbot): void {
+    public runBot(bot: DBbot): void {
+        bot.createOperatorsFile();
+
         process.env.DB_BOT = JSON.stringify(bot);
+
         this.startReactApp(this.botUIPath)
             .then(() => {
                 console.log("React app started successfully");

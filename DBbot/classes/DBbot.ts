@@ -1,7 +1,21 @@
-const fs = require("fs");
+import fs from "fs";
+import path from "path";
 import { parse } from "csv-parse/sync";
 import { Column } from "./column";
-import { DataType } from "../general/types";
+import { CustomOperator } from "./operator";
+import {
+    DataType,
+    OperatorsObject,
+    AddCustomOperatorParams,
+    BotDetails,
+    BotData,
+} from "../general/types";
+import {
+    STRING_OPERATRORS_DATA,
+    NUMERIC_OPERATORS_DATA,
+    OPERATOR_PATHS,
+    OPERATORS_FILE,
+} from "../general/resources";
 
 export class DBbot {
     private dataMap = new Map<string, any>();
@@ -11,36 +25,100 @@ export class DBbot {
     private description: string = "INSERT DESCRIPTION OF THE DATABASE";
     private example: string = "INSERT EXAMPLE OF USE CASE";
     public filePath: string = "";
+    private customOperators: CustomOperator[] = [];
+    private operatorsData: OperatorsObject = {
+        string: STRING_OPERATRORS_DATA,
+        numeric: NUMERIC_OPERATORS_DATA,
+    };
 
-    getColumns(): Column[] {
-        return this.columns;
-    }
-    getHeaders(): string[] {
-        return this.headers;
-    }
-    setName(name: string): void {
-        this.name = name;
-    }
-    setDescription(description: string): void {
-        this.description = description;
-    }
-    setExample(example: string): void {
-        this.example = example;
+    public getDetails(): BotDetails {
+        return {
+            name: this.name,
+            description: this.description,
+            example: this.example,
+        };
     }
 
-    addColumn(column: Column): void {
+    public getData(): BotData {
+        return {
+            headers: this.headers,
+            columns: this.columns,
+            customOperators: this.customOperators,
+        };
+    }
+
+    public setDetails(details: BotDetails): void {
+        this.name = details.name ?? this.name;
+        this.description = details.description ?? this.description;
+        this.example = details.example ?? this.example;
+    }
+
+    private addColumn(column: Column): void {
         this.columns.push(column);
     }
 
-    removeColumn(column: Column): void {
+    private removeColumn(column: Column): void {
         this.columns = this.columns.filter((c) => c !== column);
     }
 
-    testDataMap(): void {
-        console.log(this.dataMap);
+    public addCustomOperator(params: AddCustomOperatorParams): void {
+        this.registerOperators(params);
+
+        const functionFilePath = path.resolve(
+            __dirname,
+            `${OPERATOR_PATHS[process.env.NODE_ENV ?? "production"]}/${
+                params.name
+            }.js`
+        );
+
+        const importStatements =
+            (params.importFunctions &&
+                params.importFunctions
+                    .map((func) => `import {${func}} from './${func}.js';`)
+                    .join("\n")) ??
+            "";
+
+        fs.writeFileSync(
+            functionFilePath,
+            `${importStatements}
+
+export const ${params.name} = ${params.customFunction.toString()};`
+        );
     }
 
-    loadFile(path: string): void {
+    public createOperatorsFile(): void {
+        const operatorsFilePath = path.resolve(
+            __dirname,
+            `${
+                OPERATOR_PATHS[process.env.NODE_ENV ?? "production"]
+            }/operators.ts`
+        );
+
+        const operatorsNames = this.customOperators.map((operator) =>
+            operator.getName()
+        );
+
+        const customFunctionsImport = operatorsNames
+            .map((name) => `import { ${name} } from "@/app/operators/${name}";`)
+            .join("\n");
+
+        const appendOperators = operatorsNames
+            .map(
+                (name) =>
+                    `OPERATORS["${name}" as keyof typeof OPERATORS] = ${name};`
+            )
+            .join("\n");
+
+        const fileText =
+            OPERATORS_FILE +
+            "\n\n" +
+            customFunctionsImport +
+            "\n\n" +
+            appendOperators;
+        fs.writeFileSync(operatorsFilePath, fileText);
+    }
+
+    public loadFile(path: string): void {
         this.filePath = path;
         try {
             const fileData = fs.readFileSync(path, "utf8");
@@ -64,6 +142,20 @@ export class DBbot {
         }
     }
 
+    private registerOperators(params: AddCustomOperatorParams): void {
+        const newOperator = new CustomOperator(
+            params.name,
+            params.customFunction
+        );
+        this.customOperators.push(newOperator);
+
+        this.operatorsData[params.dataType].push({
+            name: params.name,
+            dataType: params.dataType,
+            params: params.params,
+        });
+    }
+
     private addColumsToDataMap(records: string[]): void {
         records.forEach((record: any) => {
             this.headers.forEach((header: string) => {
@@ -75,7 +167,7 @@ export class DBbot {
         });
     }
 
-    private addColumnsAuto() {
+    private addColumnsAuto(): void {
         this.headers.forEach((column) => {
             const columnData = this.dataMap.get(column);
             if (columnData && columnData.length > 0) {

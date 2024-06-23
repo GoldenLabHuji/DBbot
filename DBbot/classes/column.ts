@@ -4,7 +4,7 @@ import {
     LessOperator,
     GreaterOperator,
     RangeOperator,
-    ContainsOperator,
+    SoundLikeOperator,
     StartsWithOperator,
 } from "./operator";
 import { DataType } from "../general/types";
@@ -15,7 +15,8 @@ export class Column {
     constructor(
         private readonly id: string,
         private dataType: DataType,
-        private displayName: string = id
+        private displayName: string = id,
+        private customOperators: Operator[] = []
     ) {
         const numericOperators = [
             new EqualOperator(),
@@ -24,13 +25,17 @@ export class Column {
             new RangeOperator(),
         ];
         const stringOperators = [
-            new ContainsOperator(),
+            new SoundLikeOperator(),
             new StartsWithOperator(),
         ];
         if (dataType === "numeric") {
-            this.operatorsArray.push(...numericOperators);
+            this.operatorsArray.push(
+                ...[...numericOperators, ...this.customOperators]
+            );
         } else if (dataType === "string") {
-            this.operatorsArray.push(...stringOperators);
+            this.operatorsArray.push(
+                ...[...stringOperators, ...this.customOperators]
+            );
         } else {
             throw new Error("Invalid data type");
         }

@@ -44,235 +44,110 @@ Enter 1 to continue`,
         },
         {
             id: 2,
-            text: `At the moment, I have the capacity of helping you extract data based on ${
-                headers.length
-            } word properties:
+            text: `At the moment, I have the capacity of helping you extract data based on ${headers.length} word properties:
 ${headersString}
-${
-    headers.length + 1
-}: Related words ( like words that start with the same characters as a chosen word or words that sound like a chosen word )
 
 Which property would you like to start with?`,
             sender: "bot",
             typeOfQuestion: "parameter",
             answerOptions: Array.from(
-                { length: headers.length + 1 },
+                { length: headers.length },
                 (_, index) => index + 1
             ),
         },
     ];
 };
-export const botNumericNotEqualMessages: Message[] = [
-    {
-        id: 0,
-        text: `To help you get the words you desire, 
-I need to know few things about your specific 
-requirments to the property you have chosen above.
 
-First I need to know if you want the words to be greater, lower or in a specific range.
-Then I need to know the value of this property you want to start with.
+export const botOperatorMessages = (bot: Bot, isStr: boolean): Message[] => {
+    const operators = isStr
+        ? bot.operatorsData.string
+        : bot.operatorsData.numeric;
+    const optionsArray = operators.map(
+        (operator, index) => `${index + 1}: ${operator.name}`
+    );
+    const optionsString = optionsArray.join("\n");
 
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 1,
-        text: `For example, if you chose the property "age of aquisition" and you want words that aquiered at the age of 5 or less, you will choose the "Lower" in the first question, and then the value 5 in the next question.
+    return [
+        {
+            id: 0,
+            text: `Choose operator:
 
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 2,
-        text: `Let's start with the first question.
-        
-Do you want the words to be greater, lower, or in a specific range?
-
-1. Greater
-2. Lower
-3. Range`,
-        sender: "bot",
-        typeOfQuestion: "operator",
-        answerOptions: [1, 2, 3],
-    },
-];
-
-export const botNumericEqualMessages: Message[] = [
-    {
-        id: 0,
-        text: `To help you get the words you desire, 
-I need to know few things about your specific 
-requirments to the property you have chosen above.
-
-First I need to know if you want the words to be greater, lower, in a specific range or equal to a specific value.
-Then I need to know the value of this property you want to start with.
-
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 1,
-        text: `For example, if you chose the property "number of phonemes" and you want words that have between 4 and 7 phonemes , you will choose the "Range" in the first question, then the value 4 in the second question and then the value 7 in the third question.
-
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 2,
-        text: `Let's start with the first question.
-        
-Do you want the words to be greater, lower, in a specific range or equal to a specific value?
-
-1. Greater
-2. Lower
-3. Range
-4. Equal
+${optionsString}
 `,
-        sender: "bot",
-        typeOfQuestion: "operator",
-        answerOptions: [1, 2, 3, 4],
-    },
-];
-export const botOperatorMessages: Message[] = [
+            sender: "bot",
+            typeOfQuestion: "operator",
+            answerOptions: Array.from(
+                { length: operators.length },
+                (_, index) => index + 1
+            ),
+        },
+    ];
+};
+
+export const botFunctionParamsMessages = (
+    bot: Bot,
+    operatorIndex: number,
+    isStr: boolean
+): Message[] => {
+    const operators = isStr
+        ? bot.operatorsData.string
+        : bot.operatorsData.numeric;
+    const params = operators[operatorIndex].params;
+    const messages: Message[] = params.map((prm, index) => {
+        return {
+            id: index,
+            text: `Enter value for parameter ${prm?.name}:`,
+            sender: "bot",
+            typeOfQuestion: "functionParams",
+        };
+    });
+    const messageWithoutFirst = messages.slice(1);
+
+    if (messageWithoutFirst.length === 0) return [emptyMessage];
+
+    messageWithoutFirst.push(...botAddMessages);
+
+    return messageWithoutFirst;
+};
+
+export const botAddMessages: Message[] = [
     {
         id: 0,
-        text: `Now I need to know the value of this parameter you want to start with.
-        
-What would you like the value of this property to be?`,
-        sender: "bot",
-        typeOfQuestion: "value",
-    },
-    {
-        id: 1,
-        text: `Do you want to add more parameter?
-1. Yes
-2. No`,
+        text: `Do you want to add another parameter?
+    
+    1. Yes
+    2. No`,
         sender: "bot",
         typeOfQuestion: "add",
         answerOptions: [1, 2],
     },
 ];
 
-export const botRangeOperatorMessages: Message[] = [
-    {
-        id: 0,
-        text: `Now I need to know the range of values you want to start with.
-First I need to know the lower value of the range, then the higher value of the range.
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 1,
-        text: "What would you like the <b>lower</b> value of this range to be?",
-        sender: "bot",
-        typeOfQuestion: "value",
-    },
-    {
-        id: 1,
-        text: "What would you like the <b>higher</b> value of this range to be?",
-        sender: "bot",
-        typeOfQuestion: "value",
-    },
-    {
-        id: 1,
-        text: `Do you want to add more parameter?
-1. Yes
-2. No`,
-        sender: "bot",
-        typeOfQuestion: "add",
-        answerOptions: [1, 2],
-    },
-];
-
-export const botStringMessages: Message[] = [
-    {
-        id: 0,
-        text: `To help you get the words you desire, 
-I need to know few things about your specific 
-requirments to the property you have chosen above.
-
-First I need to know if you want the words to be words that starts with the same characters as a chosen word or words that sound like a chosen word.
-Then I need to know the word you want to start with.
+export const botRestartMessages = (bot: Bot): Message[] => {
+    const startMsg = botMessages(bot).slice(-1)[0];
+    return [
+        {
+            id: 0,
+            text: `To add another parameter, I will go through the same process as before.
 
 Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 1,
-        text: `Let's start with the first question.
-        
-Do you want the words to be:
-
-1. Words that starts with the same characters as a chosen word
-2. Words that sound like a chosen word`,
-        sender: "bot",
-        typeOfQuestion: "operator",
-        answerOptions: [1, 2],
-    },
-    {
-        id: 2,
-        text: `Now I need to know the word you want to start with.
-        
-What would you like the this word to be?`,
-        sender: "bot",
-        typeOfQuestion: "value",
-    },
-    {
-        id: 3,
-        text: `Do you want to add more parameter?
-1. Yes
-2. No`,
-        sender: "bot",
-        typeOfQuestion: "add",
-        answerOptions: [1, 2],
-    },
-];
-
-export const botAddParameterMessages: Message[] = [
-    {
-        id: 0,
-        text: `To add another parameter, I will go through the same process as before.
-
-Enter 1 to continue`,
-        sender: "bot",
-        typeOfQuestion: "intro",
-        answerOptions: [1],
-    },
-    {
-        id: 1,
-        text: `At the moment, I have the capacity of helping you extract data based on five word properties:
-
-1: Age of Acquisition
-2: Number of Phonemes
-3: Number of Syllables
-4: Related words ( like words that start with the same characters as a chosen word or words that sound like a chosen word )
-
-Which property would you like to start with?`,
-        sender: "bot",
-        typeOfQuestion: "parameter",
-        answerOptions: [1, 2, 3, 4],
-    },
-];
+            sender: "bot",
+            typeOfQuestion: "intro",
+            answerOptions: [1],
+        },
+        startMsg,
+    ];
+};
 
 export const emptyNumericAttribute: NumericAttribute = {
     value: 0,
+    params: [],
     operator: NumericOperator.Greater,
 };
 
 export const emptyStringAttribute: StringAttribute = {
     value: "",
+    params: [],
     operator: StringOperator.StartWith,
 };
 
@@ -290,3 +165,10 @@ export const defaultMsgSection = [
         messageSection: [] as Message[],
     },
 ] as MessageSection[];
+
+export const emptyMessage: Message = {
+    id: 0,
+    text: "empty message",
+    sender: "bot",
+    typeOfQuestion: "functionParams",
+};

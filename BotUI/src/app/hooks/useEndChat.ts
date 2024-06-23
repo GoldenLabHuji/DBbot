@@ -2,8 +2,6 @@ import { useRecoilState } from "recoil";
 import { messagesSectionAtom } from "@/app/store/atoms";
 import {
     QueryWords,
-    NumericOperator,
-    StringOperator,
     NumericAttribute,
     StringAttribute,
     Bot,
@@ -12,7 +10,6 @@ import {
     emptyNumericAttribute,
     emptyStringAttribute,
 } from "@/app/general/resources";
-import { isNumberArray } from "@/app/general/utils";
 import { strParamType } from "@/app/general/types";
 
 export default function useEndChat(strParam: strParamType, bot: Bot) {
@@ -36,35 +33,28 @@ export default function useEndChat(strParam: strParamType, bot: Bot) {
                 (msg) => msg && msg?.sender === "user"
             );
 
+            const numericOpertors = bot.operatorsData.numeric.map(
+                (op) => op.name
+            );
+            const stringOpertors = bot.operatorsData.string.map(
+                (op) => op.name
+            );
+
             userFilteredMessages?.forEach((msg) => {
                 switch (msg?.typeOfQuestion) {
-                    case "value":
-                        const isRange =
-                            numericAttribute.operator === NumericOperator.Range;
-                        if (strParam.state) stringAttribute.value = msg?.text;
-                        if (!isRange)
-                            numericAttribute.value = Number(msg?.text);
-                        if (isNumberArray(numericAttribute.value))
-                            numericAttribute.value.push(Number(msg?.text));
-
+                    case "functionParams":
+                        if (strParam.state)
+                            stringAttribute.params.push(msg?.text);
+                        else numericAttribute.params.push(Number(msg?.text));
                         break;
                     case "operator":
-                        if (!strParam.state) {
-                            numericAttribute.operator = [
-                                NumericOperator.Greater,
-                                NumericOperator.Lower,
-                                NumericOperator.Range,
-                                NumericOperator.Equal,
-                            ][Number(msg?.text) - 1];
-                            if (Number(msg?.text) === 3) {
-                                numericAttribute.value = [] as number[];
-                            }
-                        } else {
-                            stringAttribute.operator = [
-                                StringOperator.StartWith,
-                                StringOperator.SoundLike,
-                            ][Number(msg?.text) - 1];
-                        }
+                        if (!strParam.state)
+                            numericAttribute.operator =
+                                numericOpertors[Number(msg?.text) - 1];
+                        else
+                            stringAttribute.operator =
+                                stringOpertors[Number(msg?.text) - 1];
+
                         break;
                     case "parameter":
                         const param = bot.headers[
