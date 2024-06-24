@@ -9,9 +9,10 @@ import {
     AddCustomOperatorParams,
     BotDetails,
     BotData,
+    BotMessages,
 } from "../general/types";
 import {
-    STRING_OPERATRORS_DATA,
+    STRING_OPERATORS_DATA,
     NUMERIC_OPERATORS_DATA,
     OPERATOR_PATHS,
     OPERATORS_FILE,
@@ -19,51 +20,85 @@ import {
 
 export class DBbot {
     private dataMap = new Map<string, any>();
-    private headers: string[] = [];
-    private columns: Column[] = [];
-    private name: string = "INSERT DATABASE NAME";
-    private description: string = "INSERT DESCRIPTION OF THE DATABASE";
-    private operatorsMessage: string = "CHOOSE OPERATOR:";
-    private example: string = "INSERT EXAMPLE OF USE CASE";
     public filePath: string = "";
-    private customOperators: CustomOperator[] = [];
+    private _customOperators: CustomOperator[] = [];
+    private _data: BotData = {
+        headers: [],
+        columns: [],
+        customOperators: this._customOperators,
+    };
     private operatorsData: OperatorsObject = {
-        string: STRING_OPERATRORS_DATA,
+        string: STRING_OPERATORS_DATA,
         numeric: NUMERIC_OPERATORS_DATA,
+    };
+
+    private _details: BotDetails = {
+        name: "INSERT DATABASE NAME",
+        description: "INSERT DESCRIPTION OF THE DATABASE",
+    };
+    private _messages: BotMessages = {
+        welcomeMessage: undefined,
+        attributeMessage: undefined,
+        descriptionMessage: undefined,
+        exampleMessage: undefined,
+        operatorMessage: undefined,
+        errorMessage: undefined,
     };
     private currentOperatorIndex: number = 0;
 
-    public getDetails(): BotDetails {
-        return {
-            name: this.name,
-            description: this.description,
-            example: this.example,
-            operatorsMessage: this.operatorsMessage,
+    constructor() {
+        this.initMessages();
+    }
+
+    private initMessages(): void {
+        this._messages = {
+            welcomeMessage: `This is the welcome messages of the bot of the database ${this._details.name}.
+    
+You can customize this and the other messages. See more in our documentation: 
+    
+*LINK TO THE DOCUMENTATION*`,
+            attributeMessage:
+                "This is a message to ask for an attribute of the database to start the query. Here is the list of the attributes:",
+            descriptionMessage: `Here is a description of the database ${this._details.description}`,
+            exampleMessage: "This is an example of use case",
+            operatorMessage: "This is the list of operators to choose from:",
+            errorMessage: "I don't understand, please enter a valid option",
         };
     }
 
-    public getData(): BotData {
-        return {
-            headers: this.headers,
-            columns: this.columns,
-            customOperators: this.customOperators,
-        };
+    public get details(): BotDetails {
+        return this.details;
     }
 
-    public setDetails(details: BotDetails): void {
-        this.name = details.name ?? this.name;
-        this.description = details.description ?? this.description;
-        this.example = details.example ?? this.example;
-        this.operatorsMessage =
-            details.operatorsMessage ?? this.operatorsMessage;
+    public set details(details: BotDetails) {
+        this._details.name = details.name ?? this._details.name;
+        this._details.description =
+            details.description ?? this._details.description;
+        this.initMessages();
+    }
+
+    public get data(): BotData {
+        return this._data;
+    }
+
+    public get messages(): BotMessages {
+        return this._messages;
+    }
+
+    public set messages(messages: BotMessages) {
+        Object.keys(messages).forEach((key) => {
+            const keyName = key as keyof BotMessages;
+            this._messages[keyName] =
+                messages[keyName] ?? this._messages[keyName];
+        });
     }
 
     private addColumn(column: Column): void {
-        this.columns.push(column);
+        this._data.columns.push(column);
     }
 
     private removeColumn(column: Column): void {
-        this.columns = this.columns.filter((c) => c !== column);
+        this._data.columns = this._data.columns.filter((c) => c !== column);
     }
 
     public addCustomOperator(params: AddCustomOperatorParams): void {
@@ -99,7 +134,7 @@ export const ${params.name} = ${params.customFunction.toString()};`
             }/operators.ts`
         );
 
-        const operatorsNames = this.customOperators.map((operator) =>
+        const operatorsNames = this._data.customOperators.map((operator) =>
             operator.getDisplayName()
         );
 
@@ -134,13 +169,13 @@ export const ${params.name} = ${params.customFunction.toString()};`
             });
 
             if (records.length > 0) {
-                this.headers = Object.keys(records[0]);
-                this.headers.forEach((header: string) => {
+                this._data.headers = Object.keys(records[0]);
+                this._data.headers.forEach((header: string) => {
                     this.dataMap.set(header, []);
                 });
             }
 
-            this.addColumsToDataMap(records);
+            this.addColumnsToDataMap(records);
             this.addColumnsAuto();
         } catch (error) {
             console.error(error);
@@ -152,7 +187,7 @@ export const ${params.name} = ${params.customFunction.toString()};`
             params.name,
             params.customFunction
         );
-        this.customOperators.push(newOperator);
+        this._data.customOperators.push(newOperator);
 
         this.operatorsData[params.dataType].push({
             name: params.name,
@@ -162,9 +197,9 @@ export const ${params.name} = ${params.customFunction.toString()};`
         });
     }
 
-    private addColumsToDataMap(records: string[]): void {
+    private addColumnsToDataMap(records: string[]): void {
         records.forEach((record: any) => {
-            this.headers.forEach((header: string) => {
+            this._data.headers.forEach((header: string) => {
                 const columnData = this.dataMap.get(header);
                 if (columnData) {
                     columnData.push(record[header]);
@@ -174,7 +209,7 @@ export const ${params.name} = ${params.customFunction.toString()};`
     }
 
     private addColumnsAuto(): void {
-        this.headers.forEach((column) => {
+        this._data.headers.forEach((column) => {
             const columnData = this.dataMap.get(column);
             if (columnData && columnData.length > 0) {
                 const isNumeric = columnData.every((item: string) => {
