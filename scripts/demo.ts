@@ -2,14 +2,24 @@ import { dbBot, app } from "../index";
 import { AddCustomOperatorParams } from "../DBbot/general/types";
 
 const details = {
-    name: "Star Wars Characters",
+    name: "SW Database",
     description: "A database of Star Wars characters",
-    example:
-        "Get all characters that start with 'B' and end with 'X' with a custom operator",
-    operatorsMessage: "Choose start wars operator",
 };
 
-dbBot.setDetails(details);
+const messages = {
+    welcomeMessage: "Welcome to the Star Wars Characters database",
+    attributeMessage:
+        "Here is a list of attributes you can query from the Star Wars Characters database:",
+    descriptionMessage:
+        "The Star Wars Characters database contains information about characters from the Star Wars universe",
+    exampleMessage:
+        "Get all characters that start with 'B' and end with 'X' with a custom operator",
+    operatorMessage: "Choose a Star Wars operator",
+    errorMessage: "what???",
+};
+
+dbBot.details = details;
+dbBot.messages = messages;
 
 const startWithBAndEndWithXOperator = {
     name: "startWithBAndEndWithX",
