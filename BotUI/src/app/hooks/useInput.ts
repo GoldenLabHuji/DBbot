@@ -44,7 +44,7 @@ export default function useInput(
         if ((isAnswerOptions && !isAnswerOptionsValid) || input === "") {
             const newMessage: Message = {
                 id: currentMsg.state.length,
-                text: "I don't understand, please enter a valid option",
+                text: bot?._messages?.errorMessage,
                 sender: "bot" as sender,
                 typeOfQuestion: typeOfQuestion as typeOfQuestion,
                 answerOptions: lastMessageSectionQuestion.answerOptions,
@@ -70,10 +70,11 @@ export default function useInput(
                         setBotMsg([...botMsg, ...botRestartMessages(bot)]);
                     break;
                 case "parameter":
-                    const dataType = bot.columns[Number(input) - 1]?.dataType;
+                    const dataType =
+                        bot._data.columns[Number(input) - 1]?.dataType;
                     const isString =
                         dataType === "string" ||
-                        Number(input) === bot.headers.length + 1;
+                        Number(input) === bot._data.headers.length + 1;
                     strParam.setState(isString);
                     setBotMsg([
                         ...botMsg,
