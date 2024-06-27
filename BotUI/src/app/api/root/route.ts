@@ -22,28 +22,7 @@ async function filterCSV(filePath: string, attributes: Attribute[]) {
         fs.createReadStream(filePath)
             .pipe(csvParser())
             .on("data", (row: any) => {
-                let isRequired: boolean = true;
-                const duplicates = findDuplicates(attributes, "name");
-                if (duplicates.length > 0) {
-                    const notDuplicatesAttributes = attributes.filter(
-                        (attribute) => !duplicates.includes(attribute)
-                    );
-                    const isRequiredNotDuplicates =
-                        notDuplicatesAttributes.every((query, index) =>
-                            operators[index](row[query.name], ...query.params)
-                        );
-
-                    const isRequiredDuplicates = duplicates.some(
-                        (query, index) =>
-                            operators[index](row[query.name], ...query.params)
-                    );
-                    isRequired =
-                        isRequiredNotDuplicates && isRequiredDuplicates;
-                } else {
-                    isRequired = attributes.every((query, index) =>
-                        operators[index](row[query.name], ...query.params)
-                    );
-                }
+                const isRequired = isRowRequired(attributes, operators, row);
 
                 if (isRequired) {
                     rows.push(row);
@@ -56,6 +35,48 @@ async function filterCSV(filePath: string, attributes: Attribute[]) {
                 reject(error);
             });
     });
+}
+
+function isRowRequired(
+    attributes: Attribute[],
+    operators: any[],
+    row: any
+): boolean {
+    let isRequired: boolean = true;
+    const duplicates = findDuplicates(attributes, "name");
+    if (duplicates.length > 0) {
+        const notDuplicatesAttributes = attributes.filter(
+            (attribute) => !duplicates.includes(attribute)
+        );
+        const isRequiredNotDuplicates = notDuplicatesAttributes.every(
+            (query, index) => operators[index](row[query.name], ...query.params)
+        );
+
+        const namesOfDuplicates = duplicates.map((query) => query.name);
+        const duplicatesAttributes = [...new Set(namesOfDuplicates)];
+
+        const duplicatesRequiredArray = duplicatesAttributes.map((name) => {
+            const attributeOfTheName = attributes.filter(
+                (attribute) => attribute.name === name
+            );
+            const isRowRequired = attributeOfTheName.some((query, index) =>
+                operators[index](row[query.name], ...query.params)
+            );
+            return isRowRequired;
+        });
+
+        const isRequiredDuplicates = duplicatesRequiredArray.every(
+            (value) => value
+        );
+
+        isRequired = isRequiredNotDuplicates && isRequiredDuplicates;
+    } else {
+        isRequired = attributes.every((query, index) =>
+            operators[index](row[query.name], ...query.params)
+        );
+    }
+
+    return isRequired;
 }
 
 function findDuplicates(arr: Attribute[], key: keyof Attribute): Attribute[] {
