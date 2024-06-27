@@ -7,15 +7,16 @@ const details = {
 };
 
 const messages = {
-    welcomeMessage: "Welcome to the Star Wars Characters database",
+    welcomeMessage:
+        "Welcome to the Star Wars Characters bot! this bot will help you query the Star Wars Characters database",
     attributeMessage:
         "Here is a list of attributes you can query from the Star Wars Characters database:",
     descriptionMessage:
         "The Star Wars Characters database contains information about characters from the Star Wars universe",
-    exampleMessage:
-        "Get all characters that start with 'B' and end with 'X' with a custom operator",
-    operatorMessage: "Choose a Star Wars operator",
-    errorMessage: "what???",
+    exampleMessage: `For example, search for names of characters that start with a specific letter
+by choosing the 'name' attribute, and then choosing the 'startWith' operator`,
+    operatorMessage: "Choose an operator:",
+    errorMessage: "Try again, I didn't get that",
 };
 
 dbBot.details = details;
