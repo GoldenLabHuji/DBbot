@@ -27,14 +27,32 @@ export interface TableProps {
 }
 
 export interface Bot {
-    name: string;
-    description: string;
-    example: string;
-    columns: BotColumn[];
     dataMap: {};
-    headers: string[];
+    _data: BotData;
+    _details: BotDetails;
+    _messages: BotMessages;
     filePath: string;
     operatorsData: BotOperators;
+    currentOperatorIndex: number;
+}
+
+interface BotData {
+    headers: string[];
+    columns: BotColumn[];
+}
+
+interface BotDetails {
+    name: string;
+    description: string;
+}
+
+interface BotMessages {
+    welcomeMessage: string;
+    attributeMessage: string;
+    descriptionMessage: string;
+    exampleMessage: string;
+    operatorMessage: string;
+    errorMessage: string;
 }
 
 interface BotColumn {
@@ -54,12 +72,14 @@ interface BotOperatorArray {
     displayName: string;
 }
 
-interface BotOperatorData extends NameDataType {
+export interface BotOperatorData extends NameDataType {
     params: BotOperatorParams[];
+    message?: string;
 }
 
 interface BotOperatorParams extends NameDataType {
     isArray: boolean;
+    message?: string;
 }
 
 interface NameDataType {

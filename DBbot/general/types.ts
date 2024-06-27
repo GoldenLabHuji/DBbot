@@ -1,5 +1,5 @@
 import { Column } from "../classes/column";
-import { CustomOperator } from "../classes/operator";
+import { CustomOperator, Operator } from "../classes/operator";
 
 export type DataType = "string" | "numeric";
 
@@ -7,6 +7,14 @@ export type NumOrStr = number | string;
 
 export type Paths = {
     [key: string]: string;
+};
+
+export type ColumnData = {
+    id: string;
+    rows: any[];
+    dataType: DataType;
+    displayName: string;
+    operators: Operator[];
 };
 
 export type BotData = {
@@ -18,7 +26,6 @@ export type BotData = {
 export type BotDetails = {
     name?: string;
     description?: string;
-    example?: string;
 };
 
 export type AddCustomOperatorParams = OperatorData & {
@@ -33,6 +40,7 @@ type NameDataType = {
 
 type Params = NameDataType & {
     isArray?: boolean;
+    message?: string;
 };
 
 export type OperatorsObject = {
@@ -43,4 +51,13 @@ export type OperatorsObject = {
 export type OperatorData = NameDataType & {
     params: Params[];
     message?: string;
+};
+
+export type BotMessages = {
+    welcomeMessage?: string;
+    attributeMessage?: string;
+    descriptionMessage?: string;
+    exampleMessage?: string;
+    operatorMessage?: string;
+    errorMessage?: string;
 };

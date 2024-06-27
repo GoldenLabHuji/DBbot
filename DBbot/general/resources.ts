@@ -9,7 +9,7 @@ export const REACT_APP_PATH: Paths = {
     production: "../BotUI",
 };
 
-export const STRING_OPERATRORS_DATA: OperatorData[] = [
+export const STRING_OPERATORS_DATA: OperatorData[] = [
     {
         name: "SoundLike",
         dataType: "string",
@@ -22,6 +22,11 @@ export const STRING_OPERATRORS_DATA: OperatorData[] = [
             {
                 name: "compareValue",
                 dataType: "string",
+                isArray: false,
+            },
+            {
+                name: "maxDifferences",
+                dataType: "numeric",
                 isArray: false,
             },
         ],
