@@ -1,3 +1,3 @@
-export function startWithOperator(checkValue: string, compareValue: string) {
-    return checkValue.toLowerCase().startsWith(compareValue.toLowerCase());
+export function startWithOperator(inputValue: string, compareValue: string) {
+    return inputValue.toLowerCase().startsWith(compareValue.toLowerCase());
 }

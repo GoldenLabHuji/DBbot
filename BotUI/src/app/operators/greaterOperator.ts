@@ -1,3 +1,3 @@
-export function greaterOperator( checkValue: number, compareValue: number) {
-    return checkValue >= compareValue;
+export function greaterOperator(inputValue: number, compareValue: number) {
+    return inputValue >= compareValue;
 }

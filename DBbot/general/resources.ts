@@ -1,15 +1,49 @@
-import { OperatorData, Paths } from "./types";
+import {
+    OperatorData,
+    Paths,
+    CustomMessages,
+    MessagesSlot,
+    BotMessages,
+    OperatorsObject,
+} from "./types";
 
 export const OPERATOR_PATHS: Paths = {
     development: "../../BotUI/src/app/operators",
     production: "../../../BotUI/src/app/operators",
 };
+
 export const REACT_APP_PATH: Paths = {
     development: "./BotUI",
     production: "../BotUI",
 };
 
-export const STRING_OPERATRORS_DATA: OperatorData[] = [
+const EMPTY_CUSTOM_MESSAGES: CustomMessages = {
+    attributeMessage: undefined,
+    operatorMessage: undefined,
+    errorMessage: undefined,
+    continueMessage: undefined,
+    resultMessage: undefined,
+};
+
+const EMPTY_SLOTS: MessagesSlot = {
+    welcomeSlot: [],
+    operatorSlot: [],
+    paramsSlot: [],
+    restartSlot: [],
+    resultSlot: [],
+};
+
+export const EMPTY_MESSAGES: BotMessages = {
+    customMessages: EMPTY_CUSTOM_MESSAGES,
+    slots: EMPTY_SLOTS,
+};
+
+export const EMPTY_DETAILS = {
+    name: "INSERT DATABASE NAME",
+    description: "INSERT DESCRIPTION OF THE DATABASE",
+};
+
+const STRING_OPERATORS_DATA: OperatorData[] = [
     {
         name: "SoundLike",
         dataType: "string",
@@ -23,6 +57,14 @@ export const STRING_OPERATRORS_DATA: OperatorData[] = [
                 name: "compareValue",
                 dataType: "string",
                 isArray: false,
+                message:
+                    "enter the word you would like it to sound similar to:",
+            },
+            {
+                name: "maxDifferences",
+                dataType: "numeric",
+                isArray: false,
+                message: "Enter the maximum number of differences allowed:",
             },
         ],
     },
@@ -39,12 +81,13 @@ export const STRING_OPERATRORS_DATA: OperatorData[] = [
                 name: "compareValue",
                 dataType: "string",
                 isArray: false,
+                message: "Enter the character to start with:",
             },
         ],
     },
 ];
 
-export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
+const NUMERIC_OPERATORS_DATA: OperatorData[] = [
     {
         name: "Equal",
         dataType: "numeric",
@@ -58,6 +101,7 @@ export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
                 name: "compareValue",
                 dataType: "numeric",
                 isArray: false,
+                message: "Enter the value you would like it to be equal to:",
             },
         ],
     },
@@ -74,6 +118,8 @@ export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
                 name: "compareValue",
                 dataType: "numeric",
                 isArray: false,
+                message:
+                    "Enter the value you would like it to be greater than:",
             },
         ],
     },
@@ -90,6 +136,7 @@ export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
                 name: "compareValue",
                 dataType: "numeric",
                 isArray: false,
+                message: "Enter the value you would like it to be less than:",
             },
         ],
     },
@@ -106,15 +153,22 @@ export const NUMERIC_OPERATORS_DATA: OperatorData[] = [
                 name: "minValue",
                 dataType: "numeric",
                 isArray: false,
+                message: "Enter the minimum value:",
             },
             {
                 name: "maxValue",
                 dataType: "numeric",
                 isArray: false,
+                message: "Enter the maximum value:",
             },
         ],
     },
 ];
+
+export const EMPTY_OPERATORS_DATA: OperatorsObject = {
+    string: STRING_OPERATORS_DATA,
+    numeric: NUMERIC_OPERATORS_DATA,
+};
 
 export const OPERATORS_FILE = `
 import {

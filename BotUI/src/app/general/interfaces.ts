@@ -22,27 +22,52 @@ export interface MessageProps {
     message: Message;
 }
 
-export interface TableProps {
-    rows: WordData[];
-}
-
 export interface Bot {
-    name: string;
-    description: string;
-    example: string;
-    columns: BotColumn[];
     dataMap: {};
-    headers: string[];
+    _data: BotData;
+    _details: BotDetails;
+    _messages: BotMessages;
     filePath: string;
     operatorsData: BotOperators;
+    currentOperatorIndex: number;
 }
 
+interface BotData {
+    headers: string[];
+    columns: BotColumn[];
+}
+
+interface BotDetails {
+    name: string;
+    description: string;
+}
+
+interface BotMessages {
+    customMessages: CustomMessages;
+    slots: MessagesSlot;
+}
+
+interface CustomMessages {
+    attributeMessage: string;
+    operatorMessage: string;
+    errorMessage: string;
+    continueMessage: string;
+    resultMessage: string;
+}
+
+interface MessagesSlot {
+    welcomeSlot?: string[];
+    operatorSlot?: string[];
+    paramsSlot?: string[];
+    restartSlot?: string[];
+    resultSlot?: string[];
+}
 interface BotColumn {
     id: string;
     dataType: DataType;
     displayName: string;
     rows: strOrNum[];
-    operatorsArray: BotOperatorArray[];
+    operatorsArray: { displayName: string }[];
 }
 
 interface BotOperators {
@@ -50,16 +75,14 @@ interface BotOperators {
     string: BotOperatorData[];
 }
 
-interface BotOperatorArray {
-    displayName: string;
-}
-
 interface BotOperatorData extends NameDataType {
     params: BotOperatorParams[];
+    message?: string;
 }
 
 interface BotOperatorParams extends NameDataType {
     isArray: boolean;
+    message?: string;
 }
 
 interface NameDataType {

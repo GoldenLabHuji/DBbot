@@ -1,42 +1,67 @@
 import { dbBot, app } from "../index";
-import { AddCustomOperatorParams } from "../DBbot/general/types";
 
-const startWithBAndEndWithXOperator = {
-    name: "startWithBAndEndWithX",
-    customFunction: function (inputValue: string, endChar: string) {
-        return inputValue.toLowerCase().startsWith("b") && inputValue.toLowerCase().endsWith(endChar);
-    },
-    dataType: "string",
-    params: [
-        {
-            name: "InputValue",
-            dataType: "string",
-        },
-        {
-            name: "endChar",
-            dataType: "string",
-        },
-    ],
+/////////////////
+// set details //
+/////////////////
+
+const details = {
+    name: "Demo database name",
+    description: "Demo database description",
 };
 
-dbBot.addCustomOperator(startWithBAndEndWithXOperator as AddCustomOperatorParams);
+dbBot.details = details;
 
-const endWithROperator = {
-    name: "endWithR",
-    customFunction: function (inputValue: string) {
-        return inputValue.toLowerCase().endsWith("r");
-    },
-    dataType: "string",
-    params: [
-        {
-            name: "inputValue",
-            dataType: "string",
-        },
-    ],
+/////////////////////////
+// set custom messages //
+/////////////////////////
+
+const messages = {
+    attributeMessage: "Demo messages for attributes",
+    operatorMessage: "Demo message for operators",
+    errorMessage: "Demo error message",
+    resultMessage: "Demo result message",
 };
 
-dbBot.addCustomOperator(endWithROperator as AddCustomOperatorParams);
+dbBot.customMessages = messages;
 
-dbBot.loadFile("./sw_characters.csv");
+///////////////
+// set slots //
+///////////////
+
+// welcome slot
+const welcomeMessages = [];
+
+const welcomeFirstMsg = "Demo welcome slot first message";
+
+welcomeMessages.push(welcomeFirstMsg);
+
+const welcomeSecondMsg = "Demo welcome slot second message";
+
+welcomeMessages.push(welcomeSecondMsg);
+
+// operator slot
+const operatorMessages = [];
+
+const operatorFirstMsg = "Demo operator slot first message";
+
+operatorMessages.push(operatorFirstMsg);
+
+const operatorSecondMsg = "Demo operator slot second message";
+
+operatorMessages.push(operatorSecondMsg);
+
+const slots = {
+    welcomeSlot: welcomeMessages,
+    operatorSlot: operatorMessages,
+};
+
+dbBot.slots = slots;
+
+///////////////////
+// load csv file //
+//   & run bot   //
+///////////////////
+
+dbBot.loadFile("./pokemon.csv");
 
 app.runBot(dbBot);

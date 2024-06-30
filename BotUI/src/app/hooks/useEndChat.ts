@@ -17,7 +17,7 @@ export default function useEndChat(strParam: strParamType, bot: Bot) {
 
     const handleEndChat = (): QueryWords => {
         const wordsParams: QueryWords = {};
-        bot.columns.forEach((col) => {
+        bot._data.columns.forEach((col) => {
             wordsParams[col?.displayName] = null;
         });
 
@@ -33,10 +33,10 @@ export default function useEndChat(strParam: strParamType, bot: Bot) {
                 (msg) => msg && msg?.sender === "user"
             );
 
-            const numericOpertors = bot.operatorsData.numeric.map(
+            const numericOperators = bot.operatorsData.numeric.map(
                 (op) => op.name
             );
-            const stringOpertors = bot.operatorsData.string.map(
+            const stringOperators = bot.operatorsData.string.map(
                 (op) => op.name
             );
 
@@ -50,17 +50,17 @@ export default function useEndChat(strParam: strParamType, bot: Bot) {
                     case "operator":
                         if (!strParam.state)
                             numericAttribute.operator =
-                                numericOpertors[Number(msg?.text) - 1];
+                                numericOperators[Number(msg?.text) - 1];
                         else
                             stringAttribute.operator =
-                                stringOpertors[Number(msg?.text) - 1];
+                                stringOperators[Number(msg?.text) - 1];
 
                         break;
                     case "parameter":
-                        const param = bot.headers[
+                        const param = bot._data.headers[
                             Number(msg?.text) - 1
                         ] as keyof QueryWords;
-                        const paramColumn = bot.columns.find(
+                        const paramColumn = bot._data.columns.find(
                             (col) => col.displayName === param
                         );
                         wordsParams[param] =

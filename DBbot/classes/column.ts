@@ -7,7 +7,7 @@ import {
     SoundLikeOperator,
     StartsWithOperator,
 } from "./operator";
-import { DataType } from "../general/types";
+import { DataType, ColumnData } from "../general/types";
 
 export class Column {
     private rows: any[] = [];
@@ -41,27 +41,17 @@ export class Column {
         }
     }
 
-    getRows(): any[] {
-        return this.rows;
+    public getColumnData(): ColumnData {
+        return {
+            id: this.id,
+            rows: this.rows,
+            dataType: this.dataType,
+            displayName: this.displayName,
+            operators: this.operatorsArray,
+        };
     }
 
-    addRows(rows: any[]): void {
+    public addRows(rows: any[]): void {
         this.rows.push(...rows);
-    }
-
-    getId(): string {
-        return this.id;
-    }
-
-    getDataType(): DataType {
-        return this.dataType;
-    }
-
-    getDisplayName(): string {
-        return this.displayName;
-    }
-
-    getOperators(): Operator[] {
-        return this.operatorsArray;
     }
 }

@@ -1,3 +1,3 @@
-export function lowerOperator( checkValue: number, compareValue: number) {
-    return checkValue <= compareValue;
+export function lowerOperator(inputValue: number, compareValue: number) {
+    return inputValue <= compareValue;
 }
