@@ -8,6 +8,7 @@ import {
     Bot,
 } from "@/app/general/interfaces";
 import { sender, typeOfQuestion } from "@/app/general/types";
+import { convertTextToMessage } from "@/app/general/utils";
 
 export const botMessages = (bot: Bot): Message[] => {
     const headers = bot?._data.headers || [];
@@ -17,39 +18,20 @@ export const botMessages = (bot: Bot): Message[] => {
     );
     const headersString = headersArray.join("\n");
 
+    const welcomeMessages = bot?._messages?.slots.welcomeSlot ?? [];
+    const welcomeMessagesArray = welcomeMessages.map((msg, index) =>
+        convertTextToMessage(
+            msg,
+            index,
+            bot?._messages.customMessages.continueMessage
+        )
+    );
+
     return [
+        ...welcomeMessagesArray,
         {
-            id: 0,
-            text: `${bot?._messages?.welcomeMessage}
-
-Enter 1 to continue`,
-            sender: "bot",
-            typeOfQuestion: "intro",
-            answerOptions: [1],
-        },
-        {
-            id: 1,
-            text: `${bot?._messages?.descriptionMessage}
-
-Enter 1 to continue`,
-            sender: "bot",
-            typeOfQuestion: "intro",
-            answerOptions: [1],
-        },
-        {
-            id: 2,
-            text: `Here is an example of how you can use this database:
-
-${bot?._messages.exampleMessage}
-
-Enter 1 to continue`,
-            sender: "bot",
-            typeOfQuestion: "intro",
-            answerOptions: [1],
-        },
-        {
-            id: 3,
-            text: `${bot?._messages.attributeMessage}
+            id: welcomeMessagesArray.length,
+            text: `${bot?._messages.customMessages.attributeMessage}
             
 ${headersString}
 
@@ -79,16 +61,26 @@ export const botOperatorMessages = (bot: Bot, isStr: boolean): Message[] => {
         id: 0,
         text: `${chosenOperator?.message}
             
-Enter 1 to continue`,
+${bot?._messages.customMessages.continueMessage}`,
         sender: "bot",
         typeOfQuestion: "intro",
         answerOptions: [1],
     };
 
+    const operatorSlot = bot?._messages?.slots.operatorSlot ?? [];
+    const operatorSlotArray = operatorSlot.map((msg, index) =>
+        convertTextToMessage(
+            msg,
+            index,
+            bot?._messages.customMessages.continueMessage
+        )
+    );
+
     const displayMessage: Message[] = [
+        ...operatorSlotArray,
         {
             id: 0,
-            text: `${bot?._messages?.operatorMessage}
+            text: `${bot?._messages?.customMessages.operatorMessage}
 
 ${optionsString}
 `,
@@ -122,7 +114,7 @@ export const botFunctionParamsMessages = (
     const messages: Message[] = params.map((prm, index) => {
         return {
             id: index,
-            text: prm?.message ?? `ENTER VALUE FOR PARAMETER ${prm?.name}:`,
+            text: prm?.message ?? `Enter value for parameter ${prm?.name}:`,
             sender: "bot",
             typeOfQuestion: "functionParams",
         };
@@ -132,6 +124,16 @@ export const botFunctionParamsMessages = (
     if (messageWithoutFirst.length === 0) return [emptyMessage];
 
     messageWithoutFirst.push(...botAddMessages);
+
+    const paramsSlot = bot?._messages?.slots.paramsSlot ?? [];
+    const paramsSlotArray = paramsSlot.map((msg, index) =>
+        convertTextToMessage(
+            msg,
+            index,
+            bot?._messages.customMessages.continueMessage
+        )
+    );
+    messageWithoutFirst.unshift(...paramsSlotArray);
 
     return messageWithoutFirst;
 };
@@ -151,12 +153,21 @@ export const botAddMessages: Message[] = [
 
 export const botRestartMessages = (bot: Bot): Message[] => {
     const startMsg = botMessages(bot).slice(-1)[0];
+    const restartSlot = bot?._messages?.slots.restartSlot ?? [];
+    const restartSlotArray = restartSlot.map((msg, index) =>
+        convertTextToMessage(
+            msg,
+            index,
+            bot?._messages.customMessages.continueMessage
+        )
+    );
     return [
+        ...restartSlotArray,
         {
             id: 0,
             text: `To add another parameter, I will go through the same process as before.
 
-Enter 1 to continue`,
+${bot?._messages.customMessages.continueMessage}`,
             sender: "bot",
             typeOfQuestion: "intro",
             answerOptions: [1],
@@ -177,12 +188,23 @@ export const emptyStringAttribute: StringAttribute = {
     operator: StringOperator.StartWith,
 };
 
-export const resultMsg = {
-    id: 0,
-    text: `Here is the results of your query. 
-You can download the results as a csv file`,
-    sender: "bot" as sender,
-    typeOfQuestion: "result" as typeOfQuestion,
+export const resultMsg = (bot: Bot): Message[] => {
+    const resultSlot = bot?._messages?.slots.resultSlot ?? [];
+    const resultSlotArray = resultSlot.map((msg, index) =>
+        convertTextToMessage(
+            msg,
+            index,
+            bot?._messages.customMessages.continueMessage
+        )
+    );
+    return [
+        ...resultSlotArray,
+        {
+        id: 0,
+        text: bot?._messages?.customMessages.resultMessage,
+        sender: "bot" as sender,
+        typeOfQuestion: "result" as typeOfQuestion,
+    }];
 };
 
 export const defaultMsgSection = [

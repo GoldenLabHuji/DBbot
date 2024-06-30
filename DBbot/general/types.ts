@@ -54,10 +54,22 @@ export type OperatorData = NameDataType & {
 };
 
 export type BotMessages = {
-    welcomeMessage?: string;
+    customMessages: CustomMessages;
+    slots: MessagesSlot;
+};
+
+export type CustomMessages = {
     attributeMessage?: string;
-    descriptionMessage?: string;
-    exampleMessage?: string;
     operatorMessage?: string;
     errorMessage?: string;
+    continueMessage?: string;
+    resultMessage?: string;
+};
+
+export type MessagesSlot = {
+    welcomeSlot?: string[];
+    operatorSlot?: string[];
+    paramsSlot?: string[];
+    restartSlot?: string[];
+    resultSlot?: string[];
 };

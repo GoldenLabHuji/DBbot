@@ -10,59 +10,58 @@ import {
     BotDetails,
     BotData,
     BotMessages,
+    CustomMessages,
+    MessagesSlot,
 } from "../general/types";
 import {
-    STRING_OPERATORS_DATA,
-    NUMERIC_OPERATORS_DATA,
     OPERATOR_PATHS,
     OPERATORS_FILE,
+    EMPTY_MESSAGES,
+    EMPTY_DETAILS,
+    EMPTY_OPERATORS_DATA,
 } from "../general/resources";
 
 export class DBbot {
     private dataMap = new Map<string, any>();
     public filePath: string = "";
+    // private _customMessages: CustomMessages = {};
+    // private _messagesSlot: MessagesSlot = {};
     private _customOperators: CustomOperator[] = [];
+    private _messages: BotMessages = EMPTY_MESSAGES;
+    private currentOperatorIndex: number = 0;
+    private operatorsData: OperatorsObject = EMPTY_OPERATORS_DATA;
+    private _details: BotDetails = EMPTY_DETAILS;
     private _data: BotData = {
         headers: [],
         columns: [],
         customOperators: this._customOperators,
     };
-    private operatorsData: OperatorsObject = {
-        string: STRING_OPERATORS_DATA,
-        numeric: NUMERIC_OPERATORS_DATA,
-    };
-
-    private _details: BotDetails = {
-        name: "INSERT DATABASE NAME",
-        description: "INSERT DESCRIPTION OF THE DATABASE",
-    };
-    private _messages: BotMessages = {
-        welcomeMessage: undefined,
-        attributeMessage: undefined,
-        descriptionMessage: undefined,
-        exampleMessage: undefined,
-        operatorMessage: undefined,
-        errorMessage: undefined,
-    };
-    private currentOperatorIndex: number = 0;
 
     constructor() {
         this.initMessages();
     }
 
     private initMessages(): void {
-        this._messages = {
-            welcomeMessage: `This is the welcome messages of the bot of the database ${this._details.name}.
-    
-You can customize this and the other messages. See more in our documentation: 
-    
-*LINK TO THE DOCUMENTATION*`,
+        this._messages.customMessages = {
             attributeMessage:
                 "This is a message to ask for an attribute of the database to start the query. Here is the list of the attributes:",
-            descriptionMessage: `Here is a description of the database ${this._details.description}`,
-            exampleMessage: "This is an example of use case",
             operatorMessage: "This is the list of operators to choose from:",
             errorMessage: "I don't understand, please enter a valid option",
+            continueMessage: "Enter 1 to continue",
+            resultMessage: `Here is the results of your query. 
+You can download the results as a csv file`,
+        };
+
+        this._messages.slots = {
+            welcomeSlot: [
+                "Welcome message",
+                "Description message",
+                "Example message",
+            ],
+            operatorSlot: [],
+            paramsSlot: [],
+            restartSlot: [],
+            resultSlot: [],
         };
     }
 
@@ -74,7 +73,6 @@ You can customize this and the other messages. See more in our documentation:
         this._details.name = details.name ?? this._details.name;
         this._details.description =
             details.description ?? this._details.description;
-        this.initMessages();
     }
 
     public get data(): BotData {
@@ -85,12 +83,23 @@ You can customize this and the other messages. See more in our documentation:
         return this._messages;
     }
 
-    public set messages(messages: BotMessages) {
-        Object.keys(messages).forEach((key) => {
-            const keyName = key as keyof BotMessages;
-            this._messages[keyName] =
-                messages[keyName] ?? this._messages[keyName];
+    private setMessages<T extends keyof BotMessages>(
+        key: T,
+        messages: BotMessages[T]
+    ) {
+        Object.keys(messages).forEach((messageKey) => {
+            const messageKeyName = messageKey as keyof BotMessages[T];
+            this._messages[key][messageKeyName] =
+                messages[messageKeyName] ?? this._messages[key][messageKeyName];
         });
+    }
+
+    public set customMessages(messages: CustomMessages) {
+        this.setMessages("customMessages", messages);
+    }
+
+    public set slots(messages: MessagesSlot) {
+        this.setMessages("slots", messages);
     }
 
     private addColumn(column: Column): void {
