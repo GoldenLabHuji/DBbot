@@ -53,6 +53,7 @@ interface BotMessages {
     exampleMessage: string;
     operatorMessage: string;
     errorMessage: string;
+    continueMessage: string;
 }
 
 interface BotColumn {

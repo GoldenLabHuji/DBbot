@@ -22,7 +22,7 @@ export const botMessages = (bot: Bot): Message[] => {
             id: 0,
             text: `${bot?._messages?.welcomeMessage}
 
-Enter 1 to continue`,
+${bot?._messages.continueMessage}`,
             sender: "bot",
             typeOfQuestion: "intro",
             answerOptions: [1],
@@ -31,7 +31,7 @@ Enter 1 to continue`,
             id: 1,
             text: `${bot?._messages?.descriptionMessage}
 
-Enter 1 to continue`,
+${bot?._messages.continueMessage}`,
             sender: "bot",
             typeOfQuestion: "intro",
             answerOptions: [1],
@@ -42,7 +42,7 @@ Enter 1 to continue`,
 
 ${bot?._messages.exampleMessage}
 
-Enter 1 to continue`,
+${bot?._messages.continueMessage}`,
             sender: "bot",
             typeOfQuestion: "intro",
             answerOptions: [1],
@@ -79,7 +79,7 @@ export const botOperatorMessages = (bot: Bot, isStr: boolean): Message[] => {
         id: 0,
         text: `${chosenOperator?.message}
             
-Enter 1 to continue`,
+${bot?._messages.continueMessage}`,
         sender: "bot",
         typeOfQuestion: "intro",
         answerOptions: [1],
@@ -122,7 +122,7 @@ export const botFunctionParamsMessages = (
     const messages: Message[] = params.map((prm, index) => {
         return {
             id: index,
-            text: prm?.message ?? `ENTER VALUE FOR PARAMETER ${prm?.name}:`,
+            text: prm?.message ?? `Enter value for parameter ${prm?.name}:`,
             sender: "bot",
             typeOfQuestion: "functionParams",
         };
@@ -156,7 +156,7 @@ export const botRestartMessages = (bot: Bot): Message[] => {
             id: 0,
             text: `To add another parameter, I will go through the same process as before.
 
-Enter 1 to continue`,
+${bot?._messages.continueMessage}`,
             sender: "bot",
             typeOfQuestion: "intro",
             answerOptions: [1],

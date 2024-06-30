@@ -60,4 +60,5 @@ export type BotMessages = {
     exampleMessage?: string;
     operatorMessage?: string;
     errorMessage?: string;
+    continueMessage?: string;
 };
