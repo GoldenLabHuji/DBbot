@@ -22,10 +22,6 @@ export interface MessageProps {
     message: Message;
 }
 
-export interface TableProps {
-    rows: WordData[];
-}
-
 export interface Bot {
     dataMap: {};
     _data: BotData;
@@ -71,7 +67,7 @@ interface BotColumn {
     dataType: DataType;
     displayName: string;
     rows: strOrNum[];
-    operatorsArray: BotOperatorArray[];
+    operatorsArray: { displayName: string }[];
 }
 
 interface BotOperators {
@@ -79,11 +75,7 @@ interface BotOperators {
     string: BotOperatorData[];
 }
 
-interface BotOperatorArray {
-    displayName: string;
-}
-
-export interface BotOperatorData extends NameDataType {
+interface BotOperatorData extends NameDataType {
     params: BotOperatorParams[];
     message?: string;
 }
