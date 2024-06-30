@@ -1,80 +1,68 @@
 import { useRecoilState } from "recoil";
 import { messagesSectionAtom } from "@/app/store/atoms";
-import {
-    QueryWords,
-    NumericAttribute,
-    StringAttribute,
-    Bot,
-} from "@/app/general/interfaces";
-import {
-    emptyNumericAttribute,
-    emptyStringAttribute,
-} from "@/app/general/resources";
-import { strParamType } from "@/app/general/types";
+import { Attribute, Bot } from "@/app/general/interfaces";
+import { strOrNum } from "@/app/general/types";
 
-export default function useEndChat(strParam: strParamType, bot: Bot) {
+export default function useEndChat(bot: Bot) {
     const [messages, _] = useRecoilState(messagesSectionAtom);
 
-    const handleEndChat = (): QueryWords => {
-        const wordsParams: QueryWords = {};
-        bot.columns.forEach((col) => {
-            wordsParams[col?.displayName] = null;
-        });
-
-        const numericAttribute: NumericAttribute = {
-            ...emptyNumericAttribute,
-        };
-        const stringAttribute: StringAttribute = {
-            ...emptyStringAttribute,
-        };
+    const handleEndChat = (): Attribute[] => {
+        const queryAttributes: Attribute[] = [];
 
         messages.forEach((msgSec) => {
             const userFilteredMessages = msgSec?.messageSection.filter(
                 (msg) => msg && msg?.sender === "user"
             );
 
-            const numericOpertors = bot.operatorsData.numeric.map(
+            const numericOperators = bot.operatorsData.numeric.map(
                 (op) => op.name
             );
-            const stringOpertors = bot.operatorsData.string.map(
+            const stringOperators = bot.operatorsData.string.map(
                 (op) => op.name
             );
 
-            userFilteredMessages?.forEach((msg) => {
-                switch (msg?.typeOfQuestion) {
-                    case "functionParams":
-                        if (strParam.state)
-                            stringAttribute.params.push(msg?.text);
-                        else numericAttribute.params.push(Number(msg?.text));
-                        break;
-                    case "operator":
-                        if (!strParam.state)
-                            numericAttribute.operator =
-                                numericOpertors[Number(msg?.text) - 1];
-                        else
-                            stringAttribute.operator =
-                                stringOpertors[Number(msg?.text) - 1];
+            const parametersMessages = userFilteredMessages.filter(
+                (msg) => msg.typeOfQuestion === "parameter"
+            );
+            const operatorsMessages = userFilteredMessages.filter(
+                (msg) => msg.typeOfQuestion === "operator"
+            );
+            const functionParamsMessages = userFilteredMessages.filter(
+                (msg) => msg.typeOfQuestion === "functionParams"
+            );
 
-                        break;
-                    case "parameter":
-                        const param = bot.headers[
-                            Number(msg?.text) - 1
-                        ] as keyof QueryWords;
-                        const paramColumn = bot.columns.find(
-                            (col) => col.displayName === param
-                        );
-                        wordsParams[param] =
-                            paramColumn?.dataType === "numeric"
-                                ? numericAttribute
-                                : stringAttribute;
-                        break;
-                    default:
-                        break;
-                }
+            const parameter =
+                bot?.headers[Number(parametersMessages[0]?.text) - 1];
+
+            const parameterColumn = bot.columns.find(
+                (col) => col.displayName === parameter
+            );
+
+            const parameterDataType = parameterColumn?.dataType;
+
+            const operatorChoice = Number(operatorsMessages[0]?.text) - 1;
+
+            const operator =
+                parameterDataType === "numeric"
+                    ? numericOperators[operatorChoice]
+                    : stringOperators[operatorChoice];
+
+            const functionParams: strOrNum[] = [];
+            functionParamsMessages.forEach((msg) => {
+                if (parameterDataType === "string")
+                    functionParams.push(msg.text);
+                else functionParams.push(Number(msg.text));
             });
-        });
 
-        return wordsParams;
+            const newAttribute: Attribute = {
+                name: parameter,
+                operator,
+                params: functionParams,
+            };
+
+            queryAttributes.push(newAttribute);
+        });
+        return queryAttributes;
     };
 
     return { handleEndChat };

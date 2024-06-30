@@ -23,11 +23,11 @@ export default function useInput(
     strParam: {
         state: boolean;
         setState: Dispatch<SetStateAction<boolean>>;
-    }
+    },
+    setIsEndSection: Dispatch<SetStateAction<boolean>>
 ) {
     const [botMsg, setBotMsg] = useState<Message[]>(botMessages(bot));
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
-    const [_, setIsEndSection] = useState<boolean>(false);
 
     const handleUserInput = (
         input: string,
