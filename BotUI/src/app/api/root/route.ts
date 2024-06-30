@@ -22,9 +22,7 @@ async function filterCSV(filePath: string, attributes: Attribute[]) {
         fs.createReadStream(filePath)
             .pipe(csvParser())
             .on("data", (row: any) => {
-                const isRequired = isRowRequired(attributes, operators, row);
-
-                if (isRequired) {
+                if (isRowRequired(attributes, operators, row)) {
                     rows.push(row);
                 }
             })

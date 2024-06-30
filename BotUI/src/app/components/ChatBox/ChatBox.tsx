@@ -70,8 +70,7 @@ export default function ChatBox({ bot }: ChatBoxProps) {
 
     useEffect(() => {
         if (endChat.state) {
-            const queryAttributes = handleEndChat();
-            setQueryParams(queryAttributes);
+            setQueryParams(handleEndChat());
             setIsQuerySubmit(true);
         }
     }, [endChat.state]);
