@@ -47,15 +47,25 @@ interface BotDetails {
 }
 
 interface BotMessages {
-    welcomeMessage: string;
+    customMessages: CustomMessages;
+    slots: MessagesSlot;
+}
+
+interface CustomMessages {
     attributeMessage: string;
-    descriptionMessage: string;
-    exampleMessage: string;
     operatorMessage: string;
     errorMessage: string;
     continueMessage: string;
+    resultMessage: string;
 }
 
+interface MessagesSlot {
+    welcomeSlot?: string[];
+    operatorSlot?: string[];
+    paramsSlot?: string[];
+    restartSlot?: string[];
+    resultSlot?: string[];
+}
 interface BotColumn {
     id: string;
     dataType: DataType;

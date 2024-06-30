@@ -44,7 +44,7 @@ export default function useInput(
         if ((isAnswerOptions && !isAnswerOptionsValid) || input === "") {
             const newMessage: Message = {
                 id: currentMsg.state.length,
-                text: bot?._messages?.errorMessage,
+                text: bot?._messages.customMessages?.errorMessage,
                 sender: "bot" as sender,
                 typeOfQuestion: typeOfQuestion as typeOfQuestion,
                 answerOptions: lastMessageSectionQuestion.answerOptions,
@@ -62,13 +62,6 @@ export default function useInput(
             currentMsg.setState([...currentMsg.state, newMessage]);
 
             switch (typeOfQuestion) {
-                case "add":
-                    const isEnd = Number(input) === 2;
-                    setIsEndSection(true);
-                    setIsEndChat(isEnd);
-                    !isEnd &&
-                        setBotMsg([...botMsg, ...botRestartMessages(bot)]);
-                    break;
                 case "parameter":
                     const dataType =
                         bot._data.columns[Number(input) - 1]?.dataType;
@@ -97,7 +90,13 @@ export default function useInput(
                         setBotMsg([...botMsg, ...funcParamsMsg]);
                     }
                     break;
-
+                case "add":
+                    const isEnd = Number(input) === 2;
+                    setIsEndSection(true);
+                    setIsEndChat(isEnd);
+                    !isEnd &&
+                        setBotMsg([...botMsg, ...botRestartMessages(bot)]);
+                    break;
                 default:
                     break;
             }
