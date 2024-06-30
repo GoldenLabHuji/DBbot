@@ -1,12 +1,23 @@
-import { OperatorData, Paths } from "./types";
+import { OperatorData, Paths, BotMessages } from "./types";
 
 export const OPERATOR_PATHS: Paths = {
     development: "../../BotUI/src/app/operators",
     production: "../../../BotUI/src/app/operators",
 };
+
 export const REACT_APP_PATH: Paths = {
     development: "./BotUI",
     production: "../BotUI",
+};
+
+export const EMPTY_MESSAGES: BotMessages = {
+    welcomeMessage: undefined,
+    attributeMessage: undefined,
+    descriptionMessage: undefined,
+    exampleMessage: undefined,
+    operatorMessage: undefined,
+    errorMessage: undefined,
+    continueMessage: undefined,
 };
 
 export const STRING_OPERATORS_DATA: OperatorData[] = [

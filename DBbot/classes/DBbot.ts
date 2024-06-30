@@ -16,17 +16,21 @@ import {
     NUMERIC_OPERATORS_DATA,
     OPERATOR_PATHS,
     OPERATORS_FILE,
+    EMPTY_MESSAGES,
 } from "../general/resources";
 
 export class DBbot {
     private dataMap = new Map<string, any>();
     public filePath: string = "";
     private _customOperators: CustomOperator[] = [];
+    private _messages: BotMessages = EMPTY_MESSAGES;
+    private currentOperatorIndex: number = 0;
     private _data: BotData = {
         headers: [],
         columns: [],
         customOperators: this._customOperators,
     };
+
     private operatorsData: OperatorsObject = {
         string: STRING_OPERATORS_DATA,
         numeric: NUMERIC_OPERATORS_DATA,
@@ -36,15 +40,6 @@ export class DBbot {
         name: "INSERT DATABASE NAME",
         description: "INSERT DESCRIPTION OF THE DATABASE",
     };
-    private _messages: BotMessages = {
-        welcomeMessage: undefined,
-        attributeMessage: undefined,
-        descriptionMessage: undefined,
-        exampleMessage: undefined,
-        operatorMessage: undefined,
-        errorMessage: undefined,
-    };
-    private currentOperatorIndex: number = 0;
 
     constructor() {
         this.initMessages();
