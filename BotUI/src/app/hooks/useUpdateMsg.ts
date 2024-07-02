@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { currentMsgType } from "@/app/general/types";
 import { Message, MessageSection } from "@/app/general/interfaces";
 import { useRecoilState } from "recoil";
@@ -7,10 +6,13 @@ import { messagesSectionAtom } from "@/app/store/atoms";
 export default function useUpdateMsg(
     currentMsg: currentMsgType,
     botMsg: Message[],
-    currentQuestionIndex: number
+    currentQuestionIndex: number,
+    endSection: {
+        state: boolean;
+        setState: (value: boolean) => void;
+    }
 ) {
     const [messages, setMessages] = useRecoilState(messagesSectionAtom);
-    const [isEndSection, setIsEndSection] = useState<boolean>(false);
 
     const updateMessagesSection = (isEndChat: boolean) => {
         const lastMessageIndex = messages.length - 1;
@@ -25,20 +27,18 @@ export default function useUpdateMsg(
                 id: prevMessages.length,
                 messageSection: [...currentMsg.state],
             };
-            return isEndSection
+            return endSection.state
                 ? [...updatedMessages, newMessageSection]
                 : updatedMessages;
         });
-        if (isEndSection) {
+        if (endSection.state) {
             currentMsg.setState(
                 !isEndChat ? [botMsg[currentQuestionIndex]] : []
             );
         }
 
-        setIsEndSection(false);
+        endSection.setState(false);
     };
-
-    const endSection = { state: isEndSection, setState: setIsEndSection };
 
     return { endSection, updateMessagesSection };
 }
