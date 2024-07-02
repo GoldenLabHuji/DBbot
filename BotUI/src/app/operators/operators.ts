@@ -1,3 +1,4 @@
+
 import {
     greaterOperator,
     lowerOperator,
@@ -15,3 +16,6 @@ export const OPERATORS = {
     SoundLike: soundLikeOperator,
     StartWith: startWithOperator,
 };
+
+
+

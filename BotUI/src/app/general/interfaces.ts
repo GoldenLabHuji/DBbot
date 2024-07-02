@@ -107,27 +107,14 @@ export enum DataType {
     String = "string",
 }
 
-export interface QueryReq {
-    value: strOrNum | number[];
-    operator: string;
-    functionParams: strOrNum[];
-    parameter: string;
-}
-
-export interface NumericAttribute {
-    value: number | number[];
-    params: strOrNum[];
-    operator: string;
-}
-
-export interface StringAttribute {
-    value: string;
+export interface Attribute {
+    name: string;
     params: strOrNum[];
     operator: string;
 }
 
 export interface QueryWords {
-    [key: string]: NumericAttribute | StringAttribute | null;
+    [key: string]: Attribute;
 }
 
 export interface WordData {

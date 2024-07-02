@@ -13,7 +13,7 @@ import {
     isResultsAtom,
     isQuerySubmitAtom,
 } from "@/app/store/atoms";
-import { ChatProps, QueryReq } from "@/app/general/interfaces";
+import { ChatProps } from "@/app/general/interfaces";
 import { resultMsg } from "@/app/general/resources";
 import CSVButton from "@/app/components/CSVButton";
 
@@ -24,7 +24,7 @@ export default function Chat({ bot }: ChatProps) {
     const [queryWords, setQueryWords] = useRecoilState(queryWordsAtom);
     const [isResult, setIsResult] = useRecoilState(isResultsAtom);
     const [isQuerySubmit, ___] = useRecoilState(isQuerySubmitAtom);
-    const [loading, setloading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const messagesEndRef = useRef(null);
 
@@ -39,20 +39,7 @@ export default function Chat({ bot }: ChatProps) {
     useEffect(() => {
         const getQueryWords = async () => {
             try {
-                setloading(true);
-                const queryReq: QueryReq[] = [];
-                Object.entries(queryParams).forEach((entry) => {
-                    const [parameter, attribute] = entry;
-                    if (attribute !== null) {
-                        const { value, operator, params } = attribute;
-                        queryReq.push({
-                            parameter,
-                            operator,
-                            value,
-                            functionParams: params,
-                        });
-                    }
-                });
+                setLoading(true);
 
                 const pathArray = bot?.filePath.split("/");
                 const lastPathItem = pathArray.pop();
@@ -61,7 +48,7 @@ export default function Chat({ bot }: ChatProps) {
                 const response = await fetch("/api/root", {
                     method: "POST",
                     body: JSON.stringify({
-                        queryReq,
+                        queryParams,
                         filePath: path,
                     }),
                 });
@@ -74,7 +61,7 @@ export default function Chat({ bot }: ChatProps) {
             } catch (err: any) {
                 console.log(err.message);
             } finally {
-                setloading(false);
+                setLoading(false);
             }
         };
         if (isQuerySubmit) {

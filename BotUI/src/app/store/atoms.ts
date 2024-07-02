@@ -4,6 +4,7 @@ import {
     Message,
     QueryWords,
     Bot,
+    Attribute,
 } from "@/app/general/interfaces";
 import { defaultMsgSection } from "@/app/general/resources";
 
@@ -12,9 +13,9 @@ export const messagesSectionAtom: RecoilState<MessageSection[]> = atom({
     default: defaultMsgSection,
 });
 
-export const queryParamsAtom: RecoilState<QueryWords> = atom({
+export const queryParamsAtom: RecoilState<Attribute[]> = atom({
     key: "queryParams",
-    default: {} as QueryWords,
+    default: [] as Attribute[],
 });
 
 export const queryWordsAtom: RecoilState<any> = atom({
