@@ -20,11 +20,11 @@ export default function useInput(
     currentQIndex: currentQIndexType,
     lastQuestionIndex: number,
     bot: Bot,
-    strParam: {
-        state: boolean;
-        setState: Dispatch<SetStateAction<boolean>>;
-    },
-    setIsEndSection: Dispatch<SetStateAction<boolean>>
+    setIsEndSection: Dispatch<SetStateAction<boolean>>,
+    crtParam: {
+        state: string;
+        setState: Dispatch<SetStateAction<string>>;
+    }
 ) {
     const [botMsg, setBotMsg] = useState<Message[]>(botMessages(bot));
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -63,25 +63,21 @@ export default function useInput(
 
             switch (typeOfQuestion) {
                 case "parameter":
-                    const dataType =
-                        bot._data.columns[Number(input) - 1]?.dataType;
-                    const isString =
-                        dataType === "string" ||
-                        Number(input) === bot._data.headers.length + 1;
-                    strParam.setState(isString);
+                    const currentParameter =
+                        bot?._data.headers[Number(input) - 1];
+                    crtParam.setState(currentParameter);
                     setBotMsg([
                         ...botMsg,
-                        ...botOperatorMessages(bot, isString),
+                        ...botOperatorMessages(bot, currentParameter),
                     ]);
                     break;
                 case "operator":
                     const operatorIndex = Number(input) - 1;
-
                     bot.currentOperatorIndex = operatorIndex;
 
                     const funcParamsMsg = botFunctionParamsMessages(
                         bot,
-                        strParam.state
+                        crtParam.state
                     );
 
                     if (funcParamsMsg[0] === emptyMessage) {
