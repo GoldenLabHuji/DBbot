@@ -1,4 +1,3 @@
-
 import {
     greaterOperator,
     lowerOperator,
@@ -9,13 +8,10 @@ import {
 } from "@/app/operators";
 
 export const OPERATORS = {
-    Greater: greaterOperator,
-    Lower: lowerOperator,
-    Equal: equalOperator,
-    Range: rangeOperator,
-    SoundLike: soundLikeOperator,
-    StartWith: startWithOperator,
+    greater: greaterOperator,
+    lower: lowerOperator,
+    equal: equalOperator,
+    range: rangeOperator,
+    soundLike: soundLikeOperator,
+    startWith: startWithOperator,
 };
-
-
-
