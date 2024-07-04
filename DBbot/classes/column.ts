@@ -13,7 +13,7 @@ export class Column {
     private rows: any[] = [];
     private operatorsArray: Operator[] = [];
     constructor(
-        private readonly id: string,
+        public readonly id: string,
         private dataType: DataType,
         private displayName: string = id,
         private customOperators: Operator[] = []
@@ -53,5 +53,9 @@ export class Column {
 
     public addRows(rows: any[]): void {
         this.rows.push(...rows);
+    }
+
+    public addOperator(operator: Operator): void {
+        this.operatorsArray.push(operator);
     }
 }

@@ -1,6 +1,7 @@
-import { NumOrStr } from "../general/types";
+import { NumOrStr, Params } from "../general/types";
 
 export abstract class Operator {
+    public params: Params[] = [];
     constructor(private readonly displayName: string) {}
 
     abstract calculate(inputValue: NumOrStr, ...args: any): boolean;
@@ -11,18 +12,32 @@ export abstract class Operator {
 }
 
 export class CustomOperator extends Operator {
-    constructor(private name: string, private customFunction: Function) {
+    constructor(name: string, private customFunction: Function) {
         super(name);
     }
 
     calculate() {
         return this.customFunction();
     }
+
+    addParams(params: Params[]) {
+        this.params.push(...params);
+    }
 }
 
 export class EqualOperator extends Operator {
     constructor() {
-        super("EQUAL");
+        super("equal");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "numeric",
+            },
+            {
+                name: "compareValue",
+                dataType: "numeric",
+            },
+        ];
     }
 
     calculate(inputValue: number, compareValue: number) {
@@ -32,7 +47,17 @@ export class EqualOperator extends Operator {
 
 export class LessOperator extends Operator {
     constructor() {
-        super("LESS");
+        super("less");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "numeric",
+            },
+            {
+                name: "compareValue",
+                dataType: "numeric",
+            },
+        ];
     }
 
     calculate(inputValue: number, compareValue: number) {
@@ -42,7 +67,17 @@ export class LessOperator extends Operator {
 
 export class GreaterOperator extends Operator {
     constructor() {
-        super("GREATER");
+        super("greater");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "numeric",
+            },
+            {
+                name: "compareValue",
+                dataType: "numeric",
+            },
+        ];
     }
 
     calculate(inputValue: number, compareValue: number) {
@@ -52,7 +87,21 @@ export class GreaterOperator extends Operator {
 
 export class RangeOperator extends Operator {
     constructor() {
-        super("RANGE");
+        super("range");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "numeric",
+            },
+            {
+                name: "minValue",
+                dataType: "numeric",
+            },
+            {
+                name: "maxValue",
+                dataType: "numeric",
+            },
+        ];
     }
 
     calculate(inputValue: number, minValue: number, maxValue: number) {
@@ -62,7 +111,21 @@ export class RangeOperator extends Operator {
 
 export class SoundLikeOperator extends Operator {
     constructor() {
-        super("CONTAINS");
+        super("contains");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+            {
+                name: "maxDifferences",
+                dataType: "numeric",
+            },
+        ];
     }
 
     calculate(
@@ -87,7 +150,17 @@ export class SoundLikeOperator extends Operator {
 
 export class StartsWithOperator extends Operator {
     constructor() {
-        super("STARTS WITH");
+        super("startWith");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
     }
 
     calculate(inputValue: string, compareValue: string) {
