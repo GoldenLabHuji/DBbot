@@ -34,7 +34,7 @@ export default function useEndChat(bot: Bot) {
             const parameter =
                 bot?._data.headers[Number(parametersMessages[0]?.text) - 1];
 
-            const parameterColumn = bot._data.columns.find(
+            const parameterColumn = bot?._data.columns.find(
                 (col) => col.displayName === parameter
             );
 
