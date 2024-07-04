@@ -76,7 +76,7 @@ export default function Chat({ bot }: ChatProps) {
 
                 {
                     id: 0,
-                    messageSection: [resultMsg],
+                    messageSection: resultMsg(bot),
                 },
             ]);
             setIsResult(true);

@@ -44,7 +44,7 @@ export default function useInput(
         if ((isAnswerOptions && !isAnswerOptionsValid) || input === "") {
             const newMessage: Message = {
                 id: currentMsg.state.length,
-                text: "I don't understand, please enter a valid option",
+                text: bot?._messages.customMessages?.errorMessage,
                 sender: "bot" as sender,
                 typeOfQuestion: typeOfQuestion as typeOfQuestion,
                 answerOptions: lastMessageSectionQuestion.answerOptions,
@@ -62,18 +62,12 @@ export default function useInput(
             currentMsg.setState([...currentMsg.state, newMessage]);
 
             switch (typeOfQuestion) {
-                case "add":
-                    const isEnd = Number(input) === 2;
-                    setIsEndSection(true);
-                    setIsEndChat(isEnd);
-                    !isEnd &&
-                        setBotMsg([...botMsg, ...botRestartMessages(bot)]);
-                    break;
                 case "parameter":
-                    const dataType = bot.columns[Number(input) - 1]?.dataType;
+                    const dataType =
+                        bot._data.columns[Number(input) - 1]?.dataType;
                     const isString =
                         dataType === "string" ||
-                        Number(input) === bot.headers.length + 1;
+                        Number(input) === bot._data.headers.length + 1;
                     strParam.setState(isString);
                     setBotMsg([
                         ...botMsg,
@@ -82,9 +76,11 @@ export default function useInput(
                     break;
                 case "operator":
                     const operatorIndex = Number(input) - 1;
+
+                    bot.currentOperatorIndex = operatorIndex;
+
                     const funcParamsMsg = botFunctionParamsMessages(
                         bot,
-                        operatorIndex,
                         strParam.state
                     );
 
@@ -94,7 +90,13 @@ export default function useInput(
                         setBotMsg([...botMsg, ...funcParamsMsg]);
                     }
                     break;
-
+                case "add":
+                    const isEnd = Number(input) === 2;
+                    setIsEndSection(true);
+                    setIsEndChat(isEnd);
+                    !isEnd &&
+                        setBotMsg([...botMsg, ...botRestartMessages(bot)]);
+                    break;
                 default:
                     break;
             }
