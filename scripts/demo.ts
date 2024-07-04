@@ -1,4 +1,5 @@
 import { dbBot, app } from "../index";
+import { AddCustomOperatorParams } from "../DBbot/general/types";
 
 /////////////////
 // set details //
@@ -9,7 +10,7 @@ const details = {
     description: "Demo database description",
 };
 
-dbBot.details = details;
+// dbBot.details = details;
 
 /////////////////////////
 // set custom messages //
@@ -22,7 +23,7 @@ const messages = {
     resultMessage: "Demo result message",
 };
 
-dbBot.customMessages = messages;
+// dbBot.customMessages = messages;
 
 ///////////////
 // set slots //
@@ -55,7 +56,7 @@ const slots = {
     operatorSlot: operatorMessages,
 };
 
-dbBot.slots = slots;
+// dbBot.slots = slots;
 
 ///////////////////
 // load csv file //
@@ -63,5 +64,26 @@ dbBot.slots = slots;
 ///////////////////
 
 dbBot.loadFile("./pokemon.csv");
+
+/////////////////////
+// custom operator //
+/////////////////////
+
+const startWithBOperator = {
+    name: "startsWithB",
+    customFunction: function (cell: string) {
+        return cell.startsWith("B");
+    },
+    dataType: "string",
+    column: "name",
+    params: [
+        {
+            name: "cell",
+            dataType: "string",
+        },
+    ],
+} as AddCustomOperatorParams;
+
+dbBot.addCustomOperator(startWithBOperator);
 
 app.runBot(dbBot);
