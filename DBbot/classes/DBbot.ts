@@ -24,8 +24,6 @@ import {
 export class DBbot {
     private dataMap = new Map<string, any>();
     public filePath: string = "";
-    // private _customMessages: CustomMessages = {};
-    // private _messagesSlot: MessagesSlot = {};
     private _customOperators: CustomOperator[] = [];
     private _messages: BotMessages = EMPTY_MESSAGES;
     private currentOperatorIndex: number = 0;
