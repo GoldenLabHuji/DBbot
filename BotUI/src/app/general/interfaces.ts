@@ -28,7 +28,7 @@ export interface Bot {
     _details: BotDetails;
     _messages: BotMessages;
     filePath: string;
-    operatorsData: BotOperators;
+    operatorsData: BotOperatorData[];
     currentOperatorIndex: number;
 }
 
@@ -67,27 +67,19 @@ interface BotColumn {
     dataType: DataType;
     displayName: string;
     rows: strOrNum[];
-    operatorsArray: { displayName: string }[];
+    operatorsArray: BotOperatorData[];
 }
-
-interface BotOperators {
-    numeric: BotOperatorData[];
-    string: BotOperatorData[];
-}
-
-interface BotOperatorData extends NameDataType {
+interface BotOperatorData {
     params: BotOperatorParams[];
     message?: string;
+    displayName: string;
 }
 
-interface BotOperatorParams extends NameDataType {
+interface BotOperatorParams {
     isArray: boolean;
     message?: string;
-}
-
-interface NameDataType {
-    name: string;
     dataType: DataType;
+    name: string;
 }
 
 export enum NumericOperator {
