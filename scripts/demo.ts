@@ -10,7 +10,7 @@ const details = {
     description: "Demo database description",
 };
 
-// dbBot.details = details;
+dbBot.details = details;
 
 /////////////////////////
 // set custom messages //
@@ -23,7 +23,7 @@ const messages = {
     resultMessage: "Demo result message",
 };
 
-// dbBot.customMessages = messages;
+dbBot.customMessages = messages;
 
 ///////////////
 // set slots //
@@ -56,11 +56,10 @@ const slots = {
     operatorSlot: operatorMessages,
 };
 
-// dbBot.slots = slots;
+dbBot.slots = slots;
 
 ///////////////////
 // load csv file //
-//   & run bot   //
 ///////////////////
 
 dbBot.loadFile("./pokemon.csv");
@@ -85,5 +84,9 @@ const startWithBOperator = {
 } as AddCustomOperatorParams;
 
 dbBot.addCustomOperator(startWithBOperator);
+
+////////////////
+//  run bot   //
+////////////////
 
 app.runBot(dbBot);
