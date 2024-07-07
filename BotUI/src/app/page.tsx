@@ -8,7 +8,6 @@ export default function Home() {
             if (err) {
                 console.error("Failed to read bot data file:", err);
             } else {
-                console.log("data", JSON.parse(data));
                 process.env.DB_BOT = data;
             }
         });

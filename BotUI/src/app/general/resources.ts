@@ -46,7 +46,6 @@ export const botOperatorMessages = (
         (col) => col.id === currentParam
     )[0]?.operatorsArray;
 
-    console.log("operators", operators);
     const optionsArray = operators.map(
         (operator, index) => `${index + 1}: ${operator.displayName}`
     );
@@ -107,7 +106,6 @@ export const botFunctionParamsMessages = (
 
     const chosenOperator = operators[bot.currentOperatorIndex];
     const params = chosenOperator.params;
-    console.log("params", params);
 
     const messages: Message[] = params.map((prm, index) => {
         return {
