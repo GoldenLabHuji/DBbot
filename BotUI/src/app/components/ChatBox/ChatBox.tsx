@@ -22,7 +22,7 @@ export default function ChatBox({ bot }: ChatBoxProps) {
     );
     const [currentParameter, setCurrentParameter] = useState<string>("");
 
-    const crtParam = {
+    const currentParam = {
         state: currentParameter,
         setState: setCurrentParameter,
     };
@@ -36,7 +36,7 @@ export default function ChatBox({ bot }: ChatBoxProps) {
         lastQuestionIndex,
         bot,
         setIsEndSection,
-        crtParam
+        currentParam
     );
 
     const { updateMessagesSection } = useUpdateMsg(

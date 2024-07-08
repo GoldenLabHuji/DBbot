@@ -21,7 +21,7 @@ export default function useInput(
     lastQuestionIndex: number,
     bot: Bot,
     setIsEndSection: Dispatch<SetStateAction<boolean>>,
-    crtParam: {
+    currentParam: {
         state: string;
         setState: Dispatch<SetStateAction<string>>;
     }
@@ -65,7 +65,7 @@ export default function useInput(
                 case "parameter":
                     const currentParameter =
                         bot?._data.headers[Number(input) - 1];
-                    crtParam.setState(currentParameter);
+                    currentParam.setState(currentParameter);
                     setBotMsg([
                         ...botMsg,
                         ...botOperatorMessages(bot, currentParameter),
@@ -77,7 +77,7 @@ export default function useInput(
 
                     const funcParamsMsg = botFunctionParamsMessages(
                         bot,
-                        crtParam.state
+                        currentParam.state
                     );
 
                     if (funcParamsMsg[0] === emptyMessage) {
