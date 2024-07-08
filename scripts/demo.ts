@@ -1,4 +1,5 @@
 import { dbBot, app } from "../index";
+import { AddCustomOperatorParams } from "../DBbot/general/types";
 
 /////////////////
 // set details //
@@ -59,9 +60,33 @@ dbBot.slots = slots;
 
 ///////////////////
 // load csv file //
-//   & run bot   //
 ///////////////////
 
 dbBot.loadFile("./pokemon.csv");
+
+/////////////////////
+// custom operator //
+/////////////////////
+
+const startWithBOperator = {
+    name: "startsWithB",
+    customFunction: function (cell: string) {
+        return cell.startsWith("B");
+    },
+    dataType: "string",
+    column: "name",
+    params: [
+        {
+            name: "cell",
+            dataType: "string",
+        },
+    ],
+} as AddCustomOperatorParams;
+
+dbBot.addCustomOperator(startWithBOperator);
+
+////////////////
+//  run bot   //
+////////////////
 
 app.runBot(dbBot);

@@ -1,5 +1,8 @@
 import { DBbot } from "./DBbot";
 import { exec } from "child_process";
+import * as fs from "fs-extra";
+import * as path from "path";
+import * as os from "os";
 
 export class app {
     constructor(public botUIPath: string) {}
@@ -29,14 +32,17 @@ export class app {
     public runBot(bot: DBbot): void {
         bot.createOperatorsFile();
 
-        process.env.DB_BOT = JSON.stringify(bot);
+        const tmpFilePath = path.join(os.tmpdir(), 'db_bot.json');
+        fs.writeJsonSync(tmpFilePath, bot);
+
+        process.env.DB_BOT_FILE = tmpFilePath;
 
         this.startReactApp(this.botUIPath)
             .then(() => {
                 console.log("React app started successfully");
             })
-            .catch(() => {
-                console.error("Failed to start React app");
+            .catch((err) => {
+                console.error(err);
             });
     }
 }

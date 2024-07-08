@@ -16,16 +16,17 @@ import useEndChat from "@/app/hooks/useEndChat";
 export default function ChatBox({ bot }: ChatBoxProps) {
     const [_, setIsQuerySubmit] = useRecoilState(isQuerySubmitAtom);
     const [__, setQueryParams] = useRecoilState(queryParamsAtom);
-    const [isStringParameter, setIsStringParameter] = useState<boolean>(false);
     const [isEndSection, setIsEndSection] = useState<boolean>(false);
     const [lastQuestionIndex, setLastQuestionIndex] = useState<number>(
         botMessages.length - 1
     );
+    const [currentParameter, setCurrentParameter] = useState<string>("");
 
-    const strParam = {
-        state: isStringParameter,
-        setState: setIsStringParameter,
+    const currentParam = {
+        state: currentParameter,
+        setState: setCurrentParameter,
     };
+
     const endSection = { state: isEndSection, setState: setIsEndSection };
 
     const { currentMsg, currentQIndex, endChat } = useChat();
@@ -34,8 +35,8 @@ export default function ChatBox({ bot }: ChatBoxProps) {
         currentQIndex,
         lastQuestionIndex,
         bot,
-        strParam,
-        setIsEndSection
+        setIsEndSection,
+        currentParam
     );
 
     const { updateMessagesSection } = useUpdateMsg(

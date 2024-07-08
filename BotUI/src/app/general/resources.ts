@@ -1,12 +1,4 @@
-import {
-    Message,
-    NumericAttribute,
-    StringAttribute,
-    NumericOperator,
-    StringOperator,
-    MessageSection,
-    Bot,
-} from "@/app/general/interfaces";
+import { Message, MessageSection, Bot } from "@/app/general/interfaces";
 import { sender, typeOfQuestion } from "@/app/general/types";
 import { convertTextToMessage } from "@/app/general/utils";
 
@@ -46,12 +38,16 @@ Which property would you like to start with?`,
     ];
 };
 
-export const botOperatorMessages = (bot: Bot, isStr: boolean): Message[] => {
-    const operators = isStr
-        ? bot.operatorsData.string
-        : bot.operatorsData.numeric;
+export const botOperatorMessages = (
+    bot: Bot,
+    currentParam: string
+): Message[] => {
+    const operators = bot?._data.columns.filter(
+        (col) => col.id === currentParam
+    )[0]?.operatorsArray;
+
     const optionsArray = operators.map(
-        (operator, index) => `${index + 1}: ${operator.name}`
+        (operator, index) => `${index + 1}: ${operator.displayName}`
     );
     const optionsString = optionsArray.join("\n");
 
@@ -102,11 +98,11 @@ ${optionsString}
 
 export const botFunctionParamsMessages = (
     bot: Bot,
-    isStr: boolean
+    currentParam: string
 ): Message[] => {
-    const operators = isStr
-        ? bot.operatorsData.string
-        : bot.operatorsData.numeric;
+    const operators = bot?._data.columns.filter(
+        (col) => col.id === currentParam
+    )[0]?.operatorsArray;
 
     const chosenOperator = operators[bot.currentOperatorIndex];
     const params = chosenOperator.params;
@@ -176,18 +172,6 @@ ${bot?._messages.customMessages.continueMessage}`,
     ];
 };
 
-export const emptyNumericAttribute: NumericAttribute = {
-    value: 0,
-    params: [],
-    operator: NumericOperator.Greater,
-};
-
-export const emptyStringAttribute: StringAttribute = {
-    value: "",
-    params: [],
-    operator: StringOperator.StartWith,
-};
-
 export const resultMsg = (bot: Bot): Message[] => {
     const resultSlot = bot?._messages?.slots.resultSlot ?? [];
     const resultSlotArray = resultSlot.map((msg, index) =>
@@ -200,11 +184,12 @@ export const resultMsg = (bot: Bot): Message[] => {
     return [
         ...resultSlotArray,
         {
-        id: 0,
-        text: bot?._messages?.customMessages.resultMessage,
-        sender: "bot" as sender,
-        typeOfQuestion: "result" as typeOfQuestion,
-    }];
+            id: 0,
+            text: bot?._messages?.customMessages.resultMessage,
+            sender: "bot" as sender,
+            typeOfQuestion: "result" as typeOfQuestion,
+        },
+    ];
 };
 
 export const defaultMsgSection = [

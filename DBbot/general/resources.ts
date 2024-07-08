@@ -46,7 +46,7 @@ export const EMPTY_DETAILS = {
 const STRING_OPERATORS_DATA: OperatorData[] = [
     {
         name: "SoundLike",
-        dataType: "string",
+        column: "all",
         params: [
             {
                 name: "inputValue",
@@ -70,7 +70,7 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
     },
     {
         name: "StartWith",
-        dataType: "string",
+        column: "all",
         params: [
             {
                 name: "inputValue",
@@ -90,7 +90,7 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
 const NUMERIC_OPERATORS_DATA: OperatorData[] = [
     {
         name: "Equal",
-        dataType: "numeric",
+        column: "all",
         params: [
             {
                 name: "inputValue",
@@ -107,7 +107,7 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
     },
     {
         name: "Greater",
-        dataType: "numeric",
+        column: "all",
         params: [
             {
                 name: "inputValue",
@@ -125,7 +125,7 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
     },
     {
         name: "Less",
-        dataType: "numeric",
+        column: "all",
         params: [
             {
                 name: "inputValue",
@@ -142,7 +142,7 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
     },
     {
         name: "Range",
-        dataType: "numeric",
+        column: "all",
         params: [
             {
                 name: "inputValue",
@@ -165,10 +165,10 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
     },
 ];
 
-export const EMPTY_OPERATORS_DATA: OperatorsObject = {
-    string: STRING_OPERATORS_DATA,
-    numeric: NUMERIC_OPERATORS_DATA,
-};
+export const EMPTY_OPERATORS_DATA: OperatorData[] = [
+    ...STRING_OPERATORS_DATA,
+    ...NUMERIC_OPERATORS_DATA,
+];
 
 export const OPERATORS_FILE = `
 import {

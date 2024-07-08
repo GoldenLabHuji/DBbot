@@ -5,7 +5,7 @@ import { Column } from "./column";
 import { CustomOperator } from "./operator";
 import {
     DataType,
-    OperatorsObject,
+    OperatorData,
     AddCustomOperatorParams,
     BotDetails,
     BotData,
@@ -27,7 +27,7 @@ export class DBbot {
     private _customOperators: CustomOperator[] = [];
     private _messages: BotMessages = EMPTY_MESSAGES;
     private currentOperatorIndex: number = 0;
-    private operatorsData: OperatorsObject = EMPTY_OPERATORS_DATA;
+    private operatorsData: OperatorData[] = EMPTY_OPERATORS_DATA;
     private _details: BotDetails = EMPTY_DETAILS;
     private _data: BotData = {
         headers: [],
@@ -98,6 +98,16 @@ You can download the results as a csv file`,
 
     public set slots(messages: MessagesSlot) {
         this.setMessages("slots", messages);
+    }
+
+    private getColumnByName(name: string) {
+        const column = this._data.columns.find(
+            (column) => column.id.toLowerCase() === name.toLowerCase()
+        );
+        if (column === undefined) {
+            throw new Error(`Column ${name} not found`);
+        }
+        return column;
     }
 
     private addColumn(column: Column): void {
@@ -194,14 +204,20 @@ export const ${params.name} = ${params.customFunction.toString()};`
             params.name,
             params.customFunction
         );
+
+        newOperator.addParams(params.params);
+
         this._data.customOperators.push(newOperator);
 
-        this.operatorsData[params.dataType].push({
+        this.operatorsData.push({
             name: params.name,
-            dataType: params.dataType,
             params: params.params,
             message: params.message,
+            column: params.column,
         });
+
+        const column = this.getColumnByName(params.column);
+        column.addOperator(newOperator);
     }
 
     private addColumnsToDataMap(records: string[]): void {

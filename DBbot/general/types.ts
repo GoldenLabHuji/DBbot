@@ -33,14 +33,14 @@ export type AddCustomOperatorParams = OperatorData & {
     importFunctions?: string[];
 };
 
-type NameDataType = {
+type NameAttribute = {
     name: string;
-    dataType: DataType;
 };
 
-type Params = NameDataType & {
+export type Params = NameAttribute & {
     isArray?: boolean;
     message?: string;
+    dataType: DataType;
 };
 
 export type OperatorsObject = {
@@ -48,8 +48,9 @@ export type OperatorsObject = {
     numeric: OperatorData[];
 };
 
-export type OperatorData = NameDataType & {
+export type OperatorData = NameAttribute & {
     params: Params[];
+    column: string;
     message?: string;
 };
 
