@@ -13,9 +13,9 @@ export class Column {
     private rows: any[] = [];
     private operatorsArray: Operator[] = [];
     constructor(
-        public readonly id: string,
+        private readonly id: string,
         private dataType: DataType,
-        private displayName: string = id,
+        public displayName: string = id,
         private customOperators: Operator[] = []
     ) {
         const numericOperators = [
