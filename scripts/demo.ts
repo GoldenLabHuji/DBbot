@@ -64,6 +64,17 @@ dbBot.slots = slots;
 
 dbBot.loadFile("./pokemon.csv");
 
+
+////////////////////////
+// custom column name //
+////////////////////////
+
+// try to change the name to an already existing column name
+// dbBot.changeColumnDisplayName("name", "abilities"); // throw error
+
+// change the name successfully
+dbBot.changeColumnDisplayName("name", "newName");
+
 /////////////////////
 // custom operator //
 /////////////////////
@@ -83,7 +94,7 @@ const startWithBOperator = {
     ],
 } as AddCustomOperatorParams;
 
-dbBot.addCustomOperator(startWithBOperator);
+// dbBot.addCustomOperator(startWithBOperator);
 
 ////////////////
 //  run bot   //
