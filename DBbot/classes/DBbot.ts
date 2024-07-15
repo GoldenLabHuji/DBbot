@@ -100,14 +100,24 @@ You can download the results as a csv file`,
         this.setMessages("slots", messages);
     }
 
-    public getColumnByName(name: string): Column {
+    private getColumnByStringProperty(property: string, value: string): Column {
         const column = this._data.columns.find(
-            (column) => column.displayName.toLowerCase() === name.toLowerCase()
+            (column) =>
+                (column[property as keyof Column] as string).toLowerCase() ===
+                value.toLowerCase()
         );
         if (column === undefined) {
-            throw new Error(`Column ${name} not found`);
+            throw new Error(`Column with ${property} of ${value} not found`);
         }
         return column;
+    }
+
+    public getColumnByName(name: string): Column {
+        return this.getColumnByStringProperty("displayName", name);
+    }
+
+    public getColumnById(id: string): Column {
+        return this.getColumnByStringProperty("id", id);
     }
 
     public changeColumnDisplayName(name: string, newName: string): void {
