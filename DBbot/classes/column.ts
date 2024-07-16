@@ -79,14 +79,14 @@ export class Column {
         if (this.dataType === "string") {
             throw new Error("Cannot calculate mode for string data type");
         }
-        const counts = this.rows.reduce((acc, curr) => {
-            if (isNaN(curr)) return acc;
-            if (!acc[curr]) {
-                acc[curr] = 1;
+        const counts = this.rows.reduce((accuracy, current) => {
+            if (isNaN(current)) return accuracy;
+            if (!accuracy[current]) {
+                accuracy[current] = 1;
             } else {
-                acc[curr]++;
+                accuracy[current]++;
             }
-            return acc;
+            return accuracy;
         }, {});
         const max = Math.max(...(Object.values(counts) as number[]));
         const result =
