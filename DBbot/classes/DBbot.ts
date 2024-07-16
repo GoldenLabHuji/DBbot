@@ -87,7 +87,7 @@ You can download the results as a csv file`,
     private setMessages<T extends keyof BotMessages>(
         key: T,
         messages: BotMessages[T]
-    ) {
+    ): void {
         Object.keys(messages).forEach((messageKey) => {
             const messageKeyName = messageKey as keyof BotMessages[T];
             this._messages[key][messageKeyName] =
@@ -103,14 +103,39 @@ You can download the results as a csv file`,
         this.setMessages("slots", messages);
     }
 
-    public getColumnByName(name: string) {
+    private getColumnByStringProperty(property: string, value: string) {
         const column = this._data.columns.find(
-            (column) => column.id.toLowerCase() === name.toLowerCase()
+            (column) =>
+                (column[property as keyof Column] as string).toLowerCase() ===
+                value.toLowerCase()
         );
         if (column === undefined) {
-            throw new Error(`Column ${name} not found`);
+            throw new Error(`Column with ${property} of ${value} not found`);
         }
         return column;
+    }
+
+    public getColumnByName(name: string): Column {
+        return this.getColumnByStringProperty("displayName", name);
+    }
+
+    public getColumnById(id: string): Column {
+        return this.getColumnByStringProperty("id", id);
+    }
+
+    public changeColumnDisplayName(name: string, newName: string): void {
+        const column = this.getColumnByName(name);
+
+        try {
+            this.getColumnByName(newName);
+        } catch {
+            column.displayName = newName;
+            const index = this._data.headers.indexOf(name);
+            this._data.headers[index] = newName;
+            return;
+        }
+
+        throw new Error(`Column ${newName} already exists`);
     }
 
     private addColumn(column: Column): void {

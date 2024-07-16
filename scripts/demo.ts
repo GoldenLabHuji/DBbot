@@ -80,6 +80,17 @@ dbBot.fillNullValuesAll({
     nullValue: nullValues,
 });
 
+////////////////////////
+// custom column name //
+////////////////////////
+
+// try to change the name to an already existing column name
+// dbBot.changeColumnDisplayName("name", "abilities"); // throw error
+
+// change the name successfully
+
+dbBot.changeColumnDisplayName("name", "newName");
+
 /////////////////////
 // custom operator //
 /////////////////////
