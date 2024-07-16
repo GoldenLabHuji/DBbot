@@ -13,9 +13,9 @@ export class Column {
     private rows: any[] = [];
     private operatorsArray: Operator[] = [];
     constructor(
-        public readonly id: string,
+        private readonly _id: string,
         private dataType: DataType,
-        private displayName: string = id,
+        public displayName: string = _id,
         private customOperators: Operator[] = []
     ) {
         const numericOperators = [
@@ -39,6 +39,10 @@ export class Column {
         } else {
             throw new Error("Invalid data type");
         }
+    }
+
+    public get id(): string {
+        return this._id;
     }
 
     public getColumnData(): ColumnData {
