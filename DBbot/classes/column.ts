@@ -7,6 +7,13 @@ import {
     SoundLikeOperator,
     StartsWithOperator,
 } from "./operator";
+import {
+    DATATYPE_ERROR,
+    STRING_CALCULATION_ERROR,
+    MODE_ERROR,
+    CUSTOM_ERROR,
+    METHOD_ERROR,
+} from "../general/resources";
 import { DataType, ColumnData, nullMethod, NumOrStr } from "../general/types";
 
 export class Column {
@@ -37,7 +44,7 @@ export class Column {
                 ...[...stringOperators, ...this.customOperators]
             );
         } else {
-            throw new Error("Invalid data type");
+            throw new Error(DATATYPE_ERROR);
         }
     }
 
@@ -65,7 +72,7 @@ export class Column {
 
     public mean(): number {
         if (this.dataType === "string") {
-            throw new Error("Cannot calculate mean for string data type");
+            throw new Error(STRING_CALCULATION_ERROR);
         }
         const sum = this.rows.reduce((acc, curr) => {
             if (isNaN(curr)) return acc + 0;
@@ -77,7 +84,7 @@ export class Column {
 
     public mode(): number {
         if (this.dataType === "string") {
-            throw new Error("Cannot calculate mode for string data type");
+            throw new Error(STRING_CALCULATION_ERROR);
         }
         const counts = this.rows.reduce((accuracy, current) => {
             if (isNaN(current)) return accuracy;
@@ -93,14 +100,14 @@ export class Column {
             Number(Object.keys(counts).find((key) => counts[key] === max)) ??
             -1;
         if (result === -1) {
-            throw new Error("No mode found");
+            throw new Error(MODE_ERROR);
         }
         return result;
     }
 
     public median(): number {
         if (this.dataType === "string") {
-            throw new Error("Cannot calculate median for string data type");
+            throw new Error(STRING_CALCULATION_ERROR);
         }
         const notNaNRows = this.rows.filter((row) => !isNaN(row));
         const sortedRows = notNaNRows.sort((a, b) => {
@@ -128,7 +135,7 @@ export class Column {
     ): void {
         if (method === "custom") {
             if (customValue === undefined) {
-                throw new Error("Custom value is required");
+                throw new Error(CUSTOM_ERROR);
             }
             this.fillRow(customValue, nullValue);
         } else if (method === "remove") {
@@ -140,9 +147,7 @@ export class Column {
         } else if (method === "mode") {
             this.fillRow(this.mode(), nullValue);
         } else {
-            throw new Error(
-                "Invalid method, Please provide a valid method of the following 'mean', 'median', 'mode', 'remove' or 'custom'"
-            );
+            throw new Error(METHOD_ERROR);
         }
     }
 }
