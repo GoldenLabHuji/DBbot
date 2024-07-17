@@ -16,6 +16,8 @@ import {
 import { ChatProps } from "@/app/general/interfaces";
 import { resultMsg } from "@/app/general/resources";
 import CSVButton from "@/app/components/CSVButton";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 
 export default function Chat({ bot }: ChatProps) {
     const [messagesSection, setMessagesSection] =
@@ -84,6 +86,8 @@ export default function Chat({ bot }: ChatProps) {
     }, [isQuerySubmit]);
 
     return (
+        <Box sx={styles.headFootContainer}>
+        <Header text={bot._details.name as string} />
         <Box sx={styles.container}>
             <Box sx={styles.secondContainer}>
                 {(messagesSection &&
@@ -109,6 +113,8 @@ export default function Chat({ bot }: ChatProps) {
             </Box>
 
             <ChatBox bot={bot} />
+        </Box>
+        <Footer />
         </Box>
     );
 }

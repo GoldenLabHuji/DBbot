@@ -112,3 +112,7 @@ export interface QueryWords {
 export interface WordData {
     [key: string]: strOrNum | null;
 }
+
+export interface HeaderProps {
+    text: string;
+}
