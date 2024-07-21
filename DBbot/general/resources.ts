@@ -4,7 +4,6 @@ import {
     CustomMessages,
     MessagesSlot,
     BotMessages,
-    OperatorsObject,
 } from "./types";
 
 export const OPERATOR_PATHS: Paths = {
