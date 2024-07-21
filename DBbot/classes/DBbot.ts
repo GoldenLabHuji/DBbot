@@ -67,7 +67,7 @@ You can download the results as a csv file`,
     }
 
     public get details(): BotDetails {
-        return this.details;
+        return this._details;
     }
 
     public set details(details: BotDetails) {
@@ -84,6 +84,15 @@ You can download the results as a csv file`,
         return this._messages;
     }
 
+
+    public set customMessages(messages: CustomMessages) {
+        this.setMessages("customMessages", messages);
+    }
+
+    public set slots(messages: MessagesSlot) {
+        this.setMessages("slots", messages);
+    }
+
     private setMessages<T extends keyof BotMessages>(
         key: T,
         messages: BotMessages[T]
@@ -95,13 +104,6 @@ You can download the results as a csv file`,
         });
     }
 
-    public set customMessages(messages: CustomMessages) {
-        this.setMessages("customMessages", messages);
-    }
-
-    public set slots(messages: MessagesSlot) {
-        this.setMessages("slots", messages);
-    }
 
     private getColumnByStringProperty(property: string, value: string) {
         const column = this._data.columns.find(
