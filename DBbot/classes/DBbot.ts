@@ -11,7 +11,10 @@ import {
     BotData,
     BotMessages,
     CustomMessages,
+    nullMethod,
     MessagesSlot,
+    NumOrStr,
+    fillNullValuesParams,
 } from "../general/types";
 import {
     OPERATOR_PATHS,
@@ -64,7 +67,7 @@ You can download the results as a csv file`,
     }
 
     public get details(): BotDetails {
-        return this.details;
+        return this._details;
     }
 
     public set details(details: BotDetails) {
@@ -81,6 +84,15 @@ You can download the results as a csv file`,
         return this._messages;
     }
 
+
+    public set customMessages(messages: CustomMessages) {
+        this.setMessages("customMessages", messages);
+    }
+
+    public set slots(messages: MessagesSlot) {
+        this.setMessages("slots", messages);
+    }
+
     private setMessages<T extends keyof BotMessages>(
         key: T,
         messages: BotMessages[T]
@@ -92,15 +104,8 @@ You can download the results as a csv file`,
         });
     }
 
-    public set customMessages(messages: CustomMessages) {
-        this.setMessages("customMessages", messages);
-    }
 
-    public set slots(messages: MessagesSlot) {
-        this.setMessages("slots", messages);
-    }
-
-    private getColumnByStringProperty(property: string, value: string): Column {
+    private getColumnByStringProperty(property: string, value: string) {
         const column = this._data.columns.find(
             (column) =>
                 (column[property as keyof Column] as string).toLowerCase() ===
@@ -256,13 +261,26 @@ export const ${params.name} = ${params.customFunction.toString()};`
         });
     }
 
+    public fillNullValuesAll({
+        numericValue,
+        stringValue,
+        nullValue = [null],
+    }: fillNullValuesParams): void {
+        this._data.columns.forEach((column) => {
+            const value =
+                column.dataType === "numeric" ? numericValue : stringValue;
+            if (value === undefined) return;
+            column.fillNullValues("custom", nullValue, value);
+        });
+    }
+
     private addColumnsAuto(): void {
         this._data.headers.forEach((column) => {
             const columnData = this.dataMap.get(column);
             if (columnData && columnData.length > 0) {
-                const isNumeric = columnData.every((item: string) => {
-                    return !isNaN(Number(item));
-                });
+                const isNumeric = columnData.some(
+                    (item: string) => !isNaN(Number(item))
+                );
                 const dataType: DataType = isNumeric ? "numeric" : "string";
                 const col = new Column(column, dataType);
                 const numberColumnData: number[] = columnData.map(

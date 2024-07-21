@@ -62,7 +62,23 @@ dbBot.slots = slots;
 // load csv file //
 ///////////////////
 
-dbBot.loadFile("./pokemon.csv");
+dbBot.loadFile("./sw_characters.csv");
+
+/////////////////////////
+// null values in rows //
+/////////////////////////
+
+const nullValues = [null, "NA", NaN];
+
+const heightColumn = dbBot.getColumnByName("height");
+
+heightColumn.fillNullValues("mean", nullValues);
+
+dbBot.fillNullValuesAll({
+    numericValue: -1,
+    stringValue: "FILL",
+    nullValue: nullValues,
+});
 
 ////////////////////////
 // custom column name //
@@ -101,3 +117,5 @@ dbBot.addCustomOperator(startWithBOperator);
 ////////////////
 
 app.runBot(dbBot);
+
+// test
