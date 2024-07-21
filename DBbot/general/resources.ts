@@ -6,6 +6,14 @@ import {
     BotMessages,
 } from "./types";
 
+export const DATATYPE_ERROR = "Invalid data type";
+export const STRING_CALCULATION_ERROR =
+    "Cannot calculate for string data type";
+export const MODE_ERROR = "No mode found";
+export const CUSTOM_ERROR = "Custom value is required";
+export const METHOD_ERROR =
+    "Invalid method, Please provide a valid method of the following 'mean', 'median', 'mode', 'remove' or 'custom'";
+
 export const OPERATOR_PATHS: Paths = {
     development: "../../BotUI/src/app/operators",
     production: "../../../BotUI/src/app/operators",

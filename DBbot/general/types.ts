@@ -5,6 +5,14 @@ export type DataType = "string" | "numeric";
 
 export type NumOrStr = number | string;
 
+export type nullMethod = "mean" | "median" | "mode" | "remove" | "custom";
+
+export type fillNullValuesParams = {
+    numericValue?: number;
+    stringValue?: string;
+    nullValue: any[];
+};
+
 export type Paths = {
     [key: string]: string;
 };
