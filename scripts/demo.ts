@@ -101,7 +101,7 @@ const startWithBOperator = {
         return cell.startsWith("B");
     },
     dataType: "string",
-    column: "name",
+    column: "newName",
     params: [
         {
             name: "cell",
@@ -117,5 +117,3 @@ dbBot.addCustomOperator(startWithBOperator);
 ////////////////
 
 app.runBot(dbBot);
-
-// test
