@@ -176,19 +176,19 @@ The fixed in time messages has a fixed position in the chat, and only the text c
 The slots messages are messages that can be placed between the fixed in time messages, and the researcher can insert as many as he/she wants.
 
 - The fixed in time messages
-      - attributeMessage: In this message the user will see the list of attributes to choose from.
-        The custom message is the text before the list.
-      - operatorMessage: Same as the attributeMessage, but with the operators list
-      - errorMessage: An error message in the chat, when the user enters invalid input.
-      - continueMessage: A message to confirm an continue the conversion, e.g. "Press 1 to continue"
-      - resultMessage: This message will be displayed to the user when the result of the query are ready.
+   - attributeMessage: In this message the user will see the list of attributes to choose from.
+     The custom message is the text before the list.
+   - operatorMessage: Same as the attributeMessage, but with the operators list
+   - errorMessage: An error message in the chat, when the user enters invalid input.
+   - continueMessage: A message to confirm an continue the conversion, e.g. "Press 1 to continue"
+   - resultMessage: This message will be displayed to the user when the result of the query are ready.
 - The slots messages:
-      - welcomeSlot: Messages in this slots will be displayed at the begining of the chat.
-      - operatorSlot: Message in this slots will be displayed after the fix in time operatorMessage message.
-      - paramsSlot: Message in this slots will be displayed after the the messages of the params of the operator.
-      - restartSlot: Message in this slots will be displayed after the query has been chosen.
-        This slots meant to ask the user if he/she wants to add another attribute to the query.
-      - resultSlot: Message in this slots will be displayed *before* the fix in time resultMessage message.
+   - welcomeSlot: Messages in this slots will be displayed at the begining of the chat.
+   - operatorSlot: Message in this slots will be displayed after the fix in time operatorMessage message.
+   - paramsSlot: Message in this slots will be displayed after the the messages of the params of the operator.
+   - restartSlot: Message in this slots will be displayed after the query has been chosen.
+     This slots meant to ask the user if he/she wants to add another attribute to the query.
+   - resultSlot: Message in this slots will be displayed *before* the fix in time resultMessage message.
 
   **Example of fixed in time messages:**
 
@@ -204,36 +204,36 @@ The slots messages are messages that can be placed between the fixed in time mes
   ```
   **Example of slots messages:**
   
-```javascript
-  // welcome slot
-const welcomeMessages = [];
-
-const welcomeFirstMsg = "Demo welcome slot first message";
-
-welcomeMessages.push(welcomeFirstMsg);
-
-const welcomeSecondMsg = "Demo welcome slot second message";
-
-welcomeMessages.push(welcomeSecondMsg);
-
-// operator slot
-const operatorMessages = [];
-
-const operatorFirstMsg = "Demo operator slot first message";
-
-operatorMessages.push(operatorFirstMsg);
-
-const operatorSecondMsg = "Demo operator slot second message";
-
-operatorMessages.push(operatorSecondMsg);
-
-const slots = {
-    welcomeSlot: welcomeMessages,
-    operatorSlot: operatorMessages,
-};
-
-dbBot.slots = slots;
-```
+   ```javascript
+   // welcome slot
+   const welcomeMessages = [];
+   
+   const welcomeFirstMsg = "Demo welcome slot first message";
+   
+   welcomeMessages.push(welcomeFirstMsg);
+   
+   const welcomeSecondMsg = "Demo welcome slot second message";
+   
+   welcomeMessages.push(welcomeSecondMsg);
+   
+   // operator slot
+   const operatorMessages = [];
+   
+   const operatorFirstMsg = "Demo operator slot first message";
+   
+   operatorMessages.push(operatorFirstMsg);
+   
+   const operatorSecondMsg = "Demo operator slot second message";
+   
+   operatorMessages.push(operatorSecondMsg);
+   
+   const slots = {
+       welcomeSlot: welcomeMessages,
+       operatorSlot: operatorMessages,
+   };
+   
+   dbBot.slots = slots;
+   ```
 
 
 # API
