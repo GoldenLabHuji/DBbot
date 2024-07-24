@@ -4,8 +4,10 @@ import {
     LessOperator,
     GreaterOperator,
     RangeOperator,
-    SoundLikeOperator,
     StartsWithOperator,
+    EndWithOperator,
+    ContainsOperator,
+    EqualStringOperator,
 } from "./operator";
 import {
     DATATYPE_ERROR,
@@ -32,8 +34,10 @@ export class Column {
             new RangeOperator(),
         ];
         const stringOperators = [
-            new SoundLikeOperator(),
             new StartsWithOperator(),
+            new EndWithOperator(),
+            new ContainsOperator(),
+            new EqualStringOperator(),
         ];
         if (dataType === "numeric") {
             this.operatorsArray.push(

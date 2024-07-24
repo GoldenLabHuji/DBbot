@@ -167,3 +167,63 @@ export class StartsWithOperator extends Operator {
         return inputValue.toLowerCase().startsWith(compareValue.toLowerCase());
     }
 }
+
+export class EndWithOperator extends Operator {
+    constructor() {
+        super("endWith");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
+    }
+
+    calculate(inputValue: string, compareValue: string) {
+        return inputValue.toLowerCase().endsWith(compareValue.toLowerCase());
+    }
+}
+
+export class ContainsOperator extends Operator {
+    constructor() {
+        super("contains");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
+    }
+
+    calculate(inputValue: string, compareValue: string) {
+        return inputValue.toLowerCase().includes(compareValue.toLowerCase());
+    }
+}
+
+export class EqualStringOperator extends Operator {
+    constructor() {
+        super("equalString");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
+    }
+
+    calculate(inputValue: string, compareValue: string) {
+        return inputValue.toLowerCase() === compareValue.toLowerCase();
+    }
+}
