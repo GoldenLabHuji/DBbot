@@ -105,15 +105,49 @@ dbBot.addCustomOperator(startWithBOperator); // add the operator to the bot
 
 To add the operator to the bot, The addCustomOperator must be called  with the operator as a parameter.
 
-## Custom Queries
-CSV Bot supports custom queries for more complex operations:
+## Handling null values
+In many databaes there are missing values in some attributes. DBbot gives the researcher the option to decide how to treat those values.
+
+The are some default value the researcher can change the null values to:
+- mean:  The mean on the not-null values of the attribute. Only for numeric attributes.
+- median: The median on the not-null values of the attribute. Only for numeric attributes.
+- mode: The mode on the not-null values of the attribute. Only for numeric attributes.
+- remove: Remove the cells with null values.
+- custom: A custom value.
+
+For example:
 
 ```javascript
-// Custom query example
-const customResults = bot.customQuery('SELECT column1, column3 FROM data WHERE column4 LIKE "%pattern%"');
+// Define what values treat as null values
+const nullValues = [null, "NA", NaN];
 
-console.log(customResults);
+// Get the attribute
+const heightColumn = dbBot.getColumnByName("height");
+
+// Fill the null values with the mean of the attribute
+heightColumn.fillNullValues("mean", nullValues);
+
+// Fill the null values with a custom value - 5
+heightColumn.fillNullValues("custom", nullValues, 5);
 ```
+
+Another option is to fill al null values of all columns at the same time and with the same value (one for string attributes and one for numeric attributes)
+
+For example:
+```javascript
+
+// Define what values treat as null values
+const nullValues = [null, "NA", NaN];
+
+// Fill all null values
+dbBot.fillNullValuesAll({
+    numericValue: -1,
+    stringValue: "FILL",
+    nullValue: nullValues,
+});
+
+```
+
 
 # API
 
