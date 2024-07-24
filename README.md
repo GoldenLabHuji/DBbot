@@ -2,14 +2,33 @@
 
 DBbot is an npm package that allows researchers to create a bot based on a CSV file. The bot can query and filter the data of the CSV file, making it easy to interact with and manipulate large datasets.
 
-## Features
+
+# Table of contents
+- [Features](#features)
+- [Description of the chat](#description-of-the-chat)
+- [Installation](#installation)
+- [Usage](#usage)
+   - [Operators](#operators)
+   - [Custom operators](#custom-operators)
+   - [Handling null values](#handling-null-values)
+   - [Display name of an attribute](#display-name-of-an-attribute)
+   - [Messages](#messages)
+- [API](#api)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
+
+
+# Features
 
 - Easy to use and integrate
 - Query and filter data from a CSV file
 - Flexible and customizable
 - Supports various data operations
 
-## Description of the ChatBot (what the user will see)
+# Description of the chat
+
+This is a description of what the **user** will see
 
 First, the bot will provide the uaer an explaintion about the database (CSV file).
 Second, the bot will display the user a list of the columns of the database, and the user can choose from it which column he/she would like to query.
@@ -24,7 +43,7 @@ If the user chooses "No", the bot will fetch the data from the database and prov
 If the user chooses "Yes", the whole proccess will start over.
 
 
-## Installation
+# Installation
 
 You can install DBbot using npm:
 
@@ -60,7 +79,7 @@ By default the bot has 6 operators to query data from the csv columns:
 
 Attributes with string values will have the string operators, and attributes with numeric values will have the numeric operators.
 
-### Custom operators
+## Custom operators
 
 When building the bot, the developer can add custom operators to specific attributes.
 A custom operator must have the following:
@@ -115,7 +134,7 @@ The are some default value the researcher can change the null values to:
 - remove: Remove the cells with null values.
 - custom: A custom value.
 
-For example:
+### Example:
 
 ```javascript
 // Define what values treat as null values
@@ -133,7 +152,8 @@ heightColumn.fillNullValues("custom", nullValues, 5);
 
 Another option is to fill al null values of all columns at the same time and with the same value (one for string attributes and one for numeric attributes)
 
-For example:
+### Example:
+
 ```javascript
 
 // Define what values treat as null values
@@ -190,7 +210,7 @@ The slots messages are messages that can be placed between the fixed in time mes
      This slots meant to ask the user if he/she wants to add another attribute to the query.
    - resultSlot: Message in this slots will be displayed *before* the fix in time resultMessage message.
 
-  **Example of fixed in time messages:**
+  ### Example of fixed in time messages:
 
   ```javascript
    const messages = {
@@ -202,7 +222,7 @@ The slots messages are messages that can be placed between the fixed in time mes
 
   dbBot.customMessages = messages;
   ```
-  **Example of slots messages:**
+  ### Example of slots messages:
   
    ```javascript
    // welcome slot
@@ -238,7 +258,7 @@ The slots messages are messages that can be placed between the fixed in time mes
 
 # API
 
-### new CsvBot(filePath)
+### new dbBotBot(filePath)
 Creates a new instance of the CsvBot.
 
 #### params
