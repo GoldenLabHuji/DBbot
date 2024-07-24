@@ -148,6 +148,22 @@ dbBot.fillNullValuesAll({
 
 ```
 
+## Display name of an attribute
+
+The name of each attribute can be changed:
+```javascript
+// change a display name of "name" attribute to "newName"
+dbBot.changeColumnDisplayName("name", "newName");
+
+// If the new name is already exists in another attribute, it throw an error
+
+```
+
+The user will see the new name in the chat bot, and the `dbBot.getColumnByName()` method will be affected as well.
+
+**NOTE**: The `dbBot.getColumnById()` will *not* be affected by changes in the display name of the attribute. 
+The id property of a column is a read only property, and can not be changed once the csv file get load.
+
 
 # API
 
