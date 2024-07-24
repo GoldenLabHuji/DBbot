@@ -49,14 +49,14 @@ app.runBot(dbBot);
 
 ## Operators
 By default the bot has 6 operators to query data from the csv columns:
-* numeric
- - Equal
- - Less
- - Greater
- - Range
-* string
- - SoundLike
- - StartWith
+- Numeric
+   - Equal
+   - Less
+   - Greater
+   - Range
+- String
+   - SoundLike
+   - StartWith
 
 Attributes with string values will have the string operators, and attributes with numeric values will have the numeric operators.
 
