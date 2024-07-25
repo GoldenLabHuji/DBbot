@@ -1,6 +1,6 @@
 export const styles = {
     container: {
-        height: "100vh",
+        height: "88vh",
         display: "flex",
         flexDirection: "column",
         bgcolor: "grey.200",
@@ -12,4 +12,10 @@ export const styles = {
         overflow: "auto",
         p: 2,
     },
+    headFootContainer: {
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "grey.200",
+    }
 };
