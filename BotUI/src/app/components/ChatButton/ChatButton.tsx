@@ -5,6 +5,7 @@ export default function ChatButton() {
     return (
         <Grid item xs={2}>
             <Button
+                sx={{ width: "120%" }}
                 color="primary"
                 variant="contained"
                 endIcon={<SendIcon />}

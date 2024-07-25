@@ -117,5 +117,3 @@ dbBot.addCustomOperator(startWithBOperator);
 ////////////////
 
 app.runBot(dbBot);
-
-// test
