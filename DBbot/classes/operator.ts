@@ -2,7 +2,10 @@ import { NumOrStr, Params } from "../general/types";
 
 export abstract class Operator {
     public params: Params[] = [];
-    constructor(private readonly displayName: string) {}
+    constructor(
+        private readonly id: string,
+        private displayName: string = id
+    ) {}
 
     abstract calculate(inputValue: NumOrStr, ...args: any): boolean;
 
@@ -210,7 +213,7 @@ export class ContainsOperator extends Operator {
 
 export class EqualStringOperator extends Operator {
     constructor() {
-        super("equalString");
+        super("equalString", "equal");
         this.params = [
             {
                 name: "inputValue",

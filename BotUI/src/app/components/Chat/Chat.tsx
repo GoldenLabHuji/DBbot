@@ -87,34 +87,39 @@ export default function Chat({ bot }: ChatProps) {
 
     return (
         <Box sx={styles.headFootContainer}>
-        <Header text={bot._details.name as string} />
-        <Box sx={styles.container}>
-            <Box sx={styles.secondContainer}>
-                {(messagesSection &&
-                    messagesSection.length > 0 &&
-                    messagesSection.map(
-                        (msgSection) =>
-                            msgSection?.messageSection &&
-                            msgSection?.messageSection.length > 0 &&
-                            msgSection?.messageSection.map((message, index) => (
-                                <Message key={index} message={message} />
-                            ))
-                    )) ??
-                    defaultMsgSection}
-                {loading && (
-                    <Box textAlign="center">
-                        <CircularProgress />
-                    </Box>
-                )}
-                {isResult && queryWords.length > 0 && (
-                    <CSVButton queryWords={queryWords} />
-                )}
-                <Box component="div" ref={messagesEndRef} />
-            </Box>
+            <Header text={bot._details.name as string} />
+            <Box sx={styles.container}>
+                <Box sx={styles.secondContainer}>
+                    {(messagesSection &&
+                        messagesSection.length > 0 &&
+                        messagesSection.map(
+                            (msgSection) =>
+                                msgSection?.messageSection &&
+                                msgSection?.messageSection.length > 0 &&
+                                msgSection?.messageSection.map(
+                                    (message, index) => (
+                                        <Message
+                                            key={index}
+                                            message={message}
+                                        />
+                                    )
+                                )
+                        )) ??
+                        defaultMsgSection}
+                    {loading && (
+                        <Box textAlign="center">
+                            <CircularProgress />
+                        </Box>
+                    )}
+                    {isResult && queryWords.length > 0 && (
+                        <CSVButton queryWords={queryWords} />
+                    )}
+                    <Box component="div" ref={messagesEndRef} />
+                </Box>
 
-            <ChatBox bot={bot} />
-        </Box>
-        <Footer />
+                <ChatBox bot={bot} />
+            </Box>
+            <Footer />
         </Box>
     );
 }
