@@ -291,6 +291,7 @@ returns the data of the bot includes:
 
 **type**: BotData
 
+**BotData**
 * headers: string[] - array of the headers of the csv file
 * columns: Column[] - array of columns of the csv file
 * customOperators: CustomOperator[] - array of the custom oprators defined by the researcher
@@ -303,6 +304,7 @@ returns the messages of the bot, both fixed in time and slots.
 
 **type**: BotMessages
 
+**BotMessages**
 * customMessages: CustomMessages - the fixed in time messages
 * slots: MessagesSlot - the slots messages
 
@@ -363,9 +365,114 @@ add custom operator
       
 ---
 
+#### loadFile()
 
-#### params
-  * filePath: The path to the CSV file.
+loads the csv file to the bot
+
+**return type**: void
+
+**params**:
+* path: string - the path to the csv file
+
+---
+
+#### fillNullValuesAll()
+
+fill all the defind null values in the in the attributes to a specific value (one for numeric attributes and one for the string attributes)
+
+**return type**: void
+
+**params**:
+* params: fillNullValuesParams - the values to fiil
+  
+  **fillNullValuesParams**
+   * numericValue(optional): number - the numeric value to fill
+   * stringValue(optional): string - the string value to fill
+   * nullValue: any[] - an array of what values are considered null
+---
+
+## app
+
+### Methods
+
+#### runBot
+
+run the bot
+
+**return type**: void
+
+**params**:
+* bot: DBbot - the instance of the bot
+
+---
+
+## Column
+
+### Properties
+
+#### id
+returns the id of the column. readonly property
+
+**type**: string
+
+---
+
+### Methods
+
+#### getColumnData()
+
+return the data of the column
+
+**return type**: ColumnData
+
+**ColumnData**
+* id: string - the id of the column
+* rows: any[] - the rows of the column
+* dataType: DataType - the data type of the column. *numeric* or *string*
+* displayName: string - the display name of the column
+* operators: Operator[] - the operators of the column
+
+---
+
+#### mean()
+ *NOTE: only for numeric columns*
+
+ returns the mean of the column
+
+**return type**: number
+
+---
+
+#### mode()
+ *NOTE: only for numeric columns*
+
+ returns the mode of the column
+
+**return type**: number
+
+---
+
+#### median()
+ *NOTE: only for numeric columns*
+
+ returns the median of the column
+
+**return type**: number
+
+---
+
+#### fillNullValues()
+
+fill the defined null values of the column with a specific values
+
+**return type**: void
+
+**params**:
+* method: nullMethod - the method for the function to use. options: mean, median, mode, remove and custom
+* nullValue: any[] - an array of what values are considered null
+* customValue(optional): NumOrStr - if the "custom" method has been chosen, the custom value to change to.
+
+---
 
 # Contributing
 
