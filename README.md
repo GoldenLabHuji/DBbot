@@ -45,11 +45,33 @@ If the user chooses "Yes", the whole proccess will start over.
 
 # Installation
 
+## Node.js
+First, node.js should be installed on your machine. If you don't know how to install it, you can look at this [guide](https://thiraphat-ps-dev.medium.com/installing-node-js-a-comprehensive-guide-for-beginners-3ac322fd17f0) 
+
+## Start a new project
+Open your code editor, and create new folder *my-new-project*.
+
+Open the integrated terminal of your code editor, and navigate to your new project:
+
+```bash
+cd my-new-project
+```
+
+Then init a new node.js project with the command:
+
+```bash
+npm init
+```
+
+## Install DBbot pakcage
+
 You can install DBbot using npm:
 
 ```bash
 npm install dbbot
 ```
+
+And that's it! You are now ready to use DBbot.
 
 # Usage
 
