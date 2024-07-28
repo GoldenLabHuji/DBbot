@@ -45,11 +45,33 @@ If the user chooses "Yes", the whole proccess will start over.
 
 # Installation
 
+## Node.js
+First, node.js should be installed on your machine. If you don't know how to install it, you can look at this [guide](https://thiraphat-ps-dev.medium.com/installing-node-js-a-comprehensive-guide-for-beginners-3ac322fd17f0) 
+
+## Start a new project
+Open your code editor, and create new folder *my-new-project*.
+
+Open the integrated terminal of your code editor, and navigate to your new project:
+
+```bash
+cd my-new-project
+```
+
+Then init a new node.js project with the command:
+
+```bash
+npm init
+```
+
+## Install DBbot pakcage
+
 You can install DBbot using npm:
 
 ```bash
 npm install dbbot
 ```
+
+And that's it! You are now ready to use DBbot.
 
 # Usage
 
@@ -258,11 +280,199 @@ The slots messages are messages that can be placed between the fixed in time mes
 
 # API
 
-### new dbBotBot(filePath)
-Creates a new instance of the CsvBot.
+## dbBot
+The instance of the main bot class.
 
-#### params
-  * filePath: The path to the CSV file.
+### Properties
+
+#### data
+
+returns the data of the bot includes:
+
+**type**: BotData
+
+**BotData**
+* headers: string[] - array of the headers of the csv file
+* columns: Column[] - array of columns of the csv file
+* customOperators: CustomOperator[] - array of the custom oprators defined by the researcher
+
+---
+
+#### messages
+
+returns the messages of the bot, both fixed in time and slots.
+
+**type**: BotMessages
+
+**BotMessages**
+* customMessages: CustomMessages - the fixed in time messages
+* slots: MessagesSlot - the slots messages
+
+---
+
+### Methods
+
+#### getColumnByName()
+returns the column find by display name. If non exist, throw an error
+
+**return type**: Column
+
+**params**: 
+* name: string - the name of the column to find
+
+---
+
+#### getColumnById()
+same as *getColumnByName* just by id
+
+**return type**: Column
+
+**params**: 
+* id: string - the id of the column to find
+
+---
+
+#### changeColumnDisplayName()
+change the display name of a column
+
+**return type**: void
+
+**params**: 
+* name: string - the name of the column to change
+* newName: string - the new name of the column to change to.
+
+---
+
+#### addCustomOperator()
+add custom operator
+
+**return type**: void
+
+**params**: 
+* params: AddCustomOperatorParams - object of params to add for the custom operator.
+  
+  **AddCustomOperatorParams:**
+  * name: string - the name of the operator
+  * customFunction: Function - the function of the operator
+  * column: string - the name of the column to assign the operator to
+  * message(optional): string - the message to display to the user after choosing this operator
+  * params: Params[] - array of the parameters of the operator function
+    
+    **Params:**
+    * name: string - the name of the parameter
+    * dataType: DataType - the data type of the parameter, *string* or *numeric*
+    * message(optional) - the message to display to the user before asking for input for this parameter
+      
+---
+
+#### loadFile()
+
+loads the csv file to the bot
+
+**return type**: void
+
+**params**:
+* path: string - the path to the csv file
+
+---
+
+#### fillNullValuesAll()
+
+fill all the defind null values in the in the attributes to a specific value (one for numeric attributes and one for the string attributes)
+
+**return type**: void
+
+**params**:
+* params: fillNullValuesParams - the values to fiil
+  
+  **fillNullValuesParams**
+   * numericValue(optional): number - the numeric value to fill
+   * stringValue(optional): string - the string value to fill
+   * nullValue: any[] - an array of what values are considered null
+---
+
+## app
+
+### Methods
+
+#### runBot
+
+run the bot
+
+**return type**: void
+
+**params**:
+* bot: DBbot - the instance of the bot
+
+---
+
+## Column
+
+### Properties
+
+#### id
+returns the id of the column. readonly property
+
+**type**: string
+
+---
+
+### Methods
+
+#### getColumnData()
+
+return the data of the column
+
+**return type**: ColumnData
+
+**ColumnData**
+* id: string - the id of the column
+* rows: any[] - the rows of the column
+* dataType: DataType - the data type of the column. *numeric* or *string*
+* displayName: string - the display name of the column
+* operators: Operator[] - the operators of the column
+
+---
+
+#### mean()
+ *NOTE: only for numeric columns*
+
+ returns the mean of the column
+
+**return type**: number
+
+---
+
+#### mode()
+ *NOTE: only for numeric columns*
+
+ returns the mode of the column
+
+**return type**: number
+
+---
+
+#### median()
+ *NOTE: only for numeric columns*
+
+ returns the median of the column
+
+**return type**: number
+
+---
+
+#### fillNullValues()
+
+fill the defined null values of the column with a specific values
+
+**return type**: void
+
+**params**:
+* method: nullMethod - the method for the function to use. options: mean, median, mode, remove and custom
+* nullValue: any[] - an array of what values are considered null
+* customValue(optional): NumOrStr - if the "custom" method has been chosen, the custom value to change to.
+
+---
 
 # Contributing
 

@@ -7,8 +7,7 @@ import {
 } from "./types";
 
 export const DATATYPE_ERROR = "Invalid data type";
-export const STRING_CALCULATION_ERROR =
-    "Cannot calculate for string data type";
+export const STRING_CALCULATION_ERROR = "Cannot calculate for string data type";
 export const MODE_ERROR = "No mode found";
 export const CUSTOM_ERROR = "Custom value is required";
 export const METHOD_ERROR =
@@ -52,7 +51,7 @@ export const EMPTY_DETAILS = {
 
 const STRING_OPERATORS_DATA: OperatorData[] = [
     {
-        name: "SoundLike",
+        name: "EndWithOperator",
         column: "all",
         params: [
             {
@@ -64,14 +63,41 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
                 name: "compareValue",
                 dataType: "string",
                 isArray: false,
-                message:
-                    "enter the word you would like it to sound similar to:",
+                message: "Enter the character to end with:",
+            },
+        ],
+    },
+    {
+        name: "ContainsOperator",
+        column: "all",
+        params: [
+            {
+                name: "inputValue",
+                dataType: "string",
+                isArray: false,
             },
             {
-                name: "maxDifferences",
-                dataType: "numeric",
+                name: "compareValue",
+                dataType: "string",
                 isArray: false,
-                message: "Enter the maximum number of differences allowed:",
+                message: "Enter the string the word should contain:",
+            },
+        ],
+    },
+    {
+        name: "EqualStringOperator",
+        column: "all",
+        params: [
+            {
+                name: "inputValue",
+                dataType: "string",
+                isArray: false,
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+                isArray: false,
+                message: "Enter the value the word should be equal to:",
             },
         ],
     },
@@ -184,7 +210,9 @@ import {
     equalOperator,
     rangeOperator,
     startWithOperator,
-    soundLikeOperator,
+    endWithOperator,
+    containsOperator,
+    equalStringOperator,    
 } from "@/app/operators";
 
 export const OPERATORS = {
@@ -192,6 +220,8 @@ export const OPERATORS = {
     lower: lowerOperator,
     equal: equalOperator,
     range: rangeOperator,
-    soundLike: soundLikeOperator,
     startWith: startWithOperator,
+    endWith: endWithOperator,
+    contains: containsOperator,
+    equalString: equalStringOperator,
 };`;

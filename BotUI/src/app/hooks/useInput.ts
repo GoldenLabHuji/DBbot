@@ -63,8 +63,10 @@ export default function useInput(
 
             switch (typeOfQuestion) {
                 case "parameter":
-                    const currentParameter =
-                        bot?._data.headers[Number(input) - 1];
+                    const currentHeader = bot?._data.headers[Number(input) - 1];
+                    const currentParameter = bot?._data.columns.filter(
+                        (col) => col.displayName === currentHeader
+                    )[0].id;
                     currentParam.setState(currentParameter);
                     setBotMsg([
                         ...botMsg,

@@ -62,7 +62,7 @@ interface MessagesSlot {
     restartSlot?: string[];
     resultSlot?: string[];
 }
-interface BotColumn {
+export interface BotColumn {
     id: string;
     dataType: DataType;
     displayName: string;
@@ -73,6 +73,7 @@ interface BotOperatorData {
     params: BotOperatorParams[];
     message?: string;
     displayName: string;
+    id: string;
 }
 
 interface BotOperatorParams {

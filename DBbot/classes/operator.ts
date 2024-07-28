@@ -2,7 +2,10 @@ import { NumOrStr, Params } from "../general/types";
 
 export abstract class Operator {
     public params: Params[] = [];
-    constructor(private readonly displayName: string) {}
+    constructor(
+        private readonly id: string,
+        private displayName: string = id
+    ) {}
 
     abstract calculate(inputValue: NumOrStr, ...args: any): boolean;
 
@@ -165,5 +168,65 @@ export class StartsWithOperator extends Operator {
 
     calculate(inputValue: string, compareValue: string) {
         return inputValue.toLowerCase().startsWith(compareValue.toLowerCase());
+    }
+}
+
+export class EndWithOperator extends Operator {
+    constructor() {
+        super("endWith");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
+    }
+
+    calculate(inputValue: string, compareValue: string) {
+        return inputValue.toLowerCase().endsWith(compareValue.toLowerCase());
+    }
+}
+
+export class ContainsOperator extends Operator {
+    constructor() {
+        super("contains");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
+    }
+
+    calculate(inputValue: string, compareValue: string) {
+        return inputValue.toLowerCase().includes(compareValue.toLowerCase());
+    }
+}
+
+export class EqualStringOperator extends Operator {
+    constructor() {
+        super("equalString", "equal");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
+    }
+
+    calculate(inputValue: string, compareValue: string) {
+        return inputValue.toLowerCase() === compareValue.toLowerCase();
     }
 }

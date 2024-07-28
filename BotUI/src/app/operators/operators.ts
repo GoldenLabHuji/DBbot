@@ -4,7 +4,9 @@ import {
     equalOperator,
     rangeOperator,
     startWithOperator,
-    soundLikeOperator,
+    endWithOperator,
+    containsOperator,
+    equalStringOperator,
 } from "@/app/operators";
 
 export const OPERATORS = {
@@ -12,6 +14,8 @@ export const OPERATORS = {
     lower: lowerOperator,
     equal: equalOperator,
     range: rangeOperator,
-    soundLike: soundLikeOperator,
     startWith: startWithOperator,
+    endWith: endWithOperator,
+    contains: containsOperator,
+    equalString: equalStringOperator,
 };
