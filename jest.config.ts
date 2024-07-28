@@ -4,5 +4,10 @@ const config: Config.InitialOptions = {
     preset: "ts-jest",
     testEnvironment: "node",
     verbose: true,
+    rootDir: "./",
+    moduleNameMapper: {
+        // ...
+        "@/app/(.*)": "<rootDir>/BotUI/src/app/$1",
+    },
 };
 export default config;

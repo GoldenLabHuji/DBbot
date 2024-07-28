@@ -1,5 +1,5 @@
-import { renderHook, act } from "@testing-library/react-hooks";
-import useInput from "@/app/hooks/useInput"; // adjust the path as necessary
+import { renderHook, act } from "@testing-library/react";
+import useInput from "@/app/hooks/useInput";
 import { Message, Bot, DataType } from "@/app/general/interfaces";
 import { sender, currentMsgType, currentQIndexType } from "@/app/general/types";
 
@@ -103,7 +103,7 @@ describe("useInput", () => {
         expect(mockCurrentMsg.setState).toHaveBeenCalledWith(
             expect.arrayContaining([
                 expect.objectContaining({
-                    text: "Invalid input, please try again.",
+                    text: "error Message",
                     sender: "bot",
                 }),
             ])
