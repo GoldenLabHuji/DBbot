@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { messagesSectionAtom } from "@/app/store/atoms";
-import { Attribute, Bot } from "@/app/general/interfaces";
+import { Attribute, Bot, BotColumn } from "@/app/general/interfaces";
 import { strOrNum } from "@/app/general/types";
 
 export default function useEndChat(bot: Bot) {
@@ -27,13 +27,15 @@ export default function useEndChat(bot: Bot) {
             const parameter =
                 bot?._data.headers[Number(parametersMessages[0]?.text) - 1];
 
-            const operatorsOfColumn = bot?._data.columns.filter(
-                (col) => col.id === parameter
-            )[0]?.operatorsArray;
+            const parameterColumnId = bot?._data.columns.find(
+                (col) => col.displayName === parameter
+            )?.id;
 
             const parameterColumn = bot?._data.columns.find(
-                (col) => col.displayName === parameter
-            );
+                (col) => col.id === parameterColumnId
+            ) as BotColumn;
+
+            const operatorsOfColumn = parameterColumn.operatorsArray;
 
             const operatorChoice = Number(operatorsMessages[0]?.text) - 1;
 
@@ -50,7 +52,7 @@ export default function useEndChat(bot: Bot) {
 
             const newAttribute: Attribute = {
                 name: parameter,
-                operator: operator.displayName,
+                operator: operator.id,
                 params: functionParams,
             };
 

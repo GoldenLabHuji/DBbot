@@ -3,7 +3,9 @@ import { lowerOperator } from "./lowerOperator";
 import { equalOperator } from "./equalOperator";
 import { rangeOperator } from "./rangeOperator";
 import { startWithOperator } from "./startWithOperator";
-import { soundLikeOperator } from "./soundLikeOperator";
+import { endWithOperator } from "./endWithOperator";
+import { containsOperator } from "./containsOperator";
+import { equalStringOperator } from "./equalStringOperator";
 
 export {
     greaterOperator,
@@ -11,5 +13,7 @@ export {
     equalOperator,
     rangeOperator,
     startWithOperator,
-    soundLikeOperator,
+    endWithOperator,
+    containsOperator,
+    equalStringOperator,
 };
