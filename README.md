@@ -286,69 +286,82 @@ The instance of the main bot class.
 ### Properties
 
 #### data
+
 returns the data of the bot includes:
 
-type: BotData
+**type**: BotData
 
 * headers: string[] - array of the headers of the csv file
 * columns: Column[] - array of columns of the csv file
 * customOperators: CustomOperator[] - array of the custom oprators defined by the researcher
-* 
+
+---
+
 #### messages
+
 returns the messages of the bot, both fixed in time and slots.
 
-type: BotMessages
+**type**: BotMessages
 
 * customMessages: CustomMessages - the fixed in time messages
 * slots: MessagesSlot - the slots messages
+
+---
 
 ### Methods
 
 #### getColumnByName()
 returns the column find by display name. If non exist, throw an error
 
-return type: Column
+**return type**: Column
 
-params: 
+**params**: 
 * name: string - the name of the column to find
+
+---
 
 #### getColumnById()
 same as *getColumnByName* just by id
 
-return type: Column
+**return type**: Column
 
-params: 
+**params**: 
 * id: string - the id of the column to find
+
+---
 
 #### changeColumnDisplayName()
 change the display name of a column
 
-return type: void
+**return type**: void
 
-params: 
+**params**: 
 * name: string - the name of the column to change
 * newName: string - the new name of the column to change to.
+
+---
 
 #### addCustomOperator()
 add custom operator
 
-return type: void
+**return type**: void
 
-params: 
+**params**: 
 * params: AddCustomOperatorParams - object of params to add for the custom operator.
-  **AddCustomOperatorParams**
+  
+  **AddCustomOperatorParams:**
+  * name: string - the name of the operator
   * customFunction: Function - the function of the operator
   * column: string - the name of the column to assign the operator to
   * message(optional): string - the message to display to the user after choosing this operator
-  * params: Params - the parameters of the operator function
-    **Params**
+  * params: Params[] - array of the parameters of the operator function
     
-  
-
-
-
-
-
+    **Params:**
+    * name: string - the name of the parameter
+    * dataType: DataType - the data type of the parameter, *string* or *numeric*
+    * message(optional) - the message to display to the user before asking for input for this parameter
+      
+---
 
 
 #### params
