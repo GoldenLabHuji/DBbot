@@ -280,8 +280,76 @@ The slots messages are messages that can be placed between the fixed in time mes
 
 # API
 
-### new dbBotBot(filePath)
-Creates a new instance of the CsvBot.
+## dbBot
+The instance of the main bot class.
+
+### Properties
+
+#### data
+returns the data of the bot includes:
+
+type: BotData
+
+* headers: string[] - array of the headers of the csv file
+* columns: Column[] - array of columns of the csv file
+* customOperators: CustomOperator[] - array of the custom oprators defined by the researcher
+* 
+#### messages
+returns the messages of the bot, both fixed in time and slots.
+
+type: BotMessages
+
+* customMessages: CustomMessages - the fixed in time messages
+* slots: MessagesSlot - the slots messages
+
+### Methods
+
+#### getColumnByName()
+returns the column find by display name. If non exist, throw an error
+
+return type: Column
+
+params: 
+* name: string - the name of the column to find
+
+#### getColumnById()
+same as *getColumnByName* just by id
+
+return type: Column
+
+params: 
+* id: string - the id of the column to find
+
+#### changeColumnDisplayName()
+change the display name of a column
+
+return type: void
+
+params: 
+* name: string - the name of the column to change
+* newName: string - the new name of the column to change to.
+
+#### addCustomOperator()
+add custom operator
+
+return type: void
+
+params: 
+* params: AddCustomOperatorParams - object of params to add for the custom operator.
+  **AddCustomOperatorParams**
+  * customFunction: Function - the function of the operator
+  * column: string - the name of the column to assign the operator to
+  * message(optional): string - the message to display to the user after choosing this operator
+  * params: Params - the parameters of the operator function
+    **Params**
+    
+  
+
+
+
+
+
+
 
 #### params
   * filePath: The path to the CSV file.
