@@ -65,6 +65,25 @@ const mockBot: Bot = {
                     },
                 ],
             },
+            {
+                id: "column2",
+                dataType: "numeric" as DataType,
+                displayName: "column2",
+                rows: [1, 2, 3],
+                operatorsArray: [
+                    {
+                        params: [
+                            {
+                                isArray: false,
+                                dataType: DataType.Numeric,
+                                name: "param2",
+                            },
+                        ],
+                        displayName: "operator2",
+                        id: "operator2",
+                    },
+                ],
+            },
         ],
     },
     _details: {
@@ -82,6 +101,17 @@ const mockBot: Bot = {
                     isArray: false,
                     dataType: DataType.String,
                     name: "param1",
+                },
+            ],
+        },
+        {
+            displayName: "operator2",
+            id: "operator2",
+            params: [
+                {
+                    isArray: false,
+                    dataType: DataType.Numeric,
+                    name: "param2",
                 },
             ],
         },
@@ -179,6 +209,215 @@ describe("useEndChat", () => {
                 name: "column1",
                 operator: "operator1",
                 params: ["abc"],
+            },
+        ]);
+    });
+
+    it("should handle multiple messages correctly", () => {
+        const mockMultipleMessages: MessageSection[] = [
+            {
+                id: 0,
+                messageSection: [
+                    {
+                        id: 0,
+                        sender: "user",
+                        typeOfQuestion: "parameter",
+                        text: "1",
+                    },
+                    {
+                        id: 1,
+                        sender: "user",
+                        typeOfQuestion: "operator",
+                        text: "1",
+                    },
+                    {
+                        id: 2,
+                        sender: "user",
+                        typeOfQuestion: "functionParams",
+                        text: "10",
+                    },
+                ],
+            },
+            {
+                id: 1,
+                messageSection: [
+                    {
+                        id: 3,
+                        sender: "user",
+                        typeOfQuestion: "parameter",
+                        text: "2",
+                    },
+                    {
+                        id: 4,
+                        sender: "user",
+                        typeOfQuestion: "operator",
+                        text: "1",
+                    },
+                    {
+                        id: 5,
+                        sender: "user",
+                        typeOfQuestion: "functionParams",
+                        text: "20",
+                    },
+                ],
+            },
+        ];
+
+        const { result } = renderHook(() => useEndChat(mockBot), {
+            wrapper: ({ children }) => (
+                <RecoilRoot>
+                    <RecoilStateProvider messages={mockMultipleMessages}>
+                        {children}
+                    </RecoilStateProvider>
+                </RecoilRoot>
+            ),
+        });
+
+        let attributes: Attribute[] = [];
+
+        act(() => {
+            if (result.current) {
+                attributes = result.current.handleEndChat();
+            }
+        });
+
+        expect(attributes).toEqual([
+            {
+                name: "column1",
+                operator: "operator1",
+                params: ["10"],
+            },
+            {
+                name: "column2",
+                operator: "operator2",
+                params: [20],
+            },
+        ]);
+    });
+
+    it("should return an empty array when there are no user messages", () => {
+        const emptyMessages: MessageSection[] = [
+            {
+                id: 0,
+                messageSection: [],
+            },
+        ];
+
+        const { result } = renderHook(() => useEndChat(mockBot), {
+            wrapper: ({ children }) => (
+                <RecoilRoot>
+                    <RecoilStateProvider messages={emptyMessages}>
+                        {children}
+                    </RecoilStateProvider>
+                </RecoilRoot>
+            ),
+        });
+
+        let attributes: Attribute[] = [];
+
+        act(() => {
+            if (result.current) {
+                attributes = result.current.handleEndChat();
+            }
+        });
+
+        expect(attributes).toEqual([]);
+    });
+
+    it("should handle different operators correctly", () => {
+        const mockMessagesWithDifferentOperators: MessageSection[] = [
+            {
+                id: 0,
+                messageSection: [
+                    {
+                        id: 0,
+                        sender: "user",
+                        typeOfQuestion: "parameter",
+                        text: "1",
+                    },
+                    {
+                        id: 1,
+                        sender: "user",
+                        typeOfQuestion: "operator",
+                        text: "2",
+                    },
+                    {
+                        id: 2,
+                        sender: "user",
+                        typeOfQuestion: "functionParams",
+                        text: "30",
+                    },
+                ],
+            },
+        ];
+
+        // Mock bot with different operators
+        const mockBotWithDifferentOperators: Bot = {
+            ...mockBot,
+            _data: {
+                ...mockBot._data,
+                columns: [
+                    {
+                        id: "column1",
+                        dataType: "string" as DataType,
+                        displayName: "column1",
+                        rows: ["a", "b", "c"],
+                        operatorsArray: [
+                            {
+                                params: [
+                                    {
+                                        isArray: false,
+                                        dataType: DataType.String,
+                                        name: "param1",
+                                    },
+                                ],
+                                displayName: "operator1",
+                                id: "operator1",
+                            },
+                            {
+                                params: [
+                                    {
+                                        isArray: false,
+                                        dataType: DataType.String,
+                                        name: "param2",
+                                    },
+                                ],
+                                displayName: "operator2",
+                                id: "operator2",
+                            },
+                        ],
+                    },
+                ],
+            },
+        };
+
+        const { result } = renderHook(
+            () => useEndChat(mockBotWithDifferentOperators),
+            {
+                wrapper: ({ children }) => (
+                    <RecoilRoot>
+                        <RecoilStateProvider
+                            messages={mockMessagesWithDifferentOperators}
+                        >
+                            {children}
+                        </RecoilStateProvider>
+                    </RecoilRoot>
+                ),
+            }
+        );
+
+        let attributes: Attribute[] = [];
+        act(() => {
+            if (result.current) {
+                attributes = result.current.handleEndChat();
+            }
+        });
+
+        expect(attributes).toEqual([
+            {
+                name: "column1",
+                operator: "operator2",
+                params: ["30"],
             },
         ]);
     });
