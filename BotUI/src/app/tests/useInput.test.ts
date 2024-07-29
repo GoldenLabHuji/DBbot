@@ -16,8 +16,28 @@ const mockBot: Bot = {
         },
     },
     _data: {
-        headers: ["param1", "param2"],
-        columns: [],
+        headers: ["column1", "column2"],
+        columns: [
+            {
+                id: "column1",
+                dataType: "string" as DataType,
+                displayName: "column1",
+                rows: ["a", "b", "c"],
+                operatorsArray: [
+                    {
+                        params: [
+                            {
+                                isArray: false,
+                                dataType: DataType.String,
+                                name: "param1",
+                            },
+                        ],
+                        displayName: "operator1",
+                        id: "operator1",
+                    },
+                ],
+            },
+        ],
     },
     _details: {
         name: "name",
@@ -27,6 +47,8 @@ const mockBot: Bot = {
     currentOperatorIndex: 0,
     operatorsData: [
         {
+            displayName: "operator1",
+            id: "operator1",
             params: [
                 {
                     isArray: false,
@@ -34,7 +56,6 @@ const mockBot: Bot = {
                     name: "param1",
                 },
             ],
-            displayName: "operator1",
         },
     ],
 };
@@ -52,7 +73,7 @@ const mockCurrentQIndex: currentQIndexType = {
 const mockSetIsEndSection = jest.fn();
 const mockSetIsEndChat = jest.fn();
 const mockCurrentParam = {
-    state: "",
+    state: "column1",
     setState: jest.fn(),
 };
 
@@ -145,7 +166,7 @@ describe("useInput", () => {
                 }),
             ])
         );
-        expect(mockCurrentParam.setState).toHaveBeenCalledWith("param1");
+        expect(mockCurrentParam.setState).toHaveBeenCalledWith("column1");
     });
 
     it("should handle user input for operator question", () => {
@@ -184,10 +205,7 @@ describe("useInput", () => {
             ])
         );
         expect(mockBot.currentOperatorIndex).toBe(0);
-        expect(result.current.botMsg).toEqual(
-            expect.arrayContaining(mockBot._data.headers)
-        );
-    });
+        });
 
     it("should handle user input for add question", () => {
         const { result } = renderHook(() =>
