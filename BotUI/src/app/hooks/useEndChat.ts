@@ -33,9 +33,9 @@ export default function useEndChat(bot: Bot) {
 
             const parameterColumn = bot?._data.columns.find(
                 (col) => col.id === parameterColumnId
-            ) as BotColumn;
+            );
 
-            const operatorsOfColumn = parameterColumn.operatorsArray;
+            const operatorsOfColumn = parameterColumn?.operatorsArray ?? [];
 
             const operatorChoice = Number(operatorsMessages[0]?.text) - 1;
 
@@ -52,11 +52,16 @@ export default function useEndChat(bot: Bot) {
 
             const newAttribute: Attribute = {
                 name: parameter,
-                operator: operator.id,
+                operator: operator?.id,
                 params: functionParams,
             };
 
-            queryAttributes.push(newAttribute);
+            const newAttributeValues = Object.values(newAttribute);
+            const isValuesValid = newAttributeValues.every((value) => value);
+
+            if (isValuesValid) {
+                queryAttributes.push(newAttribute);
+            }
         });
         return queryAttributes;
     };
