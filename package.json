@@ -2,8 +2,9 @@
     "name": "dbbot",
     "version": "1.0.0",
     "description": "",
-    "main": "index.ts",
+    "main": "./build/index.js",
     "scripts": {
+        "prepare": "npm run build",
         "test": "jest",
         "demo": "ts-node ./scripts/demo.ts",
         "build": "tsc -p tsconfig.build.json"
