@@ -32,7 +32,10 @@
         "fs": "^0.0.1-security",
         "fs-extra": "^11.2.0",
         "jest-environment-jsdom": "^29.7.0",
-        "ts-node": "^10.9.2"
+        "ts-node": "^10.9.2",
+        "next": "14.0.4",
+        "react": "^18",
+        "react-dom": "^18"
     },
     "repository": {
         "type": "git",
