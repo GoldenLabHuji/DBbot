@@ -78,7 +78,7 @@ const startWithBOperator = {
         },
     ],
 };
-index_1.dbBot.addCustomOperator(startWithBOperator);
+// dbBot.addCustomOperator(startWithBOperator);
 ////////////////
 //  run bot   //
 ////////////////
