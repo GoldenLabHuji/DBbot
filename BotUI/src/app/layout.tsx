@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 };
 
 const RecoilContextProviderNoSSr = dynamic(
-    // () => import(".  /store/RecoilContextProvider"),
-    () => import("./store/RecoilContextProvider"),
+    () => import("@/app/store/RecoilContextProvider"),
     { ssr: false }
 );
 
