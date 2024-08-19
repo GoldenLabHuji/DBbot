@@ -110,7 +110,7 @@ const startWithBOperator = {
     ],
 } as AddCustomOperatorParams;
 
-dbBot.addCustomOperator(startWithBOperator);
+// dbBot.addCustomOperator(startWithBOperator);
 
 ////////////////
 //  run bot   //

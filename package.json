@@ -35,24 +35,7 @@
         "fs": "^0.0.1-security",
         "fs-extra": "^11.2.0",
         "jest-environment-jsdom": "^29.7.0",
-        "next": "^14.2.5",
-        "react": "^18",
-        "react-dom": "^18",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.4.3",
-        "@types/react": "^18",
-        "@types/react-dom": "^18",
-        "recoil": "^0.7.7",
-        "@emotion/cache": "^11.11.0",
-        "@emotion/react": "^11.11.3",
-        "@emotion/styled": "^11.11.0",
-        "@mui/icons-material": "^5.15.2",
-        "@mui/material": "^5.15.2",
-        "@mui/material-nextjs": "^5.15.0",
-        "file-saver": "^2.0.5",
-        "json2csv": "^6.0.0-alpha.2"
-
-
+        "next": "^14.2.5"
     },
     "repository": {
         "type": "git",
