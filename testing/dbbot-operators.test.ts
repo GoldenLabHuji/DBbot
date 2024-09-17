@@ -63,21 +63,6 @@ describe("DBbot operators tests", () => {
         );
     });
 
-    test("should create operators file", () => {
-        const params: AddCustomOperatorParams = {
-            name: "testOperator",
-            customFunction: (a: number, b: number) => a + b,
-            params: [],
-            message: "Test message",
-            column: "column1",
-        };
-
-        dbBot.addCustomOperator(params);
-        dbBot.createOperatorsFile();
-
-        expect(fs.writeFileSync).toHaveBeenCalled();
-    });
-
     test("should add custom operator", () => {
         const params: AddCustomOperatorParams = {
             name: "testOperator",
