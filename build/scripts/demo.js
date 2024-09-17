@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../index");
+////////////////
+// create bot //
+////////////////
+const dbBot = new index_1.DBbot();
 /////////////////
 // set details //
 /////////////////
@@ -8,7 +12,7 @@ const details = {
     name: "Demo database name",
     description: "Demo database description",
 };
-index_1.dbBot.details = details;
+dbBot.details = details;
 /////////////////////////
 // set custom messages //
 /////////////////////////
@@ -18,7 +22,7 @@ const messages = {
     errorMessage: "Demo error message",
     resultMessage: "Demo result message",
 };
-index_1.dbBot.customMessages = messages;
+dbBot.customMessages = messages;
 ///////////////
 // set slots //
 ///////////////
@@ -38,18 +42,18 @@ const slots = {
     welcomeSlot: welcomeMessages,
     operatorSlot: operatorMessages,
 };
-index_1.dbBot.slots = slots;
+dbBot.slots = slots;
 ///////////////////
 // load csv file //
 ///////////////////
-index_1.dbBot.loadFile("./sw_characters.csv");
+dbBot.loadFile("./sw_characters.csv");
 /////////////////////////
 // null values in rows //
 /////////////////////////
 const nullValues = [null, "NA", NaN];
-const heightColumn = index_1.dbBot.getColumnByName("height");
+const heightColumn = dbBot.getColumnByName("height");
 heightColumn.fillNullValues("mean", nullValues);
-index_1.dbBot.fillNullValuesAll({
+dbBot.fillNullValuesAll({
     numericValue: -1,
     stringValue: "FILL",
     nullValue: nullValues,
@@ -60,7 +64,7 @@ index_1.dbBot.fillNullValuesAll({
 // try to change the name to an already existing column name
 // dbBot.changeColumnDisplayName("name", "abilities"); // throw error
 // change the name successfully
-index_1.dbBot.changeColumnDisplayName("name", "newName");
+dbBot.changeColumnDisplayName("name", "newName");
 /////////////////////
 // custom operator //
 /////////////////////
@@ -78,8 +82,8 @@ const startWithBOperator = {
         },
     ],
 };
-// dbBot.addCustomOperator(startWithBOperator);
-////////////////
-//  run bot   //
-////////////////
-index_1.app.runBot(index_1.dbBot);
+dbBot.addCustomOperator(startWithBOperator);
+///////////////////////
+// generate bot file //
+///////////////////////
+(0, index_1.generateBotFile)(dbBot);

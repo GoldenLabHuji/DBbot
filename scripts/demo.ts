@@ -1,5 +1,10 @@
-import { dbBot, app } from "../index";
-import { AddCustomOperatorParams } from "../DBbot/general/types";
+import { DBbot, generateBotFile } from "../index";
+import { AddCustomOperatorParams } from "../general/types";
+
+////////////////
+// create bot //
+////////////////
+const dbBot = new DBbot();
 
 /////////////////
 // set details //
@@ -110,10 +115,10 @@ const startWithBOperator = {
     ],
 } as AddCustomOperatorParams;
 
-// dbBot.addCustomOperator(startWithBOperator);
+dbBot.addCustomOperator(startWithBOperator);
 
-////////////////
-//  run bot   //
-////////////////
+///////////////////////
+// generate bot file //
+///////////////////////
 
-app.runBot(dbBot);
+generateBotFile(dbBot);
