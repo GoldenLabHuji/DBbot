@@ -36,6 +36,8 @@ export class DBbot {
         customOperators: this._customOperators,
     };
     private operatorsFiles: OperatorsFiles = EMPTY_OPERATORS_FILES;
+    public userColor: string = "purple";
+    public botColor: string = "blue";
 
     constructor() {
         this.initMessages();
