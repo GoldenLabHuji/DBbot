@@ -6,6 +6,13 @@ import { AddCustomOperatorParams } from "../general/types";
 ////////////////
 const dbBot = new DBbot();
 
+////////////////
+// set colors //
+////////////////
+
+dbBot.botColor = "orange";
+dbBot.userColor = "green";
+
 /////////////////
 // set details //
 /////////////////
@@ -115,12 +122,10 @@ const startWithBOperator = {
     ],
 } as AddCustomOperatorParams;
 
-
 dbBot.addCustomOperator(startWithBOperator);
 
 ///////////////////////
 // generate bot file //
 ///////////////////////
-
 
 generateBotFile(dbBot);
