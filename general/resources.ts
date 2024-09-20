@@ -14,6 +14,8 @@ export const METHOD_ERROR =
 
 export const EMPTY_OPERATORS_FILES = { functions: {}, main: "" };
 
+export const COLORS = ["blue", "green", "red", "yellow", "purple", "orange", "black", "white"]
+
 const EMPTY_CUSTOM_MESSAGES: CustomMessages = {
     attributeMessage: undefined,
     operatorMessage: undefined,

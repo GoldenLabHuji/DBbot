@@ -83,3 +83,8 @@ export type OperatorsFiles = {
     functions: { [key: string]: string };
     main: string;
 };
+
+export type ColorsProp = {
+    user: string;
+    bot: string;
+};
