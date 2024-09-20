@@ -10,8 +10,8 @@ const dbBot = new DBbot();
 // set colors //
 ////////////////
 
-dbBot.botColor = "orange";
-dbBot.userColor = "green";
+dbBot.botColor = "green";
+dbBot.userColor = "orange";
 
 /////////////////
 // set details //
