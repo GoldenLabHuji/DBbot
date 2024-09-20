@@ -13,6 +13,7 @@ import {
     MessagesSlot,
     fillNullValuesParams,
     OperatorsFiles,
+    ColorsProp,
 } from "../general/types";
 import {
     OPERATORS_FILE,
@@ -20,6 +21,7 @@ import {
     EMPTY_DETAILS,
     EMPTY_OPERATORS_DATA,
     EMPTY_OPERATORS_FILES,
+    COLORS,
 } from "../general/resources";
 
 export class DBbot {
@@ -36,8 +38,7 @@ export class DBbot {
         customOperators: this._customOperators,
     };
     private operatorsFiles: OperatorsFiles = EMPTY_OPERATORS_FILES;
-    public userColor: string = "purple";
-    public botColor: string = "blue";
+    private colors: ColorsProp = { bot: "blue", user: "purple" };
 
     constructor() {
         this.initMessages();
@@ -91,6 +92,31 @@ You can download the results as a csv file`,
 
     public set slots(messages: MessagesSlot) {
         this.setMessages("slots", messages);
+    }
+
+    public get botColor(): string {
+        return this.colors.bot;
+    }
+
+    public get userColor(): string {
+        return this.colors.user;
+    }
+
+    public set botColor(color: string) {
+        this.setColor(color, "bot");
+    }
+
+    public set userColor(color: string) {
+        this.setColor(color, "user");
+    }
+
+    private setColor(color: string, type: "bot" | "user"): void {
+        if (!COLORS.includes(color)) {
+            console.error(`Color ${color} is not a valid option`);
+            console.error(`Please choose from ${COLORS.join(", ")}`);
+            throw new Error(`Invalid color ${color}`);
+        }
+        this.colors[type] = color;
     }
 
     private setMessages<T extends keyof BotMessages>(
