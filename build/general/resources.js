@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OPERATORS_FILE = exports.EMPTY_OPERATORS_DATA = exports.EMPTY_DETAILS = exports.EMPTY_MESSAGES = exports.EMPTY_OPERATORS_FILES = exports.METHOD_ERROR = exports.CUSTOM_ERROR = exports.MODE_ERROR = exports.STRING_CALCULATION_ERROR = exports.DATATYPE_ERROR = void 0;
+exports.OPERATORS_FILE = exports.EMPTY_OPERATORS_DATA = exports.EMPTY_DETAILS = exports.EMPTY_MESSAGES = exports.COLORS = exports.EMPTY_OPERATORS_FILES = exports.METHOD_ERROR = exports.CUSTOM_ERROR = exports.MODE_ERROR = exports.STRING_CALCULATION_ERROR = exports.DATATYPE_ERROR = void 0;
 exports.DATATYPE_ERROR = "Invalid data type";
 exports.STRING_CALCULATION_ERROR = "Cannot calculate for string data type";
 exports.MODE_ERROR = "No mode found";
 exports.CUSTOM_ERROR = "Custom value is required";
 exports.METHOD_ERROR = "Invalid method, Please provide a valid method of the following 'mean', 'median', 'mode', 'remove' or 'custom'";
 exports.EMPTY_OPERATORS_FILES = { functions: {}, main: "" };
+exports.COLORS = ["blue", "green", "red", "yellow", "purple", "orange", "black", "white"];
 const EMPTY_CUSTOM_MESSAGES = {
     attributeMessage: undefined,
     operatorMessage: undefined,
