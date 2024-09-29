@@ -23,6 +23,7 @@ import { DataType, ColumnData, nullMethod, NumOrStr } from "../general/types";
 export class Column {
     private rows: any[] = [];
     private operatorsArray: Operator[] = [];
+    private _description: string = "No description available";
     constructor(
         private readonly _id: string,
         public dataType: DataType,
@@ -60,6 +61,17 @@ export class Column {
         } else {
             throw new Error(DATATYPE_ERROR);
         }
+    }
+
+    public get description(): string {
+        return this._description;
+    }
+
+    public set description(value: string) {
+        if (typeof value !== "string") {
+            throw new Error("Description must be a string");
+        }
+        this._description = value;
     }
 
     public get id(): string {
@@ -148,7 +160,7 @@ export class Column {
     }
 
     private fillRow(
-        inputValue: NumOrStr | null, 
+        inputValue: NumOrStr | null,
         nullValue: any[] = [null]
     ): void {
         this.rows.forEach((row, index) => {

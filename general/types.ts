@@ -7,6 +7,10 @@ export type NumOrStr = number | string;
 
 export type nullMethod = "mean" | "median" | "mode" | "remove" | "custom";
 
+export type generalObject<T> = {
+    [key: string]: T;
+};
+
 export type fillNullValuesParams = {
     numericValue?: number | null;
     stringValue?: string;

@@ -14,6 +14,7 @@ import {
     fillNullValuesParams,
     OperatorsFiles,
     ColorsProp,
+    generalObject,
 } from "../general/types";
 import {
     OPERATORS_FILE,
@@ -108,6 +109,11 @@ You can download the results as a csv file`,
 
     public set userColor(color: string) {
         this.setColor(color, "user");
+    }
+
+    public setColumnDescription(column: string, description: string): void {
+        const col = this.getColumnByName(column);
+        col.description = description;
     }
 
     public convertColumnsToFactor(columns: string[]): void {
@@ -230,6 +236,28 @@ You can download the results as a csv file`,
             appendOperators;
 
         this.operatorsFiles.main = fileText;
+    }
+
+    public loadDescriptionFile(path: string): void {
+        let records: generalObject<string>[] = [];
+        try {
+            const fileData = fs.readFileSync(path, "utf8");
+            records = parse(fileData, {
+                columns: true,
+                trim: true,
+                skip_empty_lines: true,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+
+        records.forEach((record) => {
+            const keys = Object.keys(record);
+            const columnName = record[keys[0]];
+            const description = record[keys[1]];
+            const column = this.getColumnByName(columnName);
+            column.description = description;
+        });
     }
 
     public loadFile(path: string): void {
