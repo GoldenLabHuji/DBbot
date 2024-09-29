@@ -96,6 +96,16 @@ dbBot.fillNullValuesAll({
     nullValue: nullValues,
 });
 
+/////////////////////////
+// columns description //
+/////////////////////////
+
+// by column
+dbBot.setColumnDescription("name", "Name of the character");
+
+// by file
+dbBot.loadDescriptionFile("./descriptionData.csv");
+
 /////////////////////
 // custom operator //
 /////////////////////
