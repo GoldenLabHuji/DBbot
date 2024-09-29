@@ -8,6 +8,8 @@ import {
     EndWithOperator,
     ContainsOperator,
     EqualStringOperator,
+    ChooseOneOperator,
+    ChooseMultipleOperator,
 } from "./operator";
 import {
     DATATYPE_ERROR,
@@ -39,6 +41,10 @@ export class Column {
             new ContainsOperator(),
             new EqualStringOperator(),
         ];
+        const factorOperators = [
+            new ChooseOneOperator(),
+            new ChooseMultipleOperator(),
+        ];
         if (dataType === "numeric") {
             this.operatorsArray.push(
                 ...[...numericOperators, ...this.customOperators]
@@ -46,6 +52,10 @@ export class Column {
         } else if (dataType === "string") {
             this.operatorsArray.push(
                 ...[...stringOperators, ...this.customOperators]
+            );
+        } else if (dataType === "factor") {
+            this.operatorsArray.push(
+                ...[...factorOperators, ...this.customOperators]
             );
         } else {
             throw new Error(DATATYPE_ERROR);
@@ -56,6 +66,10 @@ export class Column {
         return this._id;
     }
 
+    public deleteAllRows(): void {
+        this.rows = [];
+    }
+
     public getColumnData(): ColumnData {
         return {
             id: this.id,
@@ -64,6 +78,15 @@ export class Column {
             displayName: this.displayName,
             operators: this.operatorsArray,
         };
+    }
+
+    public ConvertToFactor(): void {
+        const factorOperators = [
+            new ChooseOneOperator(),
+            new ChooseMultipleOperator(),
+        ];
+        this.dataType = "factor";
+        this.operatorsArray = [...factorOperators, ...this.customOperators];
     }
 
     public addRows(rows: any[]): void {
@@ -124,7 +147,10 @@ export class Column {
         return sortedRows[mid];
     }
 
-    private fillRow(inputValue: NumOrStr, nullValue: any[] = [null]): void {
+    private fillRow(
+        inputValue: NumOrStr | null, 
+        nullValue: any[] = [null]
+    ): void {
         this.rows.forEach((row, index) => {
             if (nullValue.includes(row)) {
                 this.rows[index] = inputValue;
@@ -135,7 +161,7 @@ export class Column {
     public fillNullValues(
         method: nullMethod,
         nullValue: any[] = [null],
-        customValue?: NumOrStr
+        customValue?: NumOrStr | null
     ): void {
         if (method === "custom") {
             if (customValue === undefined) {

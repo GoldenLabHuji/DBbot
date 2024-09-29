@@ -7,7 +7,16 @@ exports.MODE_ERROR = "No mode found";
 exports.CUSTOM_ERROR = "Custom value is required";
 exports.METHOD_ERROR = "Invalid method, Please provide a valid method of the following 'mean', 'median', 'mode', 'remove' or 'custom'";
 exports.EMPTY_OPERATORS_FILES = { functions: {}, main: "" };
-exports.COLORS = ["blue", "green", "red", "yellow", "purple", "orange", "black", "white"];
+exports.COLORS = [
+    "blue",
+    "green",
+    "red",
+    "yellow",
+    "purple",
+    "orange",
+    "black",
+    "white",
+];
 const EMPTY_CUSTOM_MESSAGES = {
     attributeMessage: undefined,
     operatorMessage: undefined,
@@ -176,9 +185,46 @@ const NUMERIC_OPERATORS_DATA = [
         ],
     },
 ];
+const FACTOR_OPERATORS_DATA = [
+    {
+        name: "ChooseOne",
+        column: "all",
+        params: [
+            {
+                name: "inputValue",
+                dataType: "string",
+                isArray: false,
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+                isArray: false,
+                message: "Enter the value you would like to choose:",
+            },
+        ],
+    },
+    {
+        name: "ChooseMultiple",
+        column: "all",
+        params: [
+            {
+                name: "inputValue",
+                dataType: "factor",
+                isArray: false,
+            },
+            {
+                name: "compareValue",
+                dataType: "factor",
+                isArray: true,
+                message: "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",
+            },
+        ],
+    },
+];
 exports.EMPTY_OPERATORS_DATA = [
     ...STRING_OPERATORS_DATA,
     ...NUMERIC_OPERATORS_DATA,
+    ...FACTOR_OPERATORS_DATA,
 ];
 exports.OPERATORS_FILE = `
 import {
@@ -189,7 +235,9 @@ import {
     startWithOperator,
     endWithOperator,
     containsOperator,
-    equalStringOperator,    
+    equalStringOperator,
+    chooseOneOperator,
+    chooseMultipleOperator,   
 } from "@/app/operators";
 
 export const OPERATORS = {
@@ -201,4 +249,6 @@ export const OPERATORS = {
     endWith: endWithOperator,
     contains: containsOperator,
     equalString: equalStringOperator,
+    chooseOne: chooseOneOperator,
+    chooseMultiple: chooseMultipleOperator,
 };`;

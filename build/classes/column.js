@@ -27,11 +27,18 @@ class Column {
             new operator_1.ContainsOperator(),
             new operator_1.EqualStringOperator(),
         ];
+        const factorOperators = [
+            new operator_1.ChooseOneOperator(),
+            new operator_1.ChooseMultipleOperator(),
+        ];
         if (dataType === "numeric") {
             this.operatorsArray.push(...[...numericOperators, ...this.customOperators]);
         }
         else if (dataType === "string") {
             this.operatorsArray.push(...[...stringOperators, ...this.customOperators]);
+        }
+        else if (dataType === "factor") {
+            this.operatorsArray.push(...[...factorOperators, ...this.customOperators]);
         }
         else {
             throw new Error(resources_1.DATATYPE_ERROR);
@@ -39,6 +46,9 @@ class Column {
     }
     get id() {
         return this._id;
+    }
+    deleteAllRows() {
+        this.rows = [];
     }
     getColumnData() {
         return {
@@ -48,6 +58,14 @@ class Column {
             displayName: this.displayName,
             operators: this.operatorsArray,
         };
+    }
+    ConvertToFactor() {
+        const factorOperators = [
+            new operator_1.ChooseOneOperator(),
+            new operator_1.ChooseMultipleOperator(),
+        ];
+        this.dataType = "factor";
+        this.operatorsArray = [...factorOperators, ...this.customOperators];
     }
     addRows(rows) {
         this.rows.push(...rows);

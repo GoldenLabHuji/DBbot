@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EqualStringOperator = exports.ContainsOperator = exports.EndWithOperator = exports.StartsWithOperator = exports.SoundLikeOperator = exports.RangeOperator = exports.GreaterOperator = exports.LessOperator = exports.EqualOperator = exports.CustomOperator = exports.Operator = void 0;
+exports.EqualStringOperator = exports.ContainsOperator = exports.EndWithOperator = exports.StartsWithOperator = exports.SoundLikeOperator = exports.RangeOperator = exports.GreaterOperator = exports.LessOperator = exports.EqualOperator = exports.ChooseMultipleOperator = exports.ChooseOneOperator = exports.CustomOperator = exports.Operator = void 0;
 class Operator {
     id;
     displayName;
@@ -28,6 +28,45 @@ class CustomOperator extends Operator {
     }
 }
 exports.CustomOperator = CustomOperator;
+class ChooseOneOperator extends Operator {
+    constructor() {
+        super("chooseOne");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
+    }
+    calculate(inputValue, compareValue) {
+        return inputValue === compareValue;
+    }
+}
+exports.ChooseOneOperator = ChooseOneOperator;
+class ChooseMultipleOperator extends Operator {
+    constructor() {
+        super("chooseMultiple");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+                isArray: true,
+            },
+        ];
+    }
+    calculate(inputValue, compareValue) {
+        return compareValue.includes(inputValue);
+    }
+}
+exports.ChooseMultipleOperator = ChooseMultipleOperator;
 class EqualOperator extends Operator {
     constructor() {
         super("equal");

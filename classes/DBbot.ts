@@ -110,6 +110,22 @@ You can download the results as a csv file`,
         this.setColor(color, "user");
     }
 
+    public convertColumnsToFactor(columns: string[]): void {
+        columns.forEach((column) => {
+            const col = this.getColumnByName(column);
+            col.ConvertToFactor();
+            const columnData = this.dataMap.get(column);
+            if (columnData) {
+                col.deleteAllRows();
+                col.addRows(columnData);
+            } else {
+                console.error(
+                    `Column ${column} has no data. cannot convert to factor`
+                );
+            }
+        });
+    }
+
     private setColor(color: string, type: "bot" | "user"): void {
         if (!COLORS.includes(color)) {
             console.error(`Color ${color} is not a valid option`);

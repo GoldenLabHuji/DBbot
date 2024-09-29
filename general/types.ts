@@ -1,14 +1,14 @@
 import { Column } from "../classes/column";
 import { CustomOperator, Operator } from "../classes/operator";
 
-export type DataType = "string" | "numeric";
+export type DataType = "string" | "numeric" | "factor";
 
 export type NumOrStr = number | string;
 
 export type nullMethod = "mean" | "median" | "mode" | "remove" | "custom";
 
 export type fillNullValuesParams = {
-    numericValue?: number;
+    numericValue?: number | null;
     stringValue?: string;
     nullValue: any[];
 };
