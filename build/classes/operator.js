@@ -33,17 +33,18 @@ class ChooseOneOperator extends Operator {
         super("chooseOne");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
+                message: "Enter the value you would like to choose:",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return inputValue === compareValue;
+    calculate(cell, value) {
+        return cell === value;
     }
 }
 exports.ChooseOneOperator = ChooseOneOperator;
@@ -52,18 +53,19 @@ class ChooseMultipleOperator extends Operator {
         super("chooseMultiple");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
             },
             {
-                name: "compareValue",
+                name: "values",
                 dataType: "string",
                 isArray: true,
+                message: "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return compareValue.includes(inputValue);
+    calculate(cell, values) {
+        return values.includes(cell);
     }
 }
 exports.ChooseMultipleOperator = ChooseMultipleOperator;
@@ -72,17 +74,18 @@ class EqualOperator extends Operator {
         super("equal");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "numeric",
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "numeric",
+                message: "Enter the value you would like it to be equal to:",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return Number(compareValue) === Number(inputValue);
+    calculate(cell, value) {
+        return Number(value) === Number(cell);
     }
 }
 exports.EqualOperator = EqualOperator;
@@ -91,17 +94,18 @@ class LessOperator extends Operator {
         super("less");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "numeric",
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "numeric",
+                message: "Enter the value you would like it to be less than:",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return inputValue <= compareValue;
+    calculate(cell, value) {
+        return cell <= value;
     }
 }
 exports.LessOperator = LessOperator;
@@ -110,17 +114,18 @@ class GreaterOperator extends Operator {
         super("greater");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "numeric",
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "numeric",
+                message: "Enter the value you would like it to be greater than:",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return inputValue >= compareValue;
+    calculate(cell, value) {
+        return cell >= value;
     }
 }
 exports.GreaterOperator = GreaterOperator;
@@ -129,21 +134,23 @@ class RangeOperator extends Operator {
         super("range");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "numeric",
             },
             {
                 name: "minValue",
                 dataType: "numeric",
+                message: "Enter the minimum value:",
             },
             {
                 name: "maxValue",
                 dataType: "numeric",
+                message: "Enter the maximum value:",
             },
         ];
     }
-    calculate(inputValue, minValue, maxValue) {
-        return inputValue >= minValue && inputValue <= maxValue;
+    calculate(cell, minValue, maxValue) {
+        return cell >= minValue && cell <= maxValue;
     }
 }
 exports.RangeOperator = RangeOperator;
@@ -188,17 +195,18 @@ class StartsWithOperator extends Operator {
         super("startWith");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
+                message: "Enter the character to start with:",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return inputValue.toLowerCase().startsWith(compareValue.toLowerCase());
+    calculate(cell, value) {
+        return cell.toLowerCase().startsWith(value.toLowerCase());
     }
 }
 exports.StartsWithOperator = StartsWithOperator;
@@ -207,17 +215,18 @@ class EndWithOperator extends Operator {
         super("endWith");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
+                message: "Enter the character to end with:",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return inputValue.toLowerCase().endsWith(compareValue.toLowerCase());
+    calculate(cell, value) {
+        return cell.toLowerCase().endsWith(value.toLowerCase());
     }
 }
 exports.EndWithOperator = EndWithOperator;
@@ -226,17 +235,18 @@ class ContainsOperator extends Operator {
         super("contains");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
+                message: "Enter the string the word should contain:",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return inputValue.toLowerCase().includes(compareValue.toLowerCase());
+    calculate(cell, value) {
+        return cell.toLowerCase().includes(value.toLowerCase());
     }
 }
 exports.ContainsOperator = ContainsOperator;
@@ -245,17 +255,18 @@ class EqualStringOperator extends Operator {
         super("equalString", "equal");
         this.params = [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
+                message: "Enter the value the word should be equal to:",
             },
         ];
     }
-    calculate(inputValue, compareValue) {
-        return inputValue.toLowerCase() === compareValue.toLowerCase();
+    calculate(cell, value) {
+        return cell.toLowerCase() === value.toLowerCase();
     }
 }
 exports.EqualStringOperator = EqualStringOperator;

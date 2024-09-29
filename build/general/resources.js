@@ -45,12 +45,12 @@ const STRING_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
                 isArray: false,
                 message: "Enter the character to end with:",
@@ -62,12 +62,12 @@ const STRING_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
                 isArray: false,
                 message: "Enter the string the word should contain:",
@@ -79,12 +79,12 @@ const STRING_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
                 isArray: false,
                 message: "Enter the value the word should be equal to:",
@@ -96,12 +96,12 @@ const STRING_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
                 isArray: false,
                 message: "Enter the character to start with:",
@@ -115,12 +115,12 @@ const NUMERIC_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "numeric",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "numeric",
                 isArray: false,
                 message: "Enter the value you would like it to be equal to:",
@@ -132,12 +132,12 @@ const NUMERIC_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "numeric",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "numeric",
                 isArray: false,
                 message: "Enter the value you would like it to be greater than:",
@@ -149,12 +149,12 @@ const NUMERIC_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "numeric",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "numeric",
                 isArray: false,
                 message: "Enter the value you would like it to be less than:",
@@ -166,7 +166,7 @@ const NUMERIC_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "numeric",
                 isArray: false,
             },
@@ -191,12 +191,12 @@ const FACTOR_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "string",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "value",
                 dataType: "string",
                 isArray: false,
                 message: "Enter the value you would like to choose:",
@@ -208,12 +208,12 @@ const FACTOR_OPERATORS_DATA = [
         column: "all",
         params: [
             {
-                name: "inputValue",
+                name: "cell",
                 dataType: "factor",
                 isArray: false,
             },
             {
-                name: "compareValue",
+                name: "values",
                 dataType: "factor",
                 isArray: true,
                 message: "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",

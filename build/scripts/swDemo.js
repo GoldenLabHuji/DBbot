@@ -69,9 +69,9 @@ dbBot.fillNullValuesAll({
 // custom operator //
 /////////////////////
 const startWithBOperator = {
-    name: "startsWithB",
-    customFunction: function (cell) {
-        return cell.startsWith("B");
+    name: "startsWithBAndEndsWithX",
+    customFunction: function (cell, value) {
+        return cell.startsWith("B") && cell.endsWith(value);
     },
     dataType: "string",
     column: "name",
@@ -80,6 +80,11 @@ const startWithBOperator = {
             name: "cell",
             dataType: "string",
             message: "Custom parameter message",
+        },
+        {
+            name: "value",
+            dataType: "string",
+            message: "Enter the value you would like the words to end with:",
         },
     ],
     message: "Custom operator message",
