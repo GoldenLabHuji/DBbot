@@ -1,94 +1,120 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../index");
+import { DBbot, generateBotFile } from "../index";
+import { AddCustomOperatorParams } from "../general/types";
+
 ////////////////
 // create bot //
 ////////////////
-const dbBot = new index_1.DBbot();
+const dbBot = new DBbot();
+
 ////////////////
 // set colors //
 ////////////////
+
 dbBot.botColor = "green";
-dbBot.userColor = "orange";
+dbBot.userColor = "blue";
+
 /////////////////
 // set details //
 /////////////////
+
 const details = {
-    name: "Demo database name",
-    description: "Demo database description",
+    name: "Star Wars Characters Bot",
+    description: "Bot to get details of Star Wars characters",
 };
+
 dbBot.details = details;
+
 /////////////////////////
 // set custom messages //
 /////////////////////////
+
 const messages = {
-    attributeMessage: "Demo messages for attributes",
-    operatorMessage: "Demo message for operators",
-    errorMessage: "Demo error message",
-    resultMessage: "Demo result message",
+    attributeMessage: "Please choose an attribute to filter the characters",
+    operatorMessage: "Please choose an operator for filtering the attribute",
+    errorMessage: "Sorry, I didn't get that. Please try again",
+    resultMessage: "Here is your result. May the force be with you!",
 };
+
 dbBot.customMessages = messages;
+
 ///////////////
 // set slots //
 ///////////////
+
 // welcome slot
 const welcomeMessages = [];
-const welcomeFirstMsg = "Demo welcome slot first message";
+
+const welcomeFirstMsg = "Welcome to Star Wars Characters Bot!";
+
 welcomeMessages.push(welcomeFirstMsg);
-const welcomeSecondMsg = "Demo welcome slot second message";
+
+const welcomeSecondMsg =
+    "I can help to filter Star Wars characters based on different attributes";
+
 welcomeMessages.push(welcomeSecondMsg);
+
 // operator slot
 const operatorMessages = [];
-const operatorFirstMsg = "Demo operator slot first message";
+
+const operatorFirstMsg =
+    "After you  have entered the operator, you need to enter values for the parameters of the operator";
+
 operatorMessages.push(operatorFirstMsg);
-const operatorSecondMsg = "Demo operator slot second message";
-operatorMessages.push(operatorSecondMsg);
+
 const slots = {
     welcomeSlot: welcomeMessages,
     operatorSlot: operatorMessages,
 };
+
 dbBot.slots = slots;
+
 ///////////////////
 // load csv file //
 ///////////////////
+
 dbBot.loadFile("./sw_characters.csv");
+
 /////////////////////////
 // null values in rows //
 /////////////////////////
+
 const nullValues = [null, "NA", NaN];
+
 const heightColumn = dbBot.getColumnByName("height");
+
 heightColumn.fillNullValues("mean", nullValues);
+
 dbBot.fillNullValuesAll({
     numericValue: -1,
     stringValue: "FILL",
     nullValue: nullValues,
 });
-////////////////////////
-// custom column name //
-////////////////////////
-// try to change the name to an already existing column name
-// dbBot.changeColumnDisplayName("name", "abilities"); // throw error
-// change the name successfully
-dbBot.changeColumnDisplayName("name", "newName");
+
 /////////////////////
 // custom operator //
 /////////////////////
+
 const startWithBOperator = {
     name: "startsWithB",
-    customFunction: function (cell) {
+    customFunction: function (cell: string) {
         return cell.startsWith("B");
     },
     dataType: "string",
-    column: "newName",
+    column: "name",
     params: [
         {
             name: "cell",
             dataType: "string",
+            message: "Custom parameter message",
         },
     ],
-};
+    message: "Custom operator message",
+} as AddCustomOperatorParams;
+
 dbBot.addCustomOperator(startWithBOperator);
+
 ///////////////////////
 // generate bot file //
 ///////////////////////
-(0, index_1.generateBotFile)(dbBot);
+
+generateBotFile(dbBot);

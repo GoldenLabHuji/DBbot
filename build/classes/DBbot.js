@@ -23,6 +23,7 @@ class DBbot {
         customOperators: this._customOperators,
     };
     operatorsFiles = resources_1.EMPTY_OPERATORS_FILES;
+    colors = { bot: "blue", user: "purple" };
     constructor() {
         this.initMessages();
     }
@@ -66,6 +67,26 @@ You can download the results as a csv file`,
     }
     set slots(messages) {
         this.setMessages("slots", messages);
+    }
+    get botColor() {
+        return this.colors.bot;
+    }
+    get userColor() {
+        return this.colors.user;
+    }
+    set botColor(color) {
+        this.setColor(color, "bot");
+    }
+    set userColor(color) {
+        this.setColor(color, "user");
+    }
+    setColor(color, type) {
+        if (!resources_1.COLORS.includes(color)) {
+            console.error(`Color ${color} is not a valid option`);
+            console.error(`Please choose from ${resources_1.COLORS.join(", ")}`);
+            throw new Error(`Invalid color ${color}`);
+        }
+        this.colors[type] = color;
     }
     setMessages(key, messages) {
         Object.keys(messages).forEach((messageKey) => {

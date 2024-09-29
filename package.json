@@ -6,7 +6,7 @@
     "scripts": {
         "prepare": "npm run build",
         "test": "jest",
-        "demo": "ts-node ./scripts/demo.ts",
+        "demo": "ts-node ./scripts/swDemo.ts",
         "build": "tsc -p tsconfig.build.json",
         "semantic-release": "semantic-release"
     },
