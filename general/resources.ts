@@ -14,7 +14,16 @@ export const METHOD_ERROR =
 
 export const EMPTY_OPERATORS_FILES = { functions: {}, main: "" };
 
-export const COLORS = ["blue", "green", "red", "yellow", "purple", "orange", "black", "white"]
+export const COLORS = [
+    "blue",
+    "green",
+    "red",
+    "yellow",
+    "purple",
+    "orange",
+    "black",
+    "white",
+];
 
 const EMPTY_CUSTOM_MESSAGES: CustomMessages = {
     attributeMessage: undefined,
@@ -191,9 +200,48 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
     },
 ];
 
+const FACTOR_OPERATORS_DATA: OperatorData[] = [
+    {
+        name: "ChooseOne",
+        column: "all",
+        params: [
+            {
+                name: "inputValue",
+                dataType: "string",
+                isArray: false,
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+                isArray: false,
+                message: "Enter the value you would like to choose:",
+            },
+        ],
+    },
+    {
+        name: "ChooseMultiple",
+        column: "all",
+        params: [
+            {
+                name: "inputValue",
+                dataType: "factor",
+                isArray: false,
+            },
+            {
+                name: "compareValue",
+                dataType: "factor",
+                isArray: true,
+                message:
+                    "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",
+            },
+        ],
+    },
+];
+
 export const EMPTY_OPERATORS_DATA: OperatorData[] = [
     ...STRING_OPERATORS_DATA,
     ...NUMERIC_OPERATORS_DATA,
+    ...FACTOR_OPERATORS_DATA,
 ];
 
 export const OPERATORS_FILE = `
@@ -205,7 +253,9 @@ import {
     startWithOperator,
     endWithOperator,
     containsOperator,
-    equalStringOperator,    
+    equalStringOperator,
+    chooseOneOperator,
+    chooseMultipleOperator,   
 } from "@/app/operators";
 
 export const OPERATORS = {
@@ -217,4 +267,6 @@ export const OPERATORS = {
     endWith: endWithOperator,
     contains: containsOperator,
     equalString: equalStringOperator,
+    chooseOne: chooseOneOperator,
+    chooseMultiple: chooseMultipleOperator,
 };`;

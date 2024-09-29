@@ -80,6 +80,20 @@ You can download the results as a csv file`,
     set userColor(color) {
         this.setColor(color, "user");
     }
+    convertColumnsToFactor(columns) {
+        columns.forEach((column) => {
+            const col = this.getColumnByName(column);
+            col.ConvertToFactor();
+            const columnData = this.dataMap.get(column);
+            if (columnData) {
+                col.deleteAllRows();
+                col.addRows(columnData);
+            }
+            else {
+                console.error(`Column ${column} has no data. cannot convert to factor`);
+            }
+        });
+    }
     setColor(color, type) {
         if (!resources_1.COLORS.includes(color)) {
             console.error(`Color ${color} is not a valid option`);

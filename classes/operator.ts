@@ -28,6 +28,47 @@ export class CustomOperator extends Operator {
     }
 }
 
+export class ChooseOneOperator extends Operator {
+    constructor() {
+        super("chooseOne");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+            },
+        ];
+    }
+
+    calculate(inputValue: string, compareValue: string) {
+        return inputValue === compareValue;
+    }
+}
+
+export class ChooseMultipleOperator extends Operator {
+    constructor() {
+        super("chooseMultiple");
+        this.params = [
+            {
+                name: "inputValue",
+                dataType: "string",
+            },
+            {
+                name: "compareValue",
+                dataType: "string",
+                isArray: true,
+            },
+        ];
+    }
+
+    calculate(inputValue: string, compareValue: string[]) {
+        return compareValue.includes(inputValue);
+    }
+}
+
 export class EqualOperator extends Operator {
     constructor() {
         super("equal");
@@ -127,7 +168,7 @@ export class SoundLikeOperator extends Operator {
             {
                 name: "maxDifferences",
                 dataType: "numeric",
-            },
+            },  
         ];
     }
 
