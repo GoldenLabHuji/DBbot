@@ -30,10 +30,10 @@ DBbot is an npm package that allows researchers to create a bot based on a CSV f
 
 This is a description of what the **user** will see
 
-First, the bot will provide the uaer an explaintion about the database (CSV file).
+First, the bot will provide the user an explaintion about the database (CSV file).
 Second, the bot will display the user a list of the columns of the database, and the user can choose from it which column he/she would like to query.
 
-After ther user has choose the attribute (column) the bot will display a list the  of operators of the chosen column. Each column has it's own operators.
+After the user has chosen the attribute (column) the bot will display a list of operators of the chosen column. Each column has it's own operators.
 The operators are used for query the data. 
 For example, if the user chose a "name" attribute and he/she want to query only the names that starts with the letter "S", he/she can choose the "StartWith" operator to achive that.
 Some operators require input of parameters. The bot will ask the user for it as well.
@@ -117,7 +117,7 @@ The cell parameter must always be the first one.
 For example:
 
 ```javascript
-// The function have a paraeter called "cell"  which can be of type string or number
+// The function has a parameter called "cell" which can be of type string or number
 function startsWithB(cell: string) {
    return cell.startsWith("B"); / return value of type boolean
 }
@@ -144,7 +144,7 @@ dbBot.addCustomOperator(startWithBOperator); // add the operator to the bot
 
 ```
 
-To add the operator to the bot, The addCustomOperator must be called  with the operator as a parameter.
+To add the operator to the bot, The addCustomOperator must be called with the operator as a parameter.
 
 ## Handling null values
 In many databaes there are missing values in some attributes. DBbot gives the researcher the option to decide how to treat those values.
@@ -159,7 +159,7 @@ The are some default value the researcher can change the null values to:
 ### Example:
 
 ```javascript
-// Define what values treat as null values
+// Define which values are treated as null values
 const nullValues = [null, "NA", NaN];
 
 // Get the attribute
@@ -172,13 +172,13 @@ heightColumn.fillNullValues("mean", nullValues);
 heightColumn.fillNullValues("custom", nullValues, 5);
 ```
 
-Another option is to fill al null values of all columns at the same time and with the same value (one for string attributes and one for numeric attributes)
+Another option is to fill all null values of all columns at the same time and with the same value (one for string attributes and one for numeric attributes)
 
 ### Example:
 
 ```javascript
 
-// Define what values treat as null values
+// Define which values are treated as null values
 const nullValues = [null, "NA", NaN];
 
 // Fill all null values
@@ -194,10 +194,10 @@ dbBot.fillNullValuesAll({
 
 The name of each attribute can be changed:
 ```javascript
-// change a display name of "name" attribute to "newName"
+// Change a display name of "name" attribute to "newName"
 dbBot.changeColumnDisplayName("name", "newName");
 
-// If the new name is already exists in another attribute, it throw an error
+// If the new name already exists in another attribute then the function will throw an error
 
 ```
 
@@ -229,7 +229,7 @@ The slots messages are messages that can be placed between the fixed in time mes
    - operatorSlot: Message in this slots will be displayed after the fix in time operatorMessage message.
    - paramsSlot: Message in this slots will be displayed after the the messages of the params of the operator.
    - restartSlot: Message in this slots will be displayed after the query has been chosen.
-     This slots meant to ask the user if he/she wants to add another attribute to the query.
+     This slots is meant to ask the user if he/she wants to add another attribute to the query.
    - resultSlot: Message in this slots will be displayed *before* the fix in time resultMessage message.
 
   ### Example of fixed in time messages:
