@@ -134,7 +134,12 @@ export class Column {
             }
             return accuracy;
         }, {});
-        const max = Math.max(...(Object.values(counts) as number[]));
+        const countsArray = Object.values(counts) as number[];
+        const isSame = countsArray.every((count) => count === countsArray[0]);
+        if (isSame) {
+            throw new Error(MODE_ERROR);
+        }
+        const max = Math.max(...countsArray);
         const result =
             Number(Object.keys(counts).find((key) => counts[key] === max)) ??
             -1;
