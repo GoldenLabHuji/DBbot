@@ -15,6 +15,7 @@ import {
     OperatorsFiles,
     ColorsProp,
     generalObject,
+    NullMethod,
 } from "../general/types";
 import {
     OPERATORS_FILE,
@@ -323,9 +324,11 @@ You can download the results as a csv file`,
     }: fillNullValuesParams): void {
         this._data.columns.forEach((column) => {
             const value =
-                column.dataType === "numeric" ? numericValue : stringValue;
+                column.dataType === DataType.NUMERIC
+                    ? numericValue
+                    : stringValue;
             if (value === undefined) return;
-            column.fillNullValues("custom", nullValue, value);
+            column.fillNullValues(NullMethod.CUSTOM, nullValue, value);
         });
     }
 
@@ -336,13 +339,17 @@ You can download the results as a csv file`,
                 const isNumeric = columnData.some(
                     (item: string) => !isNaN(Number(item))
                 );
-                const dataType: DataType = isNumeric ? "numeric" : "string";
+                const dataType: DataType = isNumeric
+                    ? DataType.NUMERIC
+                    : DataType.STRING;
                 const col = new Column(column, dataType);
                 const numberColumnData: number[] = columnData.map(
                     (item: string) => parseFloat(item)
                 );
                 col.addRows(
-                    dataType === "numeric" ? numberColumnData : columnData
+                    dataType === DataType.NUMERIC
+                        ? numberColumnData
+                        : columnData
                 );
                 this.addColumn(col);
             } else {

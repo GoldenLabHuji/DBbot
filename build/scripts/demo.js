@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../index");
+const types_1 = require("../general/types");
 ////////////////
 // create bot //
 ////////////////
@@ -57,7 +58,7 @@ dbBot.loadFile("./sw_characters.csv");
 /////////////////////////
 const nullValues = [null, "NA", NaN];
 const heightColumn = dbBot.getColumnByName("height");
-heightColumn.fillNullValues("mean", nullValues);
+heightColumn.fillNullValues(types_1.NullMethod.MEAN, nullValues);
 dbBot.fillNullValuesAll({
     numericValue: -1,
     stringValue: "FILL",

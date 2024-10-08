@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Column = void 0;
 const operator_1 = require("./operator");
 const resources_1 = require("../general/resources");
+const types_1 = require("../general/types");
 class Column {
     _id;
     dataType;
@@ -10,6 +11,7 @@ class Column {
     customOperators;
     rows = [];
     operatorsArray = [];
+    _description = "No description available";
     constructor(_id, dataType, displayName = _id, customOperators = []) {
         this._id = _id;
         this.dataType = dataType;
@@ -31,18 +33,28 @@ class Column {
             new operator_1.ChooseOneOperator(),
             new operator_1.ChooseMultipleOperator(),
         ];
-        if (dataType === "numeric") {
-            this.operatorsArray.push(...[...numericOperators, ...this.customOperators]);
+        switch (dataType) {
+            case types_1.DataType.NUMERIC:
+                this.operatorsArray.push(...[...numericOperators, ...this.customOperators]);
+                break;
+            case types_1.DataType.STRING:
+                this.operatorsArray.push(...[...stringOperators, ...this.customOperators]);
+                break;
+            case types_1.DataType.FACTOR:
+                this.operatorsArray.push(...[...factorOperators, ...this.customOperators]);
+                break;
+            default:
+                throw new Error(resources_1.DATATYPE_ERROR);
         }
-        else if (dataType === "string") {
-            this.operatorsArray.push(...[...stringOperators, ...this.customOperators]);
+    }
+    get description() {
+        return this._description;
+    }
+    set description(value) {
+        if (typeof value !== "string") {
+            throw new Error("Description must be a string");
         }
-        else if (dataType === "factor") {
-            this.operatorsArray.push(...[...factorOperators, ...this.customOperators]);
-        }
-        else {
-            throw new Error(resources_1.DATATYPE_ERROR);
-        }
+        this._description = value;
     }
     get id() {
         return this._id;
@@ -64,7 +76,7 @@ class Column {
             new operator_1.ChooseOneOperator(),
             new operator_1.ChooseMultipleOperator(),
         ];
-        this.dataType = "factor";
+        this.dataType = types_1.DataType.FACTOR;
         this.operatorsArray = [...factorOperators, ...this.customOperators];
     }
     addRows(rows) {
@@ -74,8 +86,8 @@ class Column {
         this.operatorsArray.push(operator);
     }
     mean() {
-        if (this.dataType === "string") {
-            throw new Error(resources_1.STRING_CALCULATION_ERROR);
+        if (!(this.dataType === types_1.DataType.NUMERIC)) {
+            throw new Error(resources_1.NAN_CALCULATION_ERROR);
         }
         const sum = this.rows.reduce((acc, curr) => {
             if (isNaN(curr))
@@ -86,8 +98,8 @@ class Column {
         return Math.round(mean * 100) / 100;
     }
     mode() {
-        if (this.dataType === "string") {
-            throw new Error(resources_1.STRING_CALCULATION_ERROR);
+        if (!(this.dataType === types_1.DataType.NUMERIC)) {
+            throw new Error(resources_1.NAN_CALCULATION_ERROR);
         }
         const counts = this.rows.reduce((accuracy, current) => {
             if (isNaN(current))
@@ -100,7 +112,12 @@ class Column {
             }
             return accuracy;
         }, {});
-        const max = Math.max(...Object.values(counts));
+        const countsArray = Object.values(counts);
+        const isSame = countsArray.every((count) => count === countsArray[0]);
+        if (isSame) {
+            throw new Error(resources_1.MODE_ERROR);
+        }
+        const max = Math.max(...countsArray);
         const result = Number(Object.keys(counts).find((key) => counts[key] === max)) ??
             -1;
         if (result === -1) {
@@ -109,8 +126,8 @@ class Column {
         return result;
     }
     median() {
-        if (this.dataType === "string") {
-            throw new Error(resources_1.STRING_CALCULATION_ERROR);
+        if (!(this.dataType === types_1.DataType.NUMERIC)) {
+            throw new Error(resources_1.NAN_CALCULATION_ERROR);
         }
         const notNaNRows = this.rows.filter((row) => !isNaN(row));
         const sortedRows = notNaNRows.sort((a, b) => {
@@ -130,26 +147,27 @@ class Column {
         });
     }
     fillNullValues(method, nullValue = [null], customValue) {
-        if (method === "custom") {
-            if (customValue === undefined) {
-                throw new Error(resources_1.CUSTOM_ERROR);
-            }
-            this.fillRow(customValue, nullValue);
-        }
-        else if (method === "remove") {
-            this.rows = this.rows.filter((row) => row !== nullValue);
-        }
-        else if (method === "mean") {
-            this.fillRow(this.mean(), nullValue);
-        }
-        else if (method === "median") {
-            this.fillRow(this.median(), nullValue);
-        }
-        else if (method === "mode") {
-            this.fillRow(this.mode(), nullValue);
-        }
-        else {
-            throw new Error(resources_1.METHOD_ERROR);
+        switch (method) {
+            case types_1.NullMethod.CUSTOM:
+                if (customValue === undefined) {
+                    throw new Error(resources_1.CUSTOM_ERROR);
+                }
+                this.fillRow(customValue, nullValue);
+                break;
+            case types_1.NullMethod.REMOVE:
+                this.rows = this.rows.filter((row) => row !== nullValue);
+                break;
+            case types_1.NullMethod.MEAN:
+                this.fillRow(this.mean(), nullValue);
+                break;
+            case types_1.NullMethod.MEDIAN:
+                this.fillRow(this.median(), nullValue);
+                break;
+            case types_1.NullMethod.MODE:
+                this.fillRow(this.mode(), nullValue);
+                break;
+            default:
+                throw new Error(resources_1.METHOD_ERROR);
         }
     }
 }

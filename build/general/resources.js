@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OPERATORS_FILE = exports.EMPTY_OPERATORS_DATA = exports.EMPTY_DETAILS = exports.EMPTY_MESSAGES = exports.COLORS = exports.EMPTY_OPERATORS_FILES = exports.METHOD_ERROR = exports.CUSTOM_ERROR = exports.MODE_ERROR = exports.STRING_CALCULATION_ERROR = exports.DATATYPE_ERROR = void 0;
+exports.OPERATORS_FILE = exports.EMPTY_OPERATORS_DATA = exports.EMPTY_DETAILS = exports.EMPTY_MESSAGES = exports.COLORS = exports.EMPTY_OPERATORS_FILES = exports.METHOD_ERROR = exports.CUSTOM_ERROR = exports.MODE_ERROR = exports.NAN_CALCULATION_ERROR = exports.DATATYPE_ERROR = void 0;
+const types_1 = require("./types");
 exports.DATATYPE_ERROR = "Invalid data type";
-exports.STRING_CALCULATION_ERROR = "Cannot calculate for string data type";
+exports.NAN_CALCULATION_ERROR = "Can only calculate for numeric data type";
 exports.MODE_ERROR = "No mode found";
 exports.CUSTOM_ERROR = "Custom value is required";
 exports.METHOD_ERROR = "Invalid method, Please provide a valid method of the following 'mean', 'median', 'mode', 'remove' or 'custom'";
@@ -46,12 +47,12 @@ const STRING_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
                 message: "Enter the character to end with:",
             },
@@ -63,12 +64,12 @@ const STRING_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
                 message: "Enter the string the word should contain:",
             },
@@ -80,12 +81,12 @@ const STRING_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
                 message: "Enter the value the word should be equal to:",
             },
@@ -97,12 +98,12 @@ const STRING_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
                 message: "Enter the character to start with:",
             },
@@ -116,12 +117,12 @@ const NUMERIC_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the value you would like it to be equal to:",
             },
@@ -133,12 +134,12 @@ const NUMERIC_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the value you would like it to be greater than:",
             },
@@ -150,12 +151,12 @@ const NUMERIC_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the value you would like it to be less than:",
             },
@@ -167,18 +168,18 @@ const NUMERIC_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "minValue",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the minimum value:",
             },
             {
                 name: "maxValue",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the maximum value:",
             },
@@ -192,12 +193,12 @@ const FACTOR_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: false,
                 message: "Enter the value you would like to choose:",
             },
@@ -209,12 +210,12 @@ const FACTOR_OPERATORS_DATA = [
         params: [
             {
                 name: "cell",
-                dataType: "factor",
+                dataType: types_1.DataType.FACTOR,
                 isArray: false,
             },
             {
                 name: "values",
-                dataType: "factor",
+                dataType: types_1.DataType.FACTOR,
                 isArray: true,
                 message: "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",
             },

@@ -8,6 +8,7 @@ const fs_1 = __importDefault(require("fs"));
 const sync_1 = require("csv-parse/sync");
 const column_1 = require("./column");
 const operator_1 = require("./operator");
+const types_1 = require("../general/types");
 const resources_1 = require("../general/resources");
 class DBbot {
     dataMap = new Map();
@@ -79,6 +80,10 @@ You can download the results as a csv file`,
     }
     set userColor(color) {
         this.setColor(color, "user");
+    }
+    setColumnDescription(column, description) {
+        const col = this.getColumnByName(column);
+        col.description = description;
     }
     convertColumnsToFactor(columns) {
         columns.forEach((column) => {
@@ -169,6 +174,27 @@ You can download the results as a csv file`,
             appendOperators;
         this.operatorsFiles.main = fileText;
     }
+    loadDescriptionFile(path) {
+        let records = [];
+        try {
+            const fileData = fs_1.default.readFileSync(path, "utf8");
+            records = (0, sync_1.parse)(fileData, {
+                columns: true,
+                trim: true,
+                skip_empty_lines: true,
+            });
+        }
+        catch (error) {
+            console.error(error);
+        }
+        records.forEach((record) => {
+            const keys = Object.keys(record);
+            const columnName = record[keys[0]];
+            const description = record[keys[1]];
+            const column = this.getColumnByName(columnName);
+            column.description = description;
+        });
+    }
     loadFile(path) {
         this.filePath = path;
         try {
@@ -216,10 +242,12 @@ You can download the results as a csv file`,
     }
     fillNullValuesAll({ numericValue, stringValue, nullValue = [null], }) {
         this._data.columns.forEach((column) => {
-            const value = column.dataType === "numeric" ? numericValue : stringValue;
+            const value = column.dataType === types_1.DataType.NUMERIC
+                ? numericValue
+                : stringValue;
             if (value === undefined)
                 return;
-            column.fillNullValues("custom", nullValue, value);
+            column.fillNullValues(types_1.NullMethod.CUSTOM, nullValue, value);
         });
     }
     addColumnsAuto() {
@@ -227,10 +255,14 @@ You can download the results as a csv file`,
             const columnData = this.dataMap.get(column);
             if (columnData && columnData.length > 0) {
                 const isNumeric = columnData.some((item) => !isNaN(Number(item)));
-                const dataType = isNumeric ? "numeric" : "string";
+                const dataType = isNumeric
+                    ? types_1.DataType.NUMERIC
+                    : types_1.DataType.STRING;
                 const col = new column_1.Column(column, dataType);
                 const numberColumnData = columnData.map((item) => parseFloat(item));
-                col.addRows(dataType === "numeric" ? numberColumnData : columnData);
+                col.addRows(dataType === types_1.DataType.NUMERIC
+                    ? numberColumnData
+                    : columnData);
                 this.addColumn(col);
             }
             else {

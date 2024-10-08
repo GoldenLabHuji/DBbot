@@ -1,5 +1,5 @@
 import { DBbot, generateBotFile } from "../index";
-import { AddCustomOperatorParams } from "../general/types";
+import { AddCustomOperatorParams, NullMethod } from "../general/types";
 
 ////////////////
 // create bot //
@@ -88,7 +88,7 @@ const nullValues = [null, "NA", NaN];
 
 const heightColumn = dbBot.getColumnByName("height");
 
-heightColumn.fillNullValues("mean", nullValues);
+heightColumn.fillNullValues(NullMethod.MEAN, nullValues);
 
 dbBot.fillNullValuesAll({
     numericValue: null,

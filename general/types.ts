@@ -1,11 +1,24 @@
 import { Column } from "../classes/column";
 import { CustomOperator, Operator } from "../classes/operator";
 
-export type DataType = "string" | "numeric" | "factor";
+export enum DataType {
+    STRING = "string",
+    NUMERIC = "numeric",
+    FACTOR = "factor",
+}
+// export type DataType = "string" | "numeric" | "factor";
 
 export type NumOrStr = number | string;
 
-export type nullMethod = "mean" | "median" | "mode" | "remove" | "custom";
+export enum NullMethod {
+    MEAN = "mean",
+    MEDIAN = "median",
+    MODE = "mode",
+    REMOVE = "remove",
+    CUSTOM = "custom",
+}
+
+// export type nullMethod = "mean" | "median" | "mode" | "remove" | "custom";
 
 export type generalObject<T> = {
     [key: string]: T;

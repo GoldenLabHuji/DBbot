@@ -2,7 +2,7 @@ import fs from "fs";
 import { parse } from "csv-parse/sync";
 import { DBbot } from "../classes/DBbot";
 import { Column } from "../classes/column";
-import { AddCustomOperatorParams } from "../general/types";
+import { AddCustomOperatorParams, DataType } from "../general/types";
 
 jest.mock("fs");
 jest.mock("path");
@@ -34,7 +34,7 @@ describe("DBbot operators tests", () => {
             column: "column1",
         };
 
-        const column = new Column("testColumn", "string");
+        const column = new Column("testColumn", DataType.STRING);
         dbBot["addColumn"](column);
 
         dbBot["registerOperators"](params);

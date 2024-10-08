@@ -2,6 +2,7 @@ import fs from "fs";
 import { parse } from "csv-parse/sync";
 import { DBbot } from "../classes/DBbot";
 import { Column } from "../classes/column";
+import { DataType, NullMethod } from "../general/types";
 
 jest.mock("fs");
 jest.mock("path");
@@ -51,8 +52,8 @@ describe("DBbot columns tests", () => {
     });
 
     test("should throw error when changing column display name to an existing one", () => {
-        const column1 = new Column("name1", "string");
-        const column2 = new Column("name2", "string");
+        const column1 = new Column("name1", DataType.STRING);
+        const column2 = new Column("name2", DataType.STRING);
         dbBot["addColumn"](column1);
         dbBot["addColumn"](column2);
 
@@ -105,7 +106,7 @@ describe("DBbot columns tests", () => {
     });
 
     test("should remove column", () => {
-        const column = new Column("testColumn", "string");
+        const column = new Column("testColumn", DataType.STRING);
         dbBot["addColumn"](column);
 
         dbBot["removeColumn"](column);
@@ -116,7 +117,7 @@ describe("DBbot columns tests", () => {
     });
 
     test("should get column by id", () => {
-        const column = new Column("testId", "string");
+        const column = new Column("testId", DataType.STRING);
         column.displayName = "testName";
         dbBot["addColumn"](column);
 
@@ -127,7 +128,7 @@ describe("DBbot columns tests", () => {
     });
 
     test("should change column display name", () => {
-        const column = new Column("oldName", "string");
+        const column = new Column("oldName", DataType.STRING);
         dbBot["addColumn"](column);
 
         dbBot.changeColumnDisplayName("oldName", "newName");
@@ -142,8 +143,8 @@ describe("DBbot columns tests", () => {
     });
 
     test("should throw error when duplicate column display name is added", () => {
-        const column1 = new Column("name1", "string");
-        const column2 = new Column("name2", "string");
+        const column1 = new Column("name1", DataType.STRING);
+        const column2 = new Column("name2", DataType.STRING);
         dbBot["addColumn"](column1);
         dbBot["addColumn"](column2);
 
