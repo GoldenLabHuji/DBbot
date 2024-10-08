@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../index");
+const types_1 = require("../general/types");
 ////////////////
 // create bot //
 ////////////////
@@ -59,12 +60,19 @@ dbBot.convertColumnsToFactor(["gender"]); // can enter multiple columns
 /////////////////////////
 const nullValues = [null, "NA", NaN];
 const heightColumn = dbBot.getColumnByName("height");
-heightColumn.fillNullValues("mean", nullValues);
+heightColumn.fillNullValues(types_1.NullMethod.MEAN, nullValues);
 dbBot.fillNullValuesAll({
     numericValue: null,
     stringValue: "",
     nullValue: nullValues,
 });
+/////////////////////////
+// columns description //
+/////////////////////////
+// by column
+dbBot.setColumnDescription("name", "Name of the character");
+// by file
+dbBot.loadDescriptionFile("./descriptionData.csv");
 /////////////////////
 // custom operator //
 /////////////////////

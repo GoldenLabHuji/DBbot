@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EqualStringOperator = exports.ContainsOperator = exports.EndWithOperator = exports.StartsWithOperator = exports.SoundLikeOperator = exports.RangeOperator = exports.GreaterOperator = exports.LessOperator = exports.EqualOperator = exports.ChooseMultipleOperator = exports.ChooseOneOperator = exports.CustomOperator = exports.Operator = void 0;
+const types_1 = require("../general/types");
 class Operator {
     id;
     displayName;
@@ -34,11 +35,11 @@ class ChooseOneOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 message: "Enter the value you would like to choose:",
             },
         ];
@@ -54,11 +55,11 @@ class ChooseMultipleOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
             },
             {
                 name: "values",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 isArray: true,
                 message: "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",
             },
@@ -75,11 +76,11 @@ class EqualOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 message: "Enter the value you would like it to be equal to:",
             },
         ];
@@ -95,11 +96,11 @@ class LessOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 message: "Enter the value you would like it to be less than:",
             },
         ];
@@ -115,11 +116,11 @@ class GreaterOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 message: "Enter the value you would like it to be greater than:",
             },
         ];
@@ -135,16 +136,16 @@ class RangeOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
             },
             {
                 name: "minValue",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 message: "Enter the minimum value:",
             },
             {
                 name: "maxValue",
-                dataType: "numeric",
+                dataType: types_1.DataType.NUMERIC,
                 message: "Enter the maximum value:",
             },
         ];
@@ -160,15 +161,15 @@ class SoundLikeOperator extends Operator {
         this.params = [
             {
                 name: "inputValue",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
             },
             {
                 name: "compareValue",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
             },
             {
                 name: "maxDifferences",
-                dataType: "numeric",
+                dataType: types_1.DataType.STRING,
             },
         ];
     }
@@ -196,11 +197,11 @@ class StartsWithOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 message: "Enter the character to start with:",
             },
         ];
@@ -216,11 +217,11 @@ class EndWithOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 message: "Enter the character to end with:",
             },
         ];
@@ -236,11 +237,11 @@ class ContainsOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 message: "Enter the string the word should contain:",
             },
         ];
@@ -256,11 +257,11 @@ class EqualStringOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: types_1.DataType.STRING,
                 message: "Enter the value the word should be equal to:",
             },
         ];

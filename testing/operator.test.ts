@@ -25,7 +25,7 @@ describe("Operator and its subclasses", () => {
 
     test("CustomOperator should add params", () => {
         const customOperator = new CustomOperator("custom", () => true);
-        const params = [{ name: "param1", dataType: "string" as DataType }];
+        const params = [{ name: "param1", dataType: DataType.STRING }];
         customOperator.addParams(params);
 
         expect(customOperator.params).toEqual(params);

@@ -13,12 +13,12 @@ import {
 } from "./operator";
 import {
     DATATYPE_ERROR,
-    STRING_CALCULATION_ERROR,
+    NAN_CALCULATION_ERROR,
     MODE_ERROR,
     CUSTOM_ERROR,
     METHOD_ERROR,
 } from "../general/resources";
-import { DataType, ColumnData, nullMethod, NumOrStr } from "../general/types";
+import { DataType, ColumnData, NullMethod, NumOrStr } from "../general/types";
 
 export class Column {
     private rows: any[] = [];
@@ -46,20 +46,24 @@ export class Column {
             new ChooseOneOperator(),
             new ChooseMultipleOperator(),
         ];
-        if (dataType === "numeric") {
-            this.operatorsArray.push(
-                ...[...numericOperators, ...this.customOperators]
-            );
-        } else if (dataType === "string") {
-            this.operatorsArray.push(
-                ...[...stringOperators, ...this.customOperators]
-            );
-        } else if (dataType === "factor") {
-            this.operatorsArray.push(
-                ...[...factorOperators, ...this.customOperators]
-            );
-        } else {
-            throw new Error(DATATYPE_ERROR);
+        switch (dataType) {
+            case DataType.NUMERIC:
+                this.operatorsArray.push(
+                    ...[...numericOperators, ...this.customOperators]
+                );
+                break;
+            case DataType.STRING:
+                this.operatorsArray.push(
+                    ...[...stringOperators, ...this.customOperators]
+                );
+                break;
+            case DataType.FACTOR:
+                this.operatorsArray.push(
+                    ...[...factorOperators, ...this.customOperators]
+                );
+                break;
+            default:
+                throw new Error(DATATYPE_ERROR);
         }
     }
 
@@ -97,7 +101,7 @@ export class Column {
             new ChooseOneOperator(),
             new ChooseMultipleOperator(),
         ];
-        this.dataType = "factor";
+        this.dataType = DataType.FACTOR;
         this.operatorsArray = [...factorOperators, ...this.customOperators];
     }
 
@@ -110,8 +114,8 @@ export class Column {
     }
 
     public mean(): number {
-        if (this.dataType === "string") {
-            throw new Error(STRING_CALCULATION_ERROR);
+        if (!(this.dataType === DataType.NUMERIC)) {
+            throw new Error(NAN_CALCULATION_ERROR);
         }
         const sum = this.rows.reduce((acc, curr) => {
             if (isNaN(curr)) return acc + 0;
@@ -122,8 +126,8 @@ export class Column {
     }
 
     public mode(): number {
-        if (this.dataType === "string") {
-            throw new Error(STRING_CALCULATION_ERROR);
+        if (!(this.dataType === DataType.NUMERIC)) {
+            throw new Error(NAN_CALCULATION_ERROR);
         }
         const counts = this.rows.reduce((accuracy, current) => {
             if (isNaN(current)) return accuracy;
@@ -150,8 +154,8 @@ export class Column {
     }
 
     public median(): number {
-        if (this.dataType === "string") {
-            throw new Error(STRING_CALCULATION_ERROR);
+        if (!(this.dataType === DataType.NUMERIC)) {
+            throw new Error(NAN_CALCULATION_ERROR);
         }
         const notNaNRows = this.rows.filter((row) => !isNaN(row));
         const sortedRows = notNaNRows.sort((a, b) => {
@@ -176,25 +180,31 @@ export class Column {
     }
 
     public fillNullValues(
-        method: nullMethod,
+        method: NullMethod,
         nullValue: any[] = [null],
         customValue?: NumOrStr | null
     ): void {
-        if (method === "custom") {
-            if (customValue === undefined) {
-                throw new Error(CUSTOM_ERROR);
-            }
-            this.fillRow(customValue, nullValue);
-        } else if (method === "remove") {
-            this.rows = this.rows.filter((row) => row !== nullValue);
-        } else if (method === "mean") {
-            this.fillRow(this.mean(), nullValue);
-        } else if (method === "median") {
-            this.fillRow(this.median(), nullValue);
-        } else if (method === "mode") {
-            this.fillRow(this.mode(), nullValue);
-        } else {
-            throw new Error(METHOD_ERROR);
+        switch (method) {
+            case NullMethod.CUSTOM:
+                if (customValue === undefined) {
+                    throw new Error(CUSTOM_ERROR);
+                }
+                this.fillRow(customValue, nullValue);
+                break;
+            case NullMethod.REMOVE:
+                this.rows = this.rows.filter((row) => row !== nullValue);
+                break;
+            case NullMethod.MEAN:
+                this.fillRow(this.mean(), nullValue);
+                break;
+            case NullMethod.MEDIAN:
+                this.fillRow(this.median(), nullValue);
+                break;
+            case NullMethod.MODE:
+                this.fillRow(this.mode(), nullValue);
+                break;
+            default:
+                throw new Error(METHOD_ERROR);
         }
     }
 }

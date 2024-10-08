@@ -3,10 +3,11 @@ import {
     CustomMessages,
     MessagesSlot,
     BotMessages,
+    DataType,
 } from "./types";
 
 export const DATATYPE_ERROR = "Invalid data type";
-export const STRING_CALCULATION_ERROR = "Cannot calculate for string data type";
+export const NAN_CALCULATION_ERROR = "Can only calculate for numeric data type";
 export const MODE_ERROR = "No mode found";
 export const CUSTOM_ERROR = "Custom value is required";
 export const METHOD_ERROR =
@@ -58,12 +59,12 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
                 message: "Enter the character to end with:",
             },
@@ -75,12 +76,12 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
                 message: "Enter the string the word should contain:",
             },
@@ -92,12 +93,12 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
                 message: "Enter the value the word should be equal to:",
             },
@@ -109,12 +110,12 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
                 message: "Enter the character to start with:",
             },
@@ -129,12 +130,12 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the value you would like it to be equal to:",
             },
@@ -146,12 +147,12 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
                 message:
                     "Enter the value you would like it to be greater than:",
@@ -164,12 +165,12 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the value you would like it to be less than:",
             },
@@ -181,18 +182,18 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "minValue",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the minimum value:",
             },
             {
                 name: "maxValue",
-                dataType: "numeric",
+                dataType: DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the maximum value:",
             },
@@ -207,12 +208,12 @@ const FACTOR_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: "string",
+                dataType: DataType.STRING,
                 isArray: false,
                 message: "Enter the value you would like to choose:",
             },
@@ -224,12 +225,12 @@ const FACTOR_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: "factor",
+                dataType: DataType.FACTOR,
                 isArray: false,
             },
             {
                 name: "values",
-                dataType: "factor",
+                dataType: DataType.FACTOR,
                 isArray: true,
                 message:
                     "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",
