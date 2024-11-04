@@ -76,12 +76,12 @@ You can download the results as a csv file`,
     test("should get and set details", () => {
         const details: BotDetails = {
             name: "Test Bot",
-            description: "A test bot description",
+            helpDescription: "A test bot description",
         };
 
         dbBot.details = details;
 
         expect(dbBot.details.name).toBe("Test Bot");
-        expect(dbBot.details.description).toBe("A test bot description");
+        expect(dbBot.details.helpDescription).toBe("A test bot description");
     });
 });

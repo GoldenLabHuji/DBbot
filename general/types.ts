@@ -46,7 +46,7 @@ export type BotData = {
 
 export type BotDetails = {
     name?: string;
-    description?: string;
+    helpDescription?: string;
     mailInfo?: string;
 };
 

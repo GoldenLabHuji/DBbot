@@ -48,8 +48,8 @@ export const EMPTY_MESSAGES: BotMessages = {
 };
 
 export const EMPTY_DETAILS = {
-    name: "INSERT DATABASE NAME",
-    description: "INSERT DESCRIPTION OF THE DATABASE",
+    name: "DBBot",
+    helpDescription: "NO DESCRIPTION PROVIDED",
 };
 
 const STRING_OPERATORS_DATA: OperatorData[] = [
