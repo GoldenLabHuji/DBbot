@@ -76,8 +76,8 @@ You can download the results as a csv file`,
 
     public set details(details: BotDetails) {
         this._details.name = details.name ?? this._details.name;
-        this._details.description =
-            details.description ?? this._details.description;
+        this._details.helpDescription =
+            details.helpDescription ?? this._details.helpDescription;
     }
 
     public get data(): BotData {
