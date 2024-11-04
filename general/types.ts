@@ -47,6 +47,7 @@ export type BotData = {
 export type BotDetails = {
     name?: string;
     helpDescription?: string;
+    mailInfo?: string;
 };
 
 export type AddCustomOperatorParams = OperatorData & {
