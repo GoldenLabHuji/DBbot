@@ -56,6 +56,7 @@ You can download the results as a csv file`,
         this._details.name = details.name ?? this._details.name;
         this._details.description =
             details.description ?? this._details.description;
+        this._details.mailInfo = details.mailInfo ?? this._details.mailInfo;
     }
     get data() {
         return this._data;
