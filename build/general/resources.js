@@ -37,8 +37,8 @@ exports.EMPTY_MESSAGES = {
     slots: EMPTY_SLOTS,
 };
 exports.EMPTY_DETAILS = {
-    name: "INSERT DATABASE NAME",
-    description: "INSERT DESCRIPTION OF THE DATABASE",
+    name: "DBBot",
+    helpDescription: "NO DESCRIPTION PROVIDED",
 };
 const STRING_OPERATORS_DATA = [
     {
