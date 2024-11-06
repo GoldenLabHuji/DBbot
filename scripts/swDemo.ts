@@ -19,7 +19,8 @@ dbBot.userColor = "blue";
 
 const details = {
     name: "Star Wars Characters Bot",
-    description: "Bot to get details of Star Wars characters",
+    helpDescription:
+        "This bot can help you filter Star Wars characters based on different attributes",
 };
 
 dbBot.details = details;
@@ -104,7 +105,7 @@ dbBot.fillNullValuesAll({
 dbBot.setColumnDescription("name", "Name of the character");
 
 // by file
-dbBot.loadDescriptionFile("./descriptionData.csv");
+dbBot.loadDescriptionFile("./demo/descriptionSw.csv");
 
 /////////////////////
 // custom operator //
