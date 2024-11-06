@@ -21,6 +21,7 @@ const details = {
     name: "Star Wars Characters Bot",
     helpDescription:
         "This bot can help you filter Star Wars characters based on different attributes",
+    mailInfo: "example@gmail.com",
 };
 
 dbBot.details = details;
