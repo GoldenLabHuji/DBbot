@@ -98,6 +98,8 @@ dbBot.fillNullValuesAll({
     nullValue: nullValues,
 });
 
+dbBot.isFilterIncludesNull = true;
+
 /////////////////////////
 // columns description //
 /////////////////////////
@@ -106,7 +108,7 @@ dbBot.fillNullValuesAll({
 dbBot.setColumnDescription("name", "Name of the character");
 
 // by file
-dbBot.loadDescriptionFile("./demo/descriptionSw.csv");
+// dbBot.loadDescriptionFile("./demo/descriptionSw.csv");
 
 /////////////////////
 // custom operator //

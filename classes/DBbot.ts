@@ -2,6 +2,7 @@ import fs from "fs";
 import { parse } from "csv-parse/sync";
 import { Column } from "./column";
 import { CustomOperator } from "./operator";
+import { generateTypeError } from "../general/utils";
 import {
     DataType,
     OperatorData,
@@ -41,6 +42,7 @@ export class DBbot {
     };
     private operatorsFiles: OperatorsFiles = EMPTY_OPERATORS_FILES;
     private colors: ColorsProp = { bot: "blue", user: "purple" };
+    private _isFilterIncludesNull: boolean = false;
 
     constructor() {
         this.initMessages();
@@ -106,11 +108,22 @@ You can download the results as a csv file`,
     }
 
     public set botColor(color: string) {
+        generateTypeError(color, "string", "botColor");
         this.setColor(color, "bot");
     }
 
     public set userColor(color: string) {
+        generateTypeError(color, "string", "userColor");
         this.setColor(color, "user");
+    }
+
+    public set isFilterIncludesNull(value: boolean) {
+        generateTypeError(value, "boolean", "filterIncludesNull");
+        this._isFilterIncludesNull = value;
+    }
+
+    public get isFilterIncludesNull(): boolean {
+        return this._isFilterIncludesNull;
     }
 
     public setColumnDescription(column: string, description: string): void {
