@@ -98,7 +98,8 @@ dbBot.fillNullValuesAll({
     nullValue: nullValues,
 });
 
-dbBot.isFilterIncludesNull = true;
+dbBot.defineNullValues(["NA"]);
+dbBot.setIsFilterIncludesNull(true);
 
 /////////////////////////
 // columns description //

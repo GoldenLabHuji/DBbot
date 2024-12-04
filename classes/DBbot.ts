@@ -17,6 +17,7 @@ import {
     ColorsProp,
     generalObject,
     NullMethod,
+    NullValues,
 } from "../general/types";
 import {
     OPERATORS_FILE,
@@ -42,7 +43,10 @@ export class DBbot {
     };
     private operatorsFiles: OperatorsFiles = EMPTY_OPERATORS_FILES;
     private colors: ColorsProp = { bot: "blue", user: "purple" };
-    private _isFilterIncludesNull: boolean = false;
+    private nullValues: NullValues = {
+        isFilterIncludesNull: false,
+        nullValues: [],
+    };
 
     constructor() {
         this.initMessages();
@@ -117,18 +121,22 @@ You can download the results as a csv file`,
         this.setColor(color, "user");
     }
 
-    public set isFilterIncludesNull(value: boolean) {
-        generateTypeError(value, "boolean", "filterIncludesNull");
-        this._isFilterIncludesNull = value;
-    }
-
-    public get isFilterIncludesNull(): boolean {
-        return this._isFilterIncludesNull;
+    public defineNullValues(values: any[]): void {
+        this.nullValues.nullValues = values;
     }
 
     public setColumnDescription(column: string, description: string): void {
         const col = this.getColumnByName(column);
         col.description = description;
+    }
+
+    public getNullValuesProperty(): NullValues {
+        return this.nullValues;
+    }
+
+    public setIsFilterIncludesNull(value: boolean): void {
+        generateTypeError(value, "boolean", "filterIncludesNull");
+        this.nullValues.isFilterIncludesNull = value;
     }
 
     public convertColumnsToFactor(columns: string[]): void {

@@ -103,3 +103,8 @@ export type ColorsProp = {
     user: string;
     bot: string;
 };
+
+export type NullValues = {
+    isFilterIncludesNull: boolean;
+    nullValues: any[];
+};
