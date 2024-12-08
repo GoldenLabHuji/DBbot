@@ -1,11 +1,12 @@
 import { Column } from "../classes/column";
 import { EqualOperator } from "../classes/operator";
 import {
-    DATATYPE_ERROR,
-    NAN_CALCULATION_ERROR,
-    MODE_ERROR,
-    CUSTOM_ERROR,
-    METHOD_ERROR,
+    ERRORS,
+    // DATATYPE_ERROR,
+    // NAN_CALCULATION_ERROR,
+    // MODE_ERROR,
+    // CUSTOM_ERROR,
+    // METHOD_ERROR,
 } from "../general/resources";
 import { DataType, NullMethod } from "../general/types";
 
@@ -24,7 +25,7 @@ describe("Column", () => {
     test("should throw DATATYPE_ERROR if data type is invalid", () => {
         expect(() => {
             new Column("invalidColumn", "invalid" as any);
-        }).toThrow(DATATYPE_ERROR);
+        }).toThrow(ERRORS.DATATYPE);
     });
 
     test("should set and get description", () => {
@@ -51,7 +52,7 @@ describe("Column", () => {
 
     test("should throw STRING_CALCULATION_ERROR when calculating mean for string data type", () => {
         const stringColumn = new Column("stringColumn", DataType.STRING);
-        expect(() => stringColumn.mean()).toThrow(NAN_CALCULATION_ERROR);
+        expect(() => stringColumn.mean()).toThrow(ERRORS.NAN);
     });
 
     test("should calculate mode correctly", () => {
@@ -61,7 +62,7 @@ describe("Column", () => {
 
     test("should throw MODE_ERROR if no mode found", () => {
         column.addRows([1, 2, 3]);
-        expect(() => column.mode()).toThrow(MODE_ERROR);
+        expect(() => column.mode()).toThrow(ERRORS.MODE);
     });
 
     test("should calculate median correctly", () => {
@@ -71,7 +72,7 @@ describe("Column", () => {
 
     test("should throw STRING_CALCULATION_ERROR when calculating median for string data type", () => {
         const stringColumn = new Column("stringColumn", DataType.STRING);
-        expect(() => stringColumn.median()).toThrow(NAN_CALCULATION_ERROR);
+        expect(() => stringColumn.median()).toThrow(ERRORS.NAN);
     });
 
     test("should fill null values with custom value", () => {
@@ -83,14 +84,14 @@ describe("Column", () => {
     test("should throw CUSTOM_ERROR if custom value is missing", () => {
         column.addRows([1, null, 3, null]);
         expect(() => column.fillNullValues(NullMethod.CUSTOM)).toThrow(
-            CUSTOM_ERROR
+            ERRORS.CUSTOM
         );
     });
 
     test("should throw METHOD_ERROR if invalid method is provided", () => {
         column.addRows([1, null, 3, null]);
         expect(() => column.fillNullValues("invalidMethod" as any)).toThrow(
-            METHOD_ERROR
+            ERRORS.METHOD
         );
     });
 
