@@ -1,13 +1,13 @@
-import { NumOrStr, Params, DataType } from "../general/types";
+import * as types from "../general/types";
 
 export abstract class Operator {
-    public params: Params[] = [];
+    public params: types.Params[] = [];
     constructor(
         private readonly id: string,
         private displayName: string = id
     ) {}
 
-    abstract calculate(inputValue: NumOrStr, ...args: any): boolean;
+    abstract calculate(inputValue: types.NumOrStr, ...args: any): boolean;
 
     getDisplayName(): string {
         return this.displayName;
@@ -23,7 +23,7 @@ export class CustomOperator extends Operator {
         return this.customFunction();
     }
 
-    addParams(params: Params[]) {
+    addParams(params: types.Params[]) {
         this.params.push(...params);
     }
 }
@@ -34,11 +34,11 @@ export class ChooseOneOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 message: "Enter the value you would like to choose:",
             },
         ];
@@ -55,11 +55,11 @@ export class ChooseMultipleOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
             {
                 name: "values",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: true,
                 message:
                     "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",
@@ -78,11 +78,11 @@ export class EqualOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
             },
             {
                 name: "value",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 message: "Enter the value you would like it to be equal to:",
             },
         ];
@@ -99,11 +99,11 @@ export class LessOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
             },
             {
                 name: "value",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 message: "Enter the value you would like it to be less than:",
             },
         ];
@@ -120,11 +120,11 @@ export class GreaterOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
             },
             {
                 name: "value",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 message:
                     "Enter the value you would like it to be greater than:",
             },
@@ -142,16 +142,16 @@ export class RangeOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
             },
             {
                 name: "minValue",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 message: "Enter the minimum value:",
             },
             {
                 name: "maxValue",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 message: "Enter the maximum value:",
             },
         ];
@@ -168,15 +168,15 @@ export class SoundLikeOperator extends Operator {
         this.params = [
             {
                 name: "inputValue",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
             {
                 name: "compareValue",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
             {
                 name: "maxDifferences",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
         ];
     }
@@ -207,11 +207,11 @@ export class StartsWithOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 message: "Enter the character to start with:",
             },
         ];
@@ -228,11 +228,11 @@ export class EndWithOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 message: "Enter the character to end with:",
             },
         ];
@@ -249,11 +249,11 @@ export class ContainsOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 message: "Enter the string the word should contain:",
             },
         ];
@@ -270,11 +270,11 @@ export class EqualStringOperator extends Operator {
         this.params = [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 message: "Enter the value the word should be equal to:",
             },
         ];
