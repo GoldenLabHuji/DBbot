@@ -1,5 +1,6 @@
 import { DBbot, generateBotFile } from "../index";
 import { AddCustomOperatorParams, NullMethod } from "../general/types";
+import { StartsWithOperator } from "../classes/operator";
 
 ////////////////
 // create bot //
@@ -110,6 +111,19 @@ dbBot.setColumnDescription("name", "Name of the character");
 
 // by file
 // dbBot.loadDescriptionFile("./demo/descriptionSw.csv");
+
+///////////////////////
+// default operators //
+///////////////////////
+
+// the useDefaultOperators attribute used to enable or disable the default operators
+// the default value of this attribute is true
+const eyeColorColumn = dbBot.getColumnByName("eye_color");
+eyeColorColumn.useDefaultOperators = false;
+
+// add specific operators
+// DO NOT use addOperator for custom operators!
+eyeColorColumn.addOperator(new StartsWithOperator());
 
 /////////////////////
 // custom operator //
