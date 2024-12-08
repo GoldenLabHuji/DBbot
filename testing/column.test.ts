@@ -1,13 +1,6 @@
 import { Column } from "../classes/column";
 import { EqualOperator } from "../classes/operator";
-import {
-    ERRORS,
-    // DATATYPE_ERROR,
-    // NAN_CALCULATION_ERROR,
-    // MODE_ERROR,
-    // CUSTOM_ERROR,
-    // METHOD_ERROR,
-} from "../general/resources";
+import { ERRORS } from "../general/resources";
 import { DataType, NullMethod } from "../general/types";
 
 describe("Column", () => {
