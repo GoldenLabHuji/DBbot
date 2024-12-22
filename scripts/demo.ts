@@ -1,13 +1,11 @@
-import { DBbot, generateBotFile } from "../index";
-import {
-    AddCustomOperatorParams,
-    NullMethod,
-} from "../general/types";
+import { DBbot, App } from "../index";
+import { AddCustomOperatorParams, NullMethod } from "../general/types";
 
 ////////////////
 // create bot //
 ////////////////
 const dbBot = new DBbot();
+const app = new App();
 
 ////////////////
 // set colors //
@@ -131,4 +129,4 @@ dbBot.addCustomOperator(startWithBOperator);
 // generate bot file //
 ///////////////////////
 
-generateBotFile(dbBot);
+app.deploy(dbBot);

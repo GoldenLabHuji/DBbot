@@ -1,4 +1,4 @@
 import { DBbot } from "./classes/DBbot";
-import { generateBotFile } from "./general/utils";
+import { App } from "./classes/app";
 
-export { DBbot, generateBotFile };
+export { DBbot, App };
