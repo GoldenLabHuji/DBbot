@@ -1,19 +1,13 @@
-import {
-    OperatorData,
-    CustomMessages,
-    MessagesSlot,
-    BotMessages,
-    DataType,
-} from "./types";
+import * as types from "./types";
+import * as operators from "../classes/operator";
 
-export const DATATYPE_ERROR = "Invalid data type";
-export const NAN_CALCULATION_ERROR = "Can only calculate for numeric data type";
-export const MODE_ERROR = "No mode found";
-export const CUSTOM_ERROR = "Custom value is required";
-export const METHOD_ERROR =
-    "Invalid method, Please provide a valid method of the following 'mean', 'median', 'mode', 'remove' or 'custom'";
-
-export const EMPTY_OPERATORS_FILES = { functions: {}, main: "" };
+export enum ERRORS {
+    DATATYPE = "Invalid data type",
+    NAN = "Can only calculate for numeric data type",
+    MODE = "No mode found",
+    CUSTOM = "Custom value is required",
+    METHOD = "Invalid method, Please provide a valid method of the following 'mean', 'median', 'mode', 'remove' or 'custom'",
+}
 
 export const COLORS = [
     "blue",
@@ -26,45 +20,62 @@ export const COLORS = [
     "white",
 ];
 
-const EMPTY_CUSTOM_MESSAGES: CustomMessages = {
-    attributeMessage: undefined,
-    operatorMessage: undefined,
-    errorMessage: undefined,
-    continueMessage: undefined,
-    resultMessage: undefined,
+export const EMPTY = {
+    operatorsFiles: { functions: {}, main: "" },
+    details: {
+        name: "DBBot",
+        helpDescription: "NO DESCRIPTION PROVIDED",
+    },
+    messages: {
+        customMessages: {
+            attributeMessage: undefined,
+            operatorMessage: undefined,
+            errorMessage: undefined,
+            continueMessage: undefined,
+            resultMessage: undefined,
+        } as types.CustomMessages,
+        slots: {
+            welcomeSlot: [],
+            operatorSlot: [],
+            paramsSlot: [],
+            restartSlot: [],
+            resultSlot: [],
+        } as types.MessagesSlot,
+    } as types.BotMessages,
 };
 
-const EMPTY_SLOTS: MessagesSlot = {
-    welcomeSlot: [],
-    operatorSlot: [],
-    paramsSlot: [],
-    restartSlot: [],
-    resultSlot: [],
+export const DEFAULT_OPERATORS = {
+    numericOperators: [
+        new operators.EqualOperator(),
+        new operators.LessOperator(),
+        new operators.GreaterOperator(),
+        new operators.RangeOperator(),
+    ],
+    stringOperators: [
+        new operators.StartsWithOperator(),
+        new operators.EndWithOperator(),
+        new operators.ContainsOperator(),
+        new operators.EqualStringOperator(),
+    ],
+    factorOperators: [
+        new operators.ChooseOneOperator(),
+        new operators.ChooseMultipleOperator(),
+    ],
 };
 
-export const EMPTY_MESSAGES: BotMessages = {
-    customMessages: EMPTY_CUSTOM_MESSAGES,
-    slots: EMPTY_SLOTS,
-};
-
-export const EMPTY_DETAILS = {
-    name: "DBBot",
-    helpDescription: "NO DESCRIPTION PROVIDED",
-};
-
-const STRING_OPERATORS_DATA: OperatorData[] = [
+const STRING_OPERATORS_DATA: types.OperatorData[] = [
     {
         name: "EndWithOperator",
         column: "all",
         params: [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
                 message: "Enter the character to end with:",
             },
@@ -76,12 +87,12 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
                 message: "Enter the string the word should contain:",
             },
@@ -93,12 +104,12 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
                 message: "Enter the value the word should be equal to:",
             },
@@ -110,12 +121,12 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
                 message: "Enter the character to start with:",
             },
@@ -123,19 +134,19 @@ const STRING_OPERATORS_DATA: OperatorData[] = [
     },
 ];
 
-const NUMERIC_OPERATORS_DATA: OperatorData[] = [
+const NUMERIC_OPERATORS_DATA: types.OperatorData[] = [
     {
         name: "Equal",
         column: "all",
         params: [
             {
                 name: "cell",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the value you would like it to be equal to:",
             },
@@ -147,12 +158,12 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
                 message:
                     "Enter the value you would like it to be greater than:",
@@ -165,12 +176,12 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the value you would like it to be less than:",
             },
@@ -182,18 +193,18 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
             },
             {
                 name: "minValue",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the minimum value:",
             },
             {
                 name: "maxValue",
-                dataType: DataType.NUMERIC,
+                dataType: types.DataType.NUMERIC,
                 isArray: false,
                 message: "Enter the maximum value:",
             },
@@ -201,19 +212,19 @@ const NUMERIC_OPERATORS_DATA: OperatorData[] = [
     },
 ];
 
-const FACTOR_OPERATORS_DATA: OperatorData[] = [
+const FACTOR_OPERATORS_DATA: types.OperatorData[] = [
     {
         name: "ChooseOne",
         column: "all",
         params: [
             {
                 name: "cell",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
             },
             {
                 name: "value",
-                dataType: DataType.STRING,
+                dataType: types.DataType.STRING,
                 isArray: false,
                 message: "Enter the value you would like to choose:",
             },
@@ -225,12 +236,12 @@ const FACTOR_OPERATORS_DATA: OperatorData[] = [
         params: [
             {
                 name: "cell",
-                dataType: DataType.FACTOR,
+                dataType: types.DataType.FACTOR,
                 isArray: false,
             },
             {
                 name: "values",
-                dataType: DataType.FACTOR,
+                dataType: types.DataType.FACTOR,
                 isArray: true,
                 message:
                     "Enter the values you would like to choose. Please enter in the format: value1, value2, value3",
@@ -239,7 +250,7 @@ const FACTOR_OPERATORS_DATA: OperatorData[] = [
     },
 ];
 
-export const EMPTY_OPERATORS_DATA: OperatorData[] = [
+export const EMPTY_OPERATORS_DATA: types.OperatorData[] = [
     ...STRING_OPERATORS_DATA,
     ...NUMERIC_OPERATORS_DATA,
     ...FACTOR_OPERATORS_DATA,

@@ -3,47 +3,27 @@ import { parse } from "csv-parse/sync";
 import { Column } from "./column";
 import { CustomOperator } from "./operator";
 import { generateTypeError } from "../general/utils";
-import {
-    DataType,
-    OperatorData,
-    AddCustomOperatorParams,
-    BotDetails,
-    BotData,
-    BotMessages,
-    CustomMessages,
-    MessagesSlot,
-    fillNullValuesParams,
-    OperatorsFiles,
-    ColorsProp,
-    generalObject,
-    NullMethod,
-    NullValues,
-} from "../general/types";
-import {
-    OPERATORS_FILE,
-    EMPTY_MESSAGES,
-    EMPTY_DETAILS,
-    EMPTY_OPERATORS_DATA,
-    EMPTY_OPERATORS_FILES,
-    COLORS,
-} from "../general/resources";
+import * as types from "../general/types";
+import * as resources from "../general/resources";
 
 export class DBbot {
     private dataMap = new Map<string, any>();
     public filePath: string = "";
     private _customOperators: CustomOperator[] = [];
-    private _messages: BotMessages = EMPTY_MESSAGES;
+    private _messages: types.BotMessages = resources.EMPTY.messages;
     private currentOperatorIndex: number = 0;
-    private operatorsData: OperatorData[] = EMPTY_OPERATORS_DATA;
-    private _details: BotDetails = EMPTY_DETAILS;
-    private _data: BotData = {
+    private operatorsData: types.OperatorData[] =
+        resources.EMPTY_OPERATORS_DATA;
+    private _details: types.BotDetails = resources.EMPTY.details;
+    private _data: types.BotData = {
         headers: [],
         columns: [],
         customOperators: this._customOperators,
     };
-    private operatorsFiles: OperatorsFiles = EMPTY_OPERATORS_FILES;
-    private colors: ColorsProp = { bot: "blue", user: "purple" };
-    private nullValues: NullValues = {
+    private operatorsFiles: types.OperatorsFiles =
+        resources.EMPTY.operatorsFiles;
+    private colors: types.ColorsProp = { bot: "blue", user: "purple" };
+    private nullValues: types.NullValues = {
         isFilterIncludesNull: false,
         nullValues: [],
     };
@@ -76,30 +56,30 @@ You can download the results as a csv file`,
         };
     }
 
-    public get details(): BotDetails {
+    public get details(): types.BotDetails {
         return this._details;
     }
 
-    public set details(details: BotDetails) {
+    public set details(details: types.BotDetails) {
         this._details.name = details.name ?? this._details.name;
         this._details.helpDescription =
             details.helpDescription ?? this._details.helpDescription;
         this._details.mailInfo = details.mailInfo ?? this._details.mailInfo;
     }
 
-    public get data(): BotData {
+    public get data(): types.BotData {
         return this._data;
     }
 
-    public get messages(): BotMessages {
+    public get messages(): types.BotMessages {
         return this._messages;
     }
 
-    public set customMessages(messages: CustomMessages) {
+    public set customMessages(messages: types.CustomMessages) {
         this.setMessages("customMessages", messages);
     }
 
-    public set slots(messages: MessagesSlot) {
+    public set slots(messages: types.MessagesSlot) {
         this.setMessages("slots", messages);
     }
 
@@ -130,7 +110,7 @@ You can download the results as a csv file`,
         col.description = description;
     }
 
-    public getNullValuesProperty(): NullValues {
+    public getNullValuesProperty(): types.NullValues {
         return this.nullValues;
     }
 
@@ -156,20 +136,20 @@ You can download the results as a csv file`,
     }
 
     private setColor(color: string, type: "bot" | "user"): void {
-        if (!COLORS.includes(color)) {
+        if (!resources.COLORS.includes(color)) {
             console.error(`Color ${color} is not a valid option`);
-            console.error(`Please choose from ${COLORS.join(", ")}`);
+            console.error(`Please choose from ${resources.COLORS.join(", ")}`);
             throw new Error(`Invalid color ${color}`);
         }
         this.colors[type] = color;
     }
 
-    private setMessages<T extends keyof BotMessages>(
+    private setMessages<T extends keyof types.BotMessages>(
         key: T,
-        messages: BotMessages[T]
+        messages: types.BotMessages[T]
     ): void {
         Object.keys(messages).forEach((messageKey) => {
-            const messageKeyName = messageKey as keyof BotMessages[T];
+            const messageKeyName = messageKey as keyof types.BotMessages[T];
             this._messages[key][messageKeyName] =
                 messages[messageKeyName] ?? this._messages[key][messageKeyName];
         });
@@ -218,7 +198,7 @@ You can download the results as a csv file`,
         this._data.columns = this._data.columns.filter((c) => c !== column);
     }
 
-    public addCustomOperator(params: AddCustomOperatorParams): void {
+    public addCustomOperator(params: types.AddCustomOperatorParams): void {
         this.registerOperators(params);
 
         const importStatements =
@@ -252,7 +232,7 @@ You can download the results as a csv file`,
             .join("\n");
 
         const fileText =
-            OPERATORS_FILE +
+            resources.OPERATORS_FILE +
             "\n\n" +
             customFunctionsImport +
             "\n\n" +
@@ -262,7 +242,7 @@ You can download the results as a csv file`,
     }
 
     public loadDescriptionFile(path: string): void {
-        let records: generalObject<string>[] = [];
+        let records: types.generalObject<string>[] = [];
         try {
             const fileData = fs.readFileSync(path, "utf8");
             records = parse(fileData, {
@@ -307,7 +287,7 @@ You can download the results as a csv file`,
         }
     }
 
-    private registerOperators(params: AddCustomOperatorParams): void {
+    private registerOperators(params: types.AddCustomOperatorParams): void {
         const newOperator = new CustomOperator(
             params.name,
             params.customFunction
@@ -343,14 +323,14 @@ You can download the results as a csv file`,
         numericValue,
         stringValue,
         nullValue = [null],
-    }: fillNullValuesParams): void {
+    }: types.fillNullValuesParams): void {
         this._data.columns.forEach((column) => {
             const value =
-                column.dataType === DataType.NUMERIC
+                column.dataType === types.DataType.NUMERIC
                     ? numericValue
                     : stringValue;
             if (value === undefined) return;
-            column.fillNullValues(NullMethod.CUSTOM, nullValue, value);
+            column.fillNullValues(types.NullMethod.CUSTOM, nullValue, value);
         });
     }
 
@@ -361,15 +341,15 @@ You can download the results as a csv file`,
                 const isNumeric = columnData.some(
                     (item: string) => !isNaN(Number(item))
                 );
-                const dataType: DataType = isNumeric
-                    ? DataType.NUMERIC
-                    : DataType.STRING;
+                const dataType: types.DataType = isNumeric
+                    ? types.DataType.NUMERIC
+                    : types.DataType.STRING;
                 const col = new Column(column, dataType);
                 const numberColumnData: number[] = columnData.map(
                     (item: string) => parseFloat(item)
                 );
                 col.addRows(
-                    dataType === DataType.NUMERIC
+                    dataType === types.DataType.NUMERIC
                         ? numberColumnData
                         : columnData
                 );
