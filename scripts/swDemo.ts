@@ -1,4 +1,4 @@
-import { DBbot, generateBotFile } from "../index";
+import { DBbot, App } from "../index";
 import { AddCustomOperatorParams, NullMethod } from "../general/types";
 import { StartsWithOperator } from "../classes/operator";
 
@@ -6,6 +6,7 @@ import { StartsWithOperator } from "../classes/operator";
 // create bot //
 ////////////////
 const dbBot = new DBbot();
+const app = new App();
 
 ////////////////
 // set colors //
@@ -75,7 +76,7 @@ dbBot.slots = slots;
 // load csv file //
 ///////////////////
 
-dbBot.loadFile("./sw_characters.csv");
+dbBot.loadFile("./data.csv");
 
 //////////////////////////////
 // convert column to factor //
@@ -157,4 +158,4 @@ dbBot.addCustomOperator(startWithBOperator);
 // generate bot file //
 ///////////////////////
 
-generateBotFile(dbBot);
+app.deploy(dbBot);
