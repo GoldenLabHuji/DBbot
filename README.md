@@ -11,6 +11,7 @@ DBbot is an npm package that allows researchers to create a bot based on a CSV f
     -   [Operators](#operators)
     -   [Custom operators](#custom-operators)
     -   [Handling null values](#handling-null-values)
+    -   [Factor Attributes](#factor-attributes)
     -   [Display name of an attribute](#display-name-of-an-attribute)
     -   [Messages](#messages)
 -   [API](#api)
@@ -68,7 +69,7 @@ npm init
 You can install DBbot using npm:
 
 ```bash
-npm install @gold-lab/dbbot # fix
+npm install @gold-lab/dbbot
 ```
 
 And that's it! You are now ready to use DBbot.
@@ -95,10 +96,10 @@ app.deploy(dbBot);
 
 ## Terminology
 
-- Attribute - a column of the data set
-- Operator - a function used for filtering data from an attribute
-- Developer - the programmer who write the code of the bot using dbbot npm package
-- User - the user of the final product of the bot who only see the UI of the bot and not the code.
+-   Attribute - a column of the data set
+-   Operator - a function used for filtering data from an attribute
+-   Developer - the programmer who write the code of the bot using dbbot npm package
+-   User - the user of the final product of the bot who only see the UI of the bot and not the code.
 
 ## Operators
 
@@ -120,7 +121,7 @@ By default the bot has 11 operators to query data from the csv columns:
     -   ChooseMultiple
 
 Attributes with string values will have the string operators, and attributes with numeric values will have the numeric operators.
-Factor operators behave differently. More about Factor Attributes/Operators in the Factor Section # fix
+Factor Attributes behave differently, it have several build in option to choose from. To define an attribute as a factor attribute the developer needs to do it manually. More on this in the next sections
 
 ## Custom operators
 
@@ -142,7 +143,7 @@ For example:
 ```javascript
 // The function have a paraeter called "cell"  which can be of type string or number
 function startsWithB(cell: string) {
-   return cell.startsWith("B"); // return value of type boolean
+    return cell.startsWith("B"); // return value of type boolean
 }
 ```
 
@@ -212,6 +213,16 @@ dbBot.fillNullValuesAll({
     nullValue: nullValues,
 });
 ```
+
+## Factor Attributes
+
+As was mention before, the developer can convert attributes to factor attributes:
+
+```javascript
+dbBot.convertColumnsToFactor(["gender"]); // can enter multiple columns
+```
+
+The factor attributes have several build in options. For example - attribute called gender with the values options of "male", "female" and "other.
 
 ## Display name of an attribute
 
@@ -305,21 +316,36 @@ The slots messages are messages that can be placed between the fixed in time mes
 
 # API
 
+-   [DBbot](#dbbot-class)
+    -   [Properties](#dbbot-properties)
+    -   [Methods](#dbbot-methods)
+-   [App](#app-class)
+    -   [Methods](#app-methods)
+-   [Column](#column-class)
+    -   [Properties](#column-properties)
+    -   [Methods](#column-methods)
+-   [Custom Operator](#custom-operator-class)
+    -   [Properties](#custom-operator-properties)
+    -   [Methods](#custom-operator-methods)
+
 # DBbot Class
 
-The `DBbot` class is .... # fix
+The `DBbot` class is the main class for the bot
 
 ---
 
-## Properties
+## DBbot Properties
 
 ### `filePath: string`
-- **Description**: Stores the file path of the currently loaded data.
-- **Default**: `""`
+
+-   **Description**: Stores the file path of the currently loaded data.
+-   **Default**: `""`
 
 ### `_messages: BotMessages` - getter only
-- **Description**: Contains predefined bot-related messages.
-- **Default**: 
+
+-   **Description**: Contains predefined bot-related messages.
+-   **Default**:
+
 ```javascript
 {
     customMessages: {
@@ -340,8 +366,10 @@ The `DBbot` class is .... # fix
 ```
 
 ### `customMessages: CustomMessages` - setter only
-- **Description**: Contains predefined bot-related messages. # fix
-- **Default**: 
+
+-   **Description**: Contains predefined custom bot-related messages.
+-   **Default**:
+
 ```javascript
 {
     attributeMessage: undefined,
@@ -351,9 +379,12 @@ The `DBbot` class is .... # fix
     resultMessage: undefined,
 }
 ```
+
 ### `slots: MessagesSlot` - setter only
-- **Description**: Contains predefined bot-related messages. # fix
-- **Default**: 
+
+-   **Description**: Contains predefined slots bot-related messages.
+-   **Default**:
+
 ```javascript
 {
     welcomeSlot: [],
@@ -365,8 +396,10 @@ The `DBbot` class is .... # fix
 ```
 
 ### `_details: BotDetails`
-- **Description**: Stores configuration details specific to the bot.
-- **Default**: 
+
+-   **Description**: Stores configuration details specific to the bot.
+-   **Default**:
+
 ```javascript
 {
     name: "DBBot",
@@ -375,8 +408,10 @@ The `DBbot` class is .... # fix
 ```
 
 ### `_data: BotData`
-- **Description**: Core data structure containing headers, columns, and custom operators.
-- **Default**:
+
+-   **Description**: Core data structure containing headers, columns, and custom operators.
+-   **Default**:
+
 ```javascript
   {
       headers: [],
@@ -386,247 +421,374 @@ The `DBbot` class is .... # fix
 ```
 
 ### `botColor: string`
-- **Description**: Configurable color settings for bot interactions.
-- **Default**: `"blue"`
+
+-   **Description**: Configurable color settings for bot interactions.
+-   **Default**: `"blue"`
 
 ### `userColor: string`
-- **Description**: Configurable color settings for bot interactions.
-- **Default**: `"purple"`
 
+-   **Description**: Configurable color settings for bot interactions.
+-   **Default**: `"purple"`
 
-## Methods
-
+## DBbot Methods
 
 ## `defineNullValues(values: any[])`
-- **Description**:
-This method allows you to define an array of null values for the bot. It updates the `nullValues` property, which holds an array of values that are considered null.
-- **Parameters**: 
-    - `values`
-        - **Type**: `any[]`
-         - **Description**: An array of values that you wish to set as null values. The values in this array will replace the current `nullValues` array.
-- **RType**: `void`
-- **Returns**: nothing
+
+-   **Description**:
+    This method allows you to define an array of null values for the bot. It updates the `nullValues` property, which holds an array of values that are considered null.
+-   **Parameters**:
+    -   `values`
+        -   **Type**: `any[]`
+        -   **Description**: An array of values that you wish to set as null values. The values in this array will replace the current `nullValues` array.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 ## `setColumnDescription(column: string, description: string)`
-- **Description**:
-This method sets the description for a specified column. It updates the `description` property of the column object retrieved by its name.
-- **Parameters**: 
-    - `column`
-        - **Type**: `string`
-        - **Description**: The name of the column whose description is to be set.
-    - `description`
-        - **Type**: `string`
-        - **Description**: The description to be set for the specified column.
-- **RType**: `void`
-- **Returns**: nothing
+
+-   **Description**:
+    This method sets the description for a specified column. It updates the `description` property of the column object retrieved by its name.
+-   **Parameters**:
+    -   `column`
+        -   **Type**: `string`
+        -   **Description**: The name of the column whose description is to be set.
+    -   `description`
+        -   **Type**: `string`
+        -   **Description**: The description to be set for the specified column.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 ## `getNullValuesProperty()`
-- **Description**:
-This method retrieves the current `nullValues` property, which holds the array of values considered as null and the associated configuration.
-- **Parameters**: 
-    - None
-- **RType**: `NullValues`
-- **Returns**: The current `nullValues` property.
+
+-   **Description**:
+    This method retrieves the current `nullValues` property, which holds the array of values considered as null and the associated configuration.
+-   **Parameters**:
+    -   None
+-   **RType**: `NullValues`
+-   **Returns**: The current `nullValues` property.
 
 ## `setIsFilterIncludesNull(value: boolean)`
-- **Description**:
-This method sets the `isFilterIncludesNull` property in the `nullValues` object. It also validates that the provided value is of type `boolean`, throwing a `TypeError` if the validation fails.
-- **Parameters**: 
-    - `value`
-        - **Type**: `boolean`
-        - **Description**: The boolean value to be set for the `isFilterIncludesNull` property.
-- **RType**: `void`
-- **Returns**: nothing
+
+-   **Description**:
+    This method sets the `isFilterIncludesNull` property in the `nullValues` object. It also validates that the provided value is of type `boolean`, throwing a `TypeError` if the validation fails.
+-   **Parameters**:
+    -   `value`
+        -   **Type**: `boolean`
+        -   **Description**: The boolean value to be set for the `isFilterIncludesNull` property.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 ## `convertColumnsToFactor(columns: string[])`
-- **Description**:
-This method converts specified columns to the "factor" type. It retrieves the columns by name, invokes the `ConvertToFactor()` method on each column, and updates the column's data by deleting all existing rows and adding new rows from the corresponding data map. If a column has no data, an error message is logged.
-- **Parameters**: 
-    - `columns`
-        - **Type**: `string[]`
-        - **Description**: An array of column names to be converted to the "factor" type.
-- **RType**: `void`
-- **Returns**: nothing
+
+-   **Description**:
+    This method converts specified columns to the "factor" type. It retrieves the columns by name, invokes the `ConvertToFactor()` method on each column, and updates the column's data by deleting all existing rows and adding new rows from the corresponding data map. If a column has no data, an error message is logged.
+-   **Parameters**:
+    -   `columns`
+        -   **Type**: `string[]`
+        -   **Description**: An array of column names to be converted to the "factor" type.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 ## `getColumnByName(name: string)`
-- **Description**:
-This method retrieves a column by its `displayName` property. It internally calls the private method `getColumnByStringProperty` to find a column whose `displayName` matches the provided name, performing a case-insensitive comparison.
-- **Parameters**: 
-    - `name`
-        - **Type**: `string`
-        - **Description**: The name of the column (as the `displayName`) to be retrieved.
-- **RType**: `Column`
-- **Returns**: The `Column` object that matches the provided `displayName`. If no matching column is found, an error is thrown.
+
+-   **Description**:
+    This method retrieves a column by its `displayName` property. It internally calls the private method `getColumnByStringProperty` to find a column whose `displayName` matches the provided name, performing a case-insensitive comparison.
+-   **Parameters**:
+    -   `name`
+        -   **Type**: `string`
+        -   **Description**: The name of the column (as the `displayName`) to be retrieved.
+-   **RType**: `Column`
+-   **Returns**: The `Column` object that matches the provided `displayName`. If no matching column is found, an error is thrown.
 
 ## `getColumnById(id: string)`
-- **Description**:
-This method retrieves a column by its `id` property. It internally calls the private method `getColumnByStringProperty` to find a column whose `id` matches the provided value, performing a case-insensitive comparison.
-- **Parameters**: 
-    - `id`
-        - **Type**: `string`
-        - **Description**: The ID of the column to be retrieved.
-- **RType**: `Column`
-- **Returns**: The `Column` object that matches the provided `id`. If no matching column is found, an error is thrown.
+
+-   **Description**:
+    This method retrieves a column by its `id` property. It internally calls the private method `getColumnByStringProperty` to find a column whose `id` matches the provided value, performing a case-insensitive comparison.
+-   **Parameters**:
+    -   `id`
+        -   **Type**: `string`
+        -   **Description**: The ID of the column to be retrieved.
+-   **RType**: `Column`
+-   **Returns**: The `Column` object that matches the provided `id`. If no matching column is found, an error is thrown.
 
 ## `changeColumnDisplayName(name: string, newName: string)`
-- **Description**:
-This method changes the display name of a specified column. It first checks if a column with the new name already exists. If not, it updates the column's `displayName` and updates the corresponding header in the `_data.headers` array. If a column with the new name is found, an error is thrown.
-- **Parameters**: 
-    - `name`
-        - **Type**: `string`
-        - **Description**: The current display name of the column to be renamed.
-    - `newName`
-        - **Type**: `string`
-        - **Description**: The new display name to be assigned to the column.
-- **RType**: `void`
-- **Returns**: nothing
+
+-   **Description**:
+    This method changes the display name of a specified column. It first checks if a column with the new name already exists. If not, it updates the column's `displayName` and updates the corresponding header in the `_data.headers` array. If a column with the new name is found, an error is thrown.
+-   **Parameters**:
+    -   `name`
+        -   **Type**: `string`
+        -   **Description**: The current display name of the column to be renamed.
+    -   `newName`
+        -   **Type**: `string`
+        -   **Description**: The new display name to be assigned to the column.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 ## `addCustomOperator(params: types.AddCustomOperatorParams)`
-- **Description**:
-This method adds a custom operator by registering it and generating an import statement for any specified functions. It creates a file text containing the necessary import statements and the custom function, which is then added to the `operatorsFiles.functions` object under the operator's name.
-- **Parameters**: 
-    - `params`
-        - **Type**: `types.AddCustomOperatorParams`
-        - **Description**: An object containing parameters for adding a custom operator, including:
-            - `name` (`string`): The name of the custom operator.
-            - `customFunction` (`Function`): The custom function to be assigned to the operator.
-            - `importFunctions` (`string[] | undefined`): An optional array of functions to be imported for use within the custom operator.
-- **RType**: `void`
-- **Returns**: nothing
+
+-   **Description**:
+    This method adds a custom operator by registering it and generating an import statement for any specified functions. It creates a file text containing the necessary import statements and the custom function, which is then added to the `operatorsFiles.functions` object under the operator's name.
+-   **Parameters**:
+    -   `params`
+        -   **Type**: `types.AddCustomOperatorParams`
+        -   **Description**: An object containing parameters for adding a custom operator, including:
+            -   `name` (`string`): The name of the custom operator.
+            -   `customFunction` (`Function`): The custom function to be assigned to the operator.
+            -   `importFunctions` (`string[] | undefined`): An optional array of functions to be imported for use within the custom operator.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 ## `loadDescriptionFile(path: string)`
-- **Description**:
-This method loads a description file from the specified path, parses it, and updates the `description` property of the corresponding columns. It reads the file synchronously, parses the data into records, and associates the description from the file with each column by matching the column name.
-- **Parameters**: 
-    - `path`
-        - **Type**: `string`
-        - **Description**: The file path of the description file to be loaded.
-- **RType**: `void`
-- **Returns**: nothing
 
+-   **Description**:
+    This method loads a description file from the specified path, parses it, and updates the `description` property of the corresponding columns. It reads the file synchronously, parses the data into records, and associates the description from the file with each column by matching the column name.
+-   **Parameters**:
+    -   `path`
+        -   **Type**: `string`
+        -   **Description**: The file path of the description file to be loaded.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 ## `loadFile(path: string)`
-- **Description**:
-This method loads and processes a file from the specified path. It reads the file data synchronously, parses the records, and updates the `_data.headers` and `dataMap` properties. It then adds columns to the `dataMap` and performs any additional automatic column assignments. If an error occurs during file reading or parsing, it is logged to the console.
-- **Parameters**: 
-    - `path`
-        - **Type**: `string`
-        - **Description**: The file path of the file to be loaded and processed.
-- **RType**: `void`
-- **Returns**: nothing
+
+-   **Description**:
+    This method loads and processes a file from the specified path. It reads the file data synchronously, parses the records, and updates the `_data.headers` and `dataMap` properties. It then adds columns to the `dataMap` and performs any additional automatic column assignments. If an error occurs during file reading or parsing, it is logged to the console.
+-   **Parameters**:
+    -   `path`
+        -   **Type**: `string`
+        -   **Description**: The file path of the file to be loaded and processed.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 ## `fillNullValuesAll({ numericValue, stringValue, nullValue }: types.fillNullValuesParams)`
-- **Description**:
-This method fills null values in all columns of the data. It loops through each column and assigns a value based on the column's data type. If the column is of type `NUMERIC`, it uses the `numericValue`; otherwise, it uses the `stringValue`. If no value is provided for either, the method does nothing for that column. It also allows specifying custom null values.
-- **Parameters**: 
-    - `numericValue`
-        - **Type**: `any`
-        - **Description**: The value to use for numeric columns when filling null values.
-    - `stringValue`
-        - **Type**: `any`
-        - **Description**: The value to use for string columns when filling null values.
-    - `nullValue`
-        - **Type**: `any[]`
-        - **Description**: An optional array of values representing the null values to be replaced. The default value is `[null]`.
-- **RType**: `void`
-- **Returns**: nothing
 
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
+-   **Description**:
+    This method fills null values in all columns of the data. It loops through each column and assigns a value based on the column's data type. If the column is of type `NUMERIC`, it uses the `numericValue`; otherwise, it uses the `stringValue`. If no value is provided for either, the method does nothing for that column. It also allows specifying custom null values.
+-   **Parameters**:
+    -   `numericValue`
+        -   **Type**: `any`
+        -   **Description**: The value to use for numeric columns when filling null values.
+    -   `stringValue`
+        -   **Type**: `any`
+        -   **Description**: The value to use for string columns when filling null values.
+    -   `nullValue`
+        -   **Type**: `any[]`
+        -   **Description**: An optional array of values representing the null values to be replaced. The default value is `[null]`.
+-   **RType**: `void`
+-   **Returns**: nothing
 
-## app
+# App Class
 
-### Methods
-
-#### runBot
-
-run the bot
-
-**return type**: void
-
-**params**:
-
--   bot: DBbot - the instance of the bot
+The `App` class is the class for execute and deploy the bot
 
 ---
 
-## Column
+## App Methods
 
-### Properties
+## `generateConfigFile(bot: DBbot)`
 
-#### id
+-   **Description**:
+    This method generates a configuration file for the bot and saves it as a JSON file in the current working directory. It first calls the `createOperatorsFile` method on the `bot` instance to prepare operator-related data. Then, it serializes the bot object into a JSON file named `db_bot.json`.
+-   **Parameters**:
+    -   `bot`
+        -   **Type**: `DBbot`
+        -   **Description**: The bot instance for which the configuration file is being generated.
+-   **RType**: `void`
+-   **Returns**: nothing
 
-returns the id of the column. readonly property
+## `deploy(bot: DBbot)`
 
-**type**: string
+-   **Description**:
+    This method deploys the bot by generating its configuration file and executing a deployment script. It first calls the `generateConfigFile` method to create the configuration file for the bot. Then, it spawns a new process to execute the `deploy.sh` script located in the current working directory. If an error occurs during the deployment, it is logged to the console.
+-   **Parameters**:
+    -   `bot`
+        -   **Type**: `DBbot`
+        -   **Description**: The bot instance to be deployed.
+-   **RType**: `void`
+-   **Returns**: nothing
 
----
+# Column Class
 
-### Methods
-
-#### getColumnData()
-
-return the data of the column
-
-**return type**: ColumnData
-
-**ColumnData**
-
--   id: string - the id of the column
--   rows: any[] - the rows of the column
--   dataType: DataType - the data type of the column. _numeric_ or _string_
--   displayName: string - the display name of the column
--   operators: Operator[] - the operators of the column
-
----
-
-#### mean()
-
-_NOTE: only for numeric columns_
-
-returns the mean of the column
-
-**return type**: number
+The `Column` class is the class for the Attributes of the data
 
 ---
 
-#### mode()
+## Column Properties
 
-_NOTE: only for numeric columns_
+### `useDefaultOperators: boolean`
 
-returns the mode of the column
+-   **Description**: Indicates whether the default operators should be used.
+-   **Default**: `true`
 
-**return type**: number
+### `description: string`
+
+-   **Description**: The description of the column
+-   **Default**: `"No description available"`
+
+### `id: string` - getter only
+
+-   **Description**: The id of the column
+-   **Default**: `None`
+
+## Column Methods
+
+## `deleteAllRows()`
+
+-   **Description**:
+    This method removes all rows from the current data structure by clearing the `rows` property. After this operation, the `rows` array will be empty.
+-   **Parameters**:
+    -   None
+-   **RType**: `void`
+-   **Returns**: nothing
+
+## `getColumnData()`
+
+-   **Description**:
+    This method retrieves the data of the current column in the form of a `ColumnData` object. The returned object includes the column's ID, rows, data type, display name, and an array of operators associated with the column.
+-   **Parameters**:
+    -   None
+-   **RType**: `ColumnData`
+-   **Returns**:
+    -   An object containing the following properties:
+        -   `id` (**Type**: `string`): The unique identifier of the column.
+        -   `rows` (**Type**: `any[]`): An array representing the rows in the column.
+        -   `dataType` (**Type**: `string`): The data type of the column.
+        -   `displayName` (**Type**: `string`): The display name of the column.
+        -   `operators` (**Type**: `any[]`): An array of operators associated with the column.
+
+## `ConvertToFactor()`
+
+-   **Description**:
+    This method converts the column's data type to `FACTOR` and updates the column's operators array. It includes default factor operators and any custom operators associated with the column.
+-   **Parameters**:
+    -   None
+-   **RType**: `void`
+-   **Returns**: nothing
+
+## `addRows(rows: any[])`
+
+-   **Description**:
+    This method adds the provided rows to the column by appending them to the existing `rows` array.
+-   **Parameters**:
+    -   `rows`
+        -   **Type**: `any[]`
+        -   **Description**: An array of rows to be added to the column.
+-   **RType**: `void`
+-   **Returns**: nothing
+
+## `addOperator(operator: Operator)`
+
+-   **Description**:
+    This method adds a new operator to the column by appending it to the `operatorsArray`.
+-   **Parameters**:
+    -   `operator`
+        -   **Type**: `Operator`
+        -   **Description**: The operator to be added to the column's operators array.
+-   **RType**: `void`
+-   **Returns**: nothing
+
+## `mean()`
+
+-   **Description**:
+    This method calculates the mean (average) of the numeric rows in the column. It validates that the column's data type is `NUMERIC` before performing the calculation. Non-numeric values (`NaN`) in the rows are ignored. The result is rounded to two decimal places.
+-   **Parameters**:
+    -   None
+-   **RType**: `number`
+-   **Returns**:
+    -   The mean (average) of the numeric rows in the column as a number.
+-   **Throws**:
+    -   An error if the column's data type is not `NUMERIC`.
+
+## `mode()`
+
+-   **Description**:
+    This method calculates the mode (the most frequently occurring value) of the numeric rows in the column. It validates that the column's data type is `NUMERIC` before performing the calculation. Non-numeric values (`NaN`) are ignored during the computation.
+-   **Parameters**:
+    -   None
+-   **RType**: `number`
+-   **Returns**:
+    -   The mode (most frequently occurring value) of the numeric rows in the column as a number.
+-   **Throws**:
+    -   An error if the column's data type is not `NUMERIC`.
+    -   An error if all values occur with the same frequency, indicating there is no distinct mode.
+    -   An error if the mode cannot be determined due to an unexpected issue.
+
+## `median()`
+
+-   **Description**:
+    This method calculates the median (the middle value) of the numeric rows in the column. It validates that the column's data type is `NUMERIC` before performing the calculation. Non-numeric values (`NaN`) are excluded from the computation, and the rows are sorted in ascending order.
+-   **Parameters**:
+    -   None
+-   **RType**: `number`
+-   **Returns**:
+    -   The median of the numeric rows in the column:
+        -   If the number of rows is odd, the middle value.
+        -   If the number of rows is even, the average of the two middle values.
+-   **Throws**:
+    -   An error if the column's data type is not `NUMERIC`.
+
+## `fillNullValues(method: NullMethod, nullValue: any[] = [null], customValue?: NumOrStr | null)`
+
+-   **Description**:
+    This method fills null values in the column based on the specified method. It supports various methods such as replacing nulls with a custom value, removing null values, or filling them with the mean, median, or mode of the column. The method throws errors if invalid parameters are provided or if the required custom value is not given.
+-   **Parameters**:
+    -   `method`
+        -   **Type**: `NullMethod`
+        -   **Description**: The method to be used for filling the null values. Possible values are `CUSTOM`, `REMOVE`, `MEAN`, `MEDIAN`, or `MODE`.
+    -   `nullValue`
+        -   **Type**: `any[]` (default: `[null]`)
+        -   **Description**: The value(s) to be considered as null in the column. By default, this is set to `[null]`.
+    -   `customValue`
+        -   **Type**: `NumOrStr | null` (optional)
+        -   **Description**: A custom value to replace the null values, used when `method` is set to `CUSTOM`. If not provided for the `CUSTOM` method, an error is thrown.
+-   **RType**: `void`
+-   **Returns**: `-`
+-   **Throws**:
+    -   An error if the `method` is invalid or unrecognized.
+    -   An error if the `method` is `CUSTOM` and `customValue` is `undefined`.
+
+# CustomOperator Class
+
+The `CustomOperator` class is the class for custom operators for filtering the data.
 
 ---
 
-#### median()
+## CustomOperator Properties
 
-_NOTE: only for numeric columns_
+### Constructor: `constructor(name: string, private customFunction: Function)`
 
-returns the median of the column
+-   **Description**:
+    Creates an instance of the `CustomOperator` class, initializing it with a name and a custom function that defines the operator's behavior.
+-   **Parameters**:
+    -   `name`
+        -   **Type**: `string`
+        -   **Description**: The name of the operator.
+    -   `customFunction`
+        -   **Type**: `Function`
+        -   **Description**: The custom function that defines the behavior of the operator.
+-   **RType**: `CustomOperator`
+-   **Returns**: A new instance of the `CustomOperator` class.
 
-**return type**: number
+## CustomOperator Methods
 
----
+## `calculate()`
 
-#### fillNullValues()
+-   **Description**:
+    Executes the `customFunction` defined in the constructor and returns its result.
+-   **Parameters**: None
+-   **RType**: `any`
+-   **Returns**: The result of the custom function execution.
 
-fill the defined null values of the column with a specific values
+## `addParams(params: Params[])`
 
-**return type**: void
-
-**params**:
-
--   method: nullMethod - the method for the function to use. options: mean, median, mode, remove and custom
--   nullValue: any[] - an array of what values are considered null
--   customValue(optional): NumOrStr - if the "custom" method has been chosen, the custom value to change to.
-
----
+-   **Description**:
+    Adds the provided parameters to the operator's `params` array.
+-   **Parameters**:
+    -   `params`
+        -   **Type**: `Params[]`
+        -   **Description**: An array of parameters to be added to the operator's `params` array.
+-   **RType**: `void`
+-   **Returns**: nothing
 
 # Contributing
 
