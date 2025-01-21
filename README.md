@@ -747,13 +747,13 @@ The `Column` class is the class for the Attributes of the data
     -   An error if the `method` is invalid or unrecognized.
     -   An error if the `method` is `CUSTOM` and `customValue` is `undefined`.
 
-# CustomOperator Class
+# Custom Operator Class
 
 The `CustomOperator` class is the class for custom operators for filtering the data.
 
 ---
 
-## CustomOperator Properties
+## Custom Operator Properties
 
 ### Constructor: `constructor(name: string, private customFunction: Function)`
 
@@ -769,7 +769,7 @@ The `CustomOperator` class is the class for custom operators for filtering the d
 -   **RType**: `CustomOperator`
 -   **Returns**: A new instance of the `CustomOperator` class.
 
-## CustomOperator Methods
+## Custom Operator Methods
 
 ## `calculate()`
 
