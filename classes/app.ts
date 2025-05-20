@@ -12,12 +12,26 @@ export class App {
 
     public deploy(bot: DBbot): void {
         this.generateConfigFile(bot);
-        try {
-            spawn("sh", ["deploy.sh"], {
-                cwd: process.cwd(),
-            });
-        } catch (error) {
-            console.error("Error while deploying the bot", error);
+
+        let shell: string;
+        let args: string[];
+
+        if (process.platform === "win32") {
+            // Try Git Bash path (adjust if needed)
+            shell = "C:\\Program Files\\Git\\bin\\bash.exe";
+            args = ["deploy.sh"];
+        } else {
+            shell = "sh";
+            args = ["deploy.sh"];
         }
+
+        const child = spawn(shell, args, {
+            cwd: process.cwd(),
+            stdio: "inherit",
+        });
+
+        child.on("error", (error) => {
+            console.error("Error while deploying the bot:", error);
+        });
     }
 }
