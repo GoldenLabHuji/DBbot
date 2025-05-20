@@ -75,7 +75,7 @@ dbBot.slots = slots;
 // load csv file //
 ///////////////////
 
-dbBot.loadFile("./sw_characters.csv");
+dbBot.loadFile("./demo.csv");
 
 /////////////////////////
 // null values in rows //
@@ -83,7 +83,7 @@ dbBot.loadFile("./sw_characters.csv");
 
 const nullValues = [null, "NA", NaN];
 
-const heightColumn = dbBot.getColumnByName("height");
+const heightColumn = dbBot.getColumnByName("col_3");
 
 heightColumn.fillNullValues(NullMethod.MEAN, nullValues);
 
@@ -102,7 +102,7 @@ dbBot.fillNullValuesAll({
 
 // change the name successfully
 
-dbBot.changeColumnDisplayName("name", "newName");
+dbBot.changeColumnDisplayName("col_2", "col_2_new");
 
 /////////////////////
 // custom operator //
@@ -114,7 +114,7 @@ const startWithBOperator = {
         return cell.startsWith("B");
     },
     dataType: "string",
-    column: "newName",
+    column: "col_2_new",
     params: [
         {
             name: "cell",
