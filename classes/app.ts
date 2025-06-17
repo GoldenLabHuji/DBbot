@@ -14,7 +14,7 @@ export class App {
         this.generateConfigFile(bot);
 
         // Resolve the full path to deploy.sh relative to this file
-        const scriptPath = path.resolve(__dirname, "..", "deploy.sh");
+        const scriptPath = path.resolve(__dirname, "..", "..", "deploy.sh");
 
         // Check if the script exists
         if (!fs.existsSync(scriptPath)) {
