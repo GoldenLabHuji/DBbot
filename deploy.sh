@@ -30,6 +30,8 @@ cp data.csv dbbotUI/src/app/data/
 
 # Remove the .git directory from the cloned repository
 rm -rf dbbotUI/.git
+rm -rf dbbotUI/.github
+rm -rf dbbotUI/.gitignore
 
 # Success message
 echo "Deployment setup complete."
