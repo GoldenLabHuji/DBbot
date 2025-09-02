@@ -1,6 +1,6 @@
 {
     "name": "db-chatbot",
-    "version": "0.0.1-development",
+    "version": "0.0.2-development",
     "description": "",
     "main": "./build/index.js",
     "scripts": {
@@ -10,7 +10,7 @@
         "build": "tsc -p tsconfig.build.json",
         "semantic-release": "semantic-release"
     },
-    "author": "",
+    "author": "Nadav Weisler",
     "license": "ISC",
     "devDependencies": {
         "@commitlint/cli": "^19.3.0",
