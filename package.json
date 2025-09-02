@@ -1,5 +1,5 @@
 {
-    "name": "@gold-lab/dbbot",
+    "name": "dbbot",
     "version": "0.0.0-development",
     "description": "",
     "main": "./build/index.js",
