@@ -69,7 +69,7 @@ npm init
 You can install DBbot using npm:
 
 ```bash
-npm install @gold-lab/dbbot
+npm install db-chatbot
 ```
 
 And that's it! You are now ready to use DBbot.
@@ -81,14 +81,14 @@ And that's it! You are now ready to use DBbot.
 Here is a basic example of how to use DBbot:
 
 ```javascript
-import { DBbot, App } from "dbbot";
+import { DBbot, App } from "db-chatbot";
 
 // Create bot and app instances
 const dbBot = new DBbot();
 const app = new App();
 
 // Initialize the bot with a CSV file
-dbBot.loadFile("./example.csv");
+dbBot.loadFile("./data.csv");
 
 // Run the bot
 app.deploy(dbBot);
